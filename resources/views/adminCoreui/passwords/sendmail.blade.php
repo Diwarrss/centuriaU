@@ -4,8 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card mx-4">
-                    <div class="card-header">{{ __('Reset Password') }}</div>
-
+                    <div class="card-header">
+                        <h4><i class="fas fa-lock"></i> {{ __('Reset Password') }}</h4>
+                    </div>
                     <div class="card-body p-4">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -33,11 +34,16 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Send Password Reset Link') }}
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ __('Send Password Reset Link') }}
                                     </button>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/" class=" btn btn-outline-secondary tx-tfm text-dark">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
                     </div>
             </div>
         </div>
