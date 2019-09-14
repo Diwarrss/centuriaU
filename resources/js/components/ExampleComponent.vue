@@ -18,7 +18,7 @@ export default {
     getUser() {
       let me = this;
       axios
-        .get("http://apicenturia.test/api/getUsuarios", {
+        .get("https://apicenturia.local/api/getUsuarios", {
           params: {
             id: "1057516393"
           }
