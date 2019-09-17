@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'estado_user'
+        'name', 'email', 'password', 'estado_user', 'roles_id'
     ];
 
     /**
@@ -42,13 +42,5 @@ class User extends Authenticatable
     public function rol()
     {
         return $this->belongsTo('App\Role'); //un usuario pertenece a/tiene un Rol
-    }
-
-    //para capturar los datos del Usuario al Loguearse
-    public function setSession($rol)
-    {
-        Session::put([
-            'id'
-        ]);
     }
 }
