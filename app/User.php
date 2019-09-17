@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Session;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'estado_user'
     ];
 
     /**
@@ -36,4 +37,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //para las relaciones Eloquent
+    public function rol()
+    {
+        return $this->belongsTo('App\Role'); //un usuario pertenece a/tiene un Rol
+    }
+
+    //para capturar los datos del Usuario al Loguearse
+    public function setSession($rol)
+    {
+        Session::put([
+            'id'
+        ]);
+    }
 }

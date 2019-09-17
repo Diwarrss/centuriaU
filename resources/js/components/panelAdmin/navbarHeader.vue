@@ -10,18 +10,18 @@
     <a class="navbar-brand" href="/admin">
       <img
         class="navbar-brand-full"
-        src="adminCoreui/img/brand/logo.svg"
-        width="89"
-        height="25"
-        alt="CoreUI Logo"
+        src="adminCoreui/img/brand/banner.png"
+        width="145"
+        height="35"
+        alt="Logotipo"
       />
-      <img
+      <!-- <img
         class="navbar-brand-minimized"
         src="adminCoreui/img/brand/sygnet.svg"
         width="30"
         height="30"
         alt="CoreUI Logo"
-      />
+      />-->
     </a>
     <button
       class="navbar-toggler sidebar-toggler d-md-down-none"
