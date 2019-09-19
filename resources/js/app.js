@@ -10,6 +10,11 @@ window.Vue = require('vue');
 //importacion de libreria Vue Router
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+
+//importando VUEX
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -35,7 +40,7 @@ Vue.component('sidebardright', require('./components/panelAdmin/sidebardRight.vu
 const Error404 = require("./components/Error404.vue").default;
 //para el Admin
 const Escritorio = require("./components/allMenusInfo/Escritorio.vue").default;
-const Colors = require("./components/allMenusInfo/Colors.vue").default;
+const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -55,8 +60,8 @@ const routes = [{
         component: Escritorio
     },
     {
-        path: "/colors",
-        component: Colors
+        path: "/ingresos",
+        component: Ingresos
     },
 ];
 
@@ -69,7 +74,30 @@ const router = new VueRouter({
     base: "/admin"
 });
 
+//para Vuex funcione
+const store = new Vuex.Store({
+    state: {
+        infoUserAuth: []
+    },
+    mutations: {
+        //capturamos el dato enviado desde actions getUserAuth
+        llenarInfo(state, getUserAccion) {
+            state.infoUserAuth = getUserAccion
+        }
+    },
+    actions: {
+        getUserAuth: async function ({
+            commit
+        }) {
+            const data = await fetch('/getUserAuth');
+            const dataUser = await data.json();
+            commit('llenarInfo', dataUser)
+        }
+    }
+});
+
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });

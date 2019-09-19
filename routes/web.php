@@ -40,4 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //cuando es autenticado o logueado Entra a administrar
     Route::get('admin', 'HomeController@index')->name('admin');
+
+    //Controllador de Users
+    Route::get('getUserAuth', 'UsersController@getUserAuth')->name('getUserAuth');
 });

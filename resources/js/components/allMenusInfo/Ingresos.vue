@@ -28,7 +28,9 @@
           <div class="animated fadeIn">
             <div class="row">
               <div class="col-sm-12 col-lg-12">
-                <h2>MENU 2</h2>
+                <div class="card">
+                  <div class="card-body">{{infoUserAuth[0].created_at}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -37,3 +39,19 @@
     </div>
   </main>
 </template>
+<script>
+//importamos para usar el mapState, mapActions
+import { mapState, mapActions } from "vuex";
+export default {
+  computed: {
+    ...mapState(["infoUserAuth"])
+  },
+  methods: {
+    ...mapActions(["getUserAuth"])
+  },
+  mounted() {
+    //optener el Usuario autenticado
+    this.getUserAuth();
+  }
+};
+</script>
