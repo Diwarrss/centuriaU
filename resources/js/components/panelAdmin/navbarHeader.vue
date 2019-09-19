@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header navbar">
+  <header class="app-header navbar" v-if="infoUserAuth.length">
     <button
       class="navbar-toggler sidebar-toggler d-lg-none mr-auto"
       type="button"
@@ -57,10 +57,10 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <a class="d-md-down-none">Administrador</a>
+          <a class="d-md-down-none">{{infoUserAuth[0].name}}</a>
           <img
             class="img-avatar"
-            src="adminCoreui/img/avatars/6.jpg"
+            src="adminCoreui/img/avatars/avatar.png"
             alt="admin@bootstrapmaster.com"
           />
         </a>
@@ -101,13 +101,23 @@
   </header>
 </template>
 <script>
+//importamos para usar el mapState, mapActions
+import { mapState, mapActions } from "vuex";
 export default {
   props: ["csrf"],
+  computed: {
+    ...mapState(["infoUserAuth"])
+  },
   methods: {
+    ...mapActions(["getUserAuth"]),
     logout() {
       event.preventDefault();
       document.getElementById("logout-form").submit();
     }
+  },
+  mounted() {
+    //optener el Usuario autenticado
+    this.getUserAuth();
   }
 };
 </script>

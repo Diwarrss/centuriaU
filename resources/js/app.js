@@ -90,7 +90,7 @@ const store = new Vuex.Store({
             commit
         }) {
             const data = await fetch('/getUserAuth');
-            const dataUser = await data.json();
+            const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit('llenarInfo', dataUser)
         }
     }

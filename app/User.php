@@ -43,4 +43,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Role'); //un usuario pertenece a/tiene un Rol
     }
+
+    //para las relaciones Eloquent
+    public function sede()
+    {
+        return $this->belongsTo('App\Sede'); //un usuario pertenece a/tiene una Sede
+    }
 }

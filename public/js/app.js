@@ -1805,14 +1805,78 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //importamos para usar el mapState, mapActions
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      documento: "",
+      infoPersonaU: [],
+      //persona de la bd Unisangil
+      infoPersonaC: [] //persona creada en mi bd
+
+    };
+  },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["infoUserAuth"])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getUserAuth"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getUserAuth"]), {
+    buscarPersonaID: function buscarPersonaID() {
+      var me = this;
+      axios.get("https://apicenturia.local/api/getUsuarios", {
+        params: {
+          id: me.documento
+        }
+      }).then(function (response) {
+        me.infoPersonaU = response.data;
+
+        if (me.infoPersonaU == "") {
+          axios.get("/getPersona", {
+            params: {
+              id: me.documento
+            }
+          }) //para buscar el usuario en mi BD
+          .then(function (response) {
+            me.infoPersonaC = response.data;
+
+            if (me.infoPersonaC == "") {
+              console.log("No hay datos para mostrar de mi BD");
+              console.log("No hay datos para mostrar de Unisangil");
+            } else {
+              console.log("Busqueda exitosa en BD");
+              console.log("No hay datos para mostrar de Unisangil");
+            }
+          })["catch"](function (error) {
+            console.log(error);
+          }).then(function () {// always executed
+          });
+        } else {
+          console.log("Busqueda exitosa BD Unisangil");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function () {// always executed
+      });
+    }
+  }),
   mounted: function mounted() {
     //optener el Usuario autenticado
     this.getUserAuth();
+    this.$refs.buscarId.focus();
   }
 });
 
@@ -1827,6 +1891,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1929,13 +2000,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//importamos para usar el mapState, mapActions
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["csrf"],
-  methods: {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["infoUserAuth"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getUserAuth"]), {
     logout: function logout() {
       event.preventDefault();
       document.getElementById("logout-form").submit();
     }
+  }),
+  mounted: function mounted() {
+    //optener el Usuario autenticado
+    this.getUserAuth();
   }
 });
 
@@ -2060,7 +2138,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* colocar estilo al router-link-active */\n.router-link-exact-active[data-v-aca6ead0] {\r\n  background: black;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* colocar estilo al router-link-active */\n.router-link-exact-active[data-v-aca6ead0] {\n  background: black;\n}\n", ""]);
 
 // exports
 
@@ -21272,18 +21350,112 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("main", { staticClass: "main" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "ui-view" }, [
-        _c("div", [
-          _c("div", { staticClass: "animated fadeIn" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-sm-12 col-lg-12" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "card-body" }, [
-                    _vm._v(_vm._s(_vm.infoUserAuth[0].created_at))
+  return _vm.infoUserAuth.length
+    ? _c("main", { staticClass: "main" }, [
+        _c("ol", { staticClass: "breadcrumb" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("li", { staticClass: "breadcrumb-menu d-md-down-none" }, [
+            _c(
+              "div",
+              {
+                staticClass: "btn-group",
+                attrs: { role: "group", "aria-label": "Button group" }
+              },
+              [
+                _c("router-link", { staticClass: "btn", attrs: { to: "/" } }, [
+                  _c("i", { staticClass: "icon-graph" }),
+                  _vm._v(" Escritorio\n        ")
+                ]),
+                _vm._v(" "),
+                _vm._m(1)
+              ],
+              1
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("div", { staticClass: "ui-view" }, [
+            _c("div", [
+              _c("div", { staticClass: "animated fadeIn" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6 col-md-4" }, [
+                    _c("div", { staticClass: "card card-accent-primary" }, [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("div", { staticClass: "input-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.documento,
+                                expression: "documento"
+                              }
+                            ],
+                            ref: "buscarId",
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              placeholder: "ID o Documento"
+                            },
+                            domProps: { value: _vm.documento },
+                            on: {
+                              keyup: function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.buscarPersonaID($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.documento = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "input-group-append" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button" },
+                                on: { click: _vm.buscarPersonaID }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-search" }),
+                                _vm._v(" Buscar\n                      ")
+                              ]
+                            )
+                          ])
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.infoPersonaU.length
+                      ? _c("div", { staticClass: "card card-accent-success" }, [
+                          _vm._v(_vm._s(_vm.infoPersonaU))
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.infoPersonaC.length
+                      ? _c("div", { staticClass: "card card-accent-success" }, [
+                          _vm._v(_vm._s(_vm.infoPersonaC))
+                        ])
+                      : _vm._e()
                   ])
                 ])
               ])
@@ -21291,49 +21463,34 @@ var render = function() {
           ])
         ])
       ])
-    ])
-  ])
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
-      _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [
-        _vm._v("Dashboard")
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-menu d-md-down-none" }, [
-        _c(
-          "div",
-          {
-            staticClass: "btn-group",
-            attrs: { role: "group", "aria-label": "Button group" }
-          },
-          [
-            _c("a", { staticClass: "btn", attrs: { href: "#" } }, [
-              _c("i", { staticClass: "icon-speech" })
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "btn", attrs: { href: "/" } }, [
-              _c("i", { staticClass: "icon-graph" }),
-              _vm._v(" Dashboard\n        ")
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "btn", attrs: { href: "#" } }, [
-              _c("i", { staticClass: "icon-settings" }),
-              _vm._v(" Settings\n        ")
-            ])
-          ]
-        )
-      ])
+    return _c("li", { staticClass: "breadcrumb-item active" }, [
+      _c("i", { staticClass: "nav-icon icon-user-following" }),
+      _vm._v(" Ingresos\n    ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "btn", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "icon-settings" }),
+      _vm._v(" Configuración\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("i", { staticClass: "icon-magnifier icons" }),
+      _vm._v("Buscar Persona\n                ")
     ])
   }
 ]
@@ -21358,129 +21515,164 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("header", { staticClass: "app-header navbar" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _vm._m(2),
-    _vm._v(" "),
-    _c("ul", { staticClass: "nav navbar-nav d-md-down-none" }, [
-      _c(
-        "li",
-        { staticClass: "nav-item px-3" },
-        [
-          _c("router-link", { staticClass: "nav-link", attrs: { to: "/" } }, [
-            _c("i", { staticClass: "nav-icon icon-speedometer" }),
-            _vm._v(" Escritorio\n      ")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        { staticClass: "nav-item px-3" },
-        [
-          _c(
-            "router-link",
-            { staticClass: "nav-link", attrs: { to: "/usuarios" } },
-            [
-              _c("i", { staticClass: "fas fa-users-cog" }),
-              _vm._v(" Usuarios\n      ")
-            ]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        { staticClass: "nav-item px-3" },
-        [
-          _c(
-            "router-link",
-            { staticClass: "nav-link", attrs: { to: "/usuarios" } },
-            [
-              _c("i", { staticClass: "fas fa-wrench" }),
-              _vm._v(" Configuración\n      ")
-            ]
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("ul", { staticClass: "nav navbar-nav ml-auto" }, [
-      _c("li", { staticClass: "nav-item dropdown" }, [
-        _vm._m(3),
+  return _vm.infoUserAuth.length
+    ? _c("header", { staticClass: "app-header navbar" }, [
+        _vm._m(0),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "dropdown-menu dropdown-menu-right" },
-          [
-            _vm._m(4),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { staticClass: "dropdown-item", attrs: { to: "/perfil" } },
-              [
-                _c("i", { staticClass: "fa fa-user" }),
-                _vm._v(" Perfil\n        ")
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              { staticClass: "dropdown-item", attrs: { to: "/config" } },
-              [
-                _c("i", { staticClass: "fa fa-wrench" }),
-                _vm._v(" Configuración\n        ")
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "dropdown-divider" }),
-            _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c("ul", { staticClass: "nav navbar-nav d-md-down-none" }, [
+          _c(
+            "li",
+            { staticClass: "nav-item px-3" },
+            [
+              _c(
+                "router-link",
+                { staticClass: "nav-link", attrs: { to: "/" } },
+                [
+                  _c("i", { staticClass: "nav-icon icon-speedometer" }),
+                  _vm._v(" Escritorio\n      ")
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "nav-item px-3" },
+            [
+              _c(
+                "router-link",
+                { staticClass: "nav-link", attrs: { to: "/usuarios" } },
+                [
+                  _c("i", { staticClass: "fas fa-users-cog" }),
+                  _vm._v(" Usuarios\n      ")
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "nav-item px-3" },
+            [
+              _c(
+                "router-link",
+                { staticClass: "nav-link", attrs: { to: "/usuarios" } },
+                [
+                  _c("i", { staticClass: "fas fa-wrench" }),
+                  _vm._v(" Configuración\n      ")
+                ]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("ul", { staticClass: "nav navbar-nav ml-auto" }, [
+          _c("li", { staticClass: "nav-item dropdown" }, [
             _c(
               "a",
               {
-                staticClass: "dropdown-item",
-                attrs: { href: "/logout" },
-                on: {
-                  click: function($event) {
-                    return _vm.logout()
-                  }
+                staticClass: "nav-link",
+                attrs: {
+                  "data-toggle": "dropdown",
+                  href: "#",
+                  role: "button",
+                  "aria-haspopup": "true",
+                  "aria-expanded": "false"
                 }
               },
               [
-                _c("i", { staticClass: "fas fa-sign-out-alt text-danger" }),
-                _vm._v(" Cerrar Sesión\n        ")
+                _c("a", { staticClass: "d-md-down-none" }, [
+                  _vm._v(_vm._s(_vm.infoUserAuth[0].name))
+                ]),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "img-avatar",
+                  attrs: {
+                    src: "adminCoreui/img/avatars/avatar.png",
+                    alt: "admin@bootstrapmaster.com"
+                  }
+                })
               ]
             ),
             _vm._v(" "),
             _c(
-              "form",
-              {
-                staticStyle: { display: "none" },
-                attrs: { id: "logout-form", action: "/logout", method: "POST" }
-              },
+              "div",
+              { staticClass: "dropdown-menu dropdown-menu-right" },
               [
-                _c("input", {
-                  attrs: { type: "hidden", name: "_token" },
-                  domProps: { value: _vm.csrf }
-                })
-              ]
+                _vm._m(3),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  { staticClass: "dropdown-item", attrs: { to: "/perfil" } },
+                  [
+                    _c("i", { staticClass: "fa fa-user" }),
+                    _vm._v(" Perfil\n        ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  { staticClass: "dropdown-item", attrs: { to: "/config" } },
+                  [
+                    _c("i", { staticClass: "fa fa-wrench" }),
+                    _vm._v(" Configuración\n        ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "dropdown-divider" }),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "dropdown-item",
+                    attrs: { href: "/logout" },
+                    on: {
+                      click: function($event) {
+                        return _vm.logout()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-sign-out-alt text-danger" }),
+                    _vm._v(" Cerrar Sesión\n        ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    staticStyle: { display: "none" },
+                    attrs: {
+                      id: "logout-form",
+                      action: "/logout",
+                      method: "POST"
+                    }
+                  },
+                  [
+                    _c("input", {
+                      attrs: { type: "hidden", name: "_token" },
+                      domProps: { value: _vm.csrf }
+                    })
+                  ]
+                )
+              ],
+              1
             )
-          ],
-          1
-        )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(4),
+        _vm._v(" "),
+        _vm._m(5)
       ])
-    ]),
-    _vm._v(" "),
-    _vm._m(5),
-    _vm._v(" "),
-    _vm._m(6)
-  ])
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
@@ -21523,35 +21715,6 @@ var staticRenderFns = [
         attrs: { type: "button", "data-toggle": "sidebar-lg-show" }
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "nav-link",
-        attrs: {
-          "data-toggle": "dropdown",
-          href: "#",
-          role: "button",
-          "aria-haspopup": "true",
-          "aria-expanded": "false"
-        }
-      },
-      [
-        _c("a", { staticClass: "d-md-down-none" }, [_vm._v("Administrador")]),
-        _vm._v(" "),
-        _c("img", {
-          staticClass: "img-avatar",
-          attrs: {
-            src: "adminCoreui/img/avatars/6.jpg",
-            alt: "admin@bootstrapmaster.com"
-          }
-        })
-      ]
     )
   },
   function() {
@@ -38807,6 +38970,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
 
               case 6:
                 dataUser = _context.sent;
+                //no es necesario pasarlo a json laravel ya lo envia en este formato
                 commit('llenarInfo', dataUser);
 
               case 8:

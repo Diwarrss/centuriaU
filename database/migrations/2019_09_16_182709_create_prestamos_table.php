@@ -23,6 +23,8 @@ class CreatePrestamosTable extends Migration
             $table->foreign('computadores_id')->references('id')->on('ingresos');
             $table->unsignedBigInteger('ingresos_id')->comment('Ingresos del día actual');
             $table->foreign('ingresos_id')->references('id')->on('ingresos');
+            $table->unsignedBigInteger('sedes_id')->default(1);
+            $table->foreign('sedes_id')->references('id')->on('sedes');
         });
     }
 

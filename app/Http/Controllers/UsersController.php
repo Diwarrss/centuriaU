@@ -14,6 +14,6 @@ class UsersController extends Controller
 
         $userAuth = User::where('id', Auth::user()->id)->get();
 
-        return $userAuth;
+        return json_decode($userAuth);
     }
 }
