@@ -43,3 +43,9 @@ mix
         ],
         "public/js/allCoreui.js"
     );
+
+//background: "#f6e1e1",//error
+//background: "#d9ffe7", //success
+//background: "#fff1d5", //warning
+//background: "#e0f1ff", //info
+//background: "#f5f8fb", //question

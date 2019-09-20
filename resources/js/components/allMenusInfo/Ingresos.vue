@@ -127,7 +127,7 @@ export default {
         //background: "#d9ffe7", //success
         //background: "#fff1d5", //warning
         //background: "#e0f1ff", //info
-        background: "#f5f8fb", //info
+        background: "#f5f8fb", //question
         type: "question",
         title: "No hay Servicio a buscar",
         showConfirmButton: false,
