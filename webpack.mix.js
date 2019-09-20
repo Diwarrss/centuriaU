@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -13,9 +13,9 @@ const mix = require('laravel-mix');
 
 mix
     //El js de Componentes VUEJS y Axios
-    .js('resources/js/app.js', 'public/js')
+    .js("resources/js/app.js", "public/js")
     //El sass estilos de Componentes laravel por defecto
-    .sass('resources/sass/app.scss', 'public/css')
+    .sass("resources/sass/app.scss", "public/css")
 
     //Creamos los CSS General para las vistas de Coreui
     .styles(
@@ -38,7 +38,8 @@ mix
             "public/adminCoreui/node_modules/bootstrap/dist/js/bootstrap.min.js",
             "public/adminCoreui/node_modules/pace-progress/pace.min.js",
             "public/adminCoreui/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-            "public/adminCoreui/node_modules/@coreui/coreui/dist/js/coreui.min.js"
+            "public/adminCoreui/node_modules/@coreui/coreui/dist/js/coreui.min.js",
+            "public/adminCoreui/js/sweetalert2/sweetalert2.all.min.js"
         ],
         "public/js/allCoreui.js"
     );

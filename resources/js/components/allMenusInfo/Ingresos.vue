@@ -41,6 +41,9 @@
                         <button class="btn btn-primary" type="button" @click="buscarPersonaID">
                           <i class="fas fa-search"></i> Buscar
                         </button>
+                        <button class="btn btn-primary" type="button" @click="alerta">
+                          <i class="fas fa-search"></i> Alerta
+                        </button>
                       </span>
                     </div>
                   </div>
@@ -115,6 +118,21 @@ export default {
         .then(function() {
           // always executed
         });
+    },
+    alerta() {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        //background: "#f6e1e1",//error
+        //background: "#d9ffe7", //success
+        //background: "#fff1d5", //warning
+        //background: "#e0f1ff", //info
+        background: "#f5f8fb", //info
+        type: "question",
+        title: "No hay Servicio a buscar",
+        showConfirmButton: false,
+        timer: 2500
+      });
     }
   },
   mounted() {
