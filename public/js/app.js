@@ -1821,6 +1821,280 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //importamos para usar el mapState, mapActions
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1833,8 +2107,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["infoUserAuth"])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getUserAuth"]), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(["infoUserAuth", "infoPeriodo"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getUserAuth", "getPeriodo"]), {
     buscarPersonaID: function buscarPersonaID() {
       var me = this;
       axios.get("https://apicenturia.local/api/getUsuarios", {
@@ -1844,7 +2118,91 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (response) {
         me.infoPersonaU = response.data;
 
-        if (me.infoPersonaU == "") {
+        if (me.infoPersonaU != "") {
+          /* TIDG_ID == 1 CC, TIDG_ID == 2 TI */
+          axios.post("/crearPersona", {
+            tipo_documento: me.infoPersonaU[0].tidg_id,
+            numero_documento: me.infoPersonaU[0].pege_documentoidentidad,
+            nombre1: me.infoPersonaU[0].peng_primernombre,
+            nombre2: me.infoPersonaU[0].peng_segundonombre,
+            apellido1: me.infoPersonaU[0].peng_primerapellido,
+            apellido2: me.infoPersonaU[0].peng_segundoapellido,
+            estado_persona: me.infoPersonaU[0].estp_estado,
+            tipo_persona: me.infoPersonaU[0].cate_descripcion,
+            programa: me.infoPersonaU[0].prog_nombre,
+            sede: me.infoPersonaU[0].cige_nombre
+          }).then(function (response) {
+            /* Swal.fire({
+              position: "top-end",
+              type: "success",
+              title: "Persona creada con éxito",
+              showConfirmButton: false,
+              timer: 1500
+            }); */
+            //console.log(response);
+            axios.get("/getPersona", {
+              params: {
+                id: me.infoPersonaU[0].pege_documentoidentidad
+              }
+            }) //para buscar el usuario en mi BD
+            .then(function (response) {
+              me.infoPersonaC = response.data;
+
+              if (me.infoPersonaC == "") {
+                Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  background: "#fff1d5",
+                  //warning
+                  type: "warning",
+                  title: "¡Persona NO ENCONTRADA!",
+                  showConfirmButton: false,
+                  timer: 3000
+                }); //console.log("No hay datos para mostrar de mi BD");
+                //console.log("No hay datos para mostrar de Unisangil");
+              } else {
+                if (me.infoPersonaC[0].estado_persona == "Activo") {
+                  Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    background: "#e0f1ff",
+                    //info
+                    type: "info",
+                    title: "Persona Activa",
+                    showConfirmButton: false,
+                    timer: 3000
+                  });
+                } else {
+                  Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    background: "#fff1d5",
+                    //warning
+                    type: "warning",
+                    title: "Persona Inactiva!",
+                    showConfirmButton: false,
+                    timer: 3000
+                  });
+                }
+
+                console.log("Busqueda exitosa en BD");
+                console.log("No hay datos para mostrar de Unisangil");
+              }
+            })["catch"](function (error) {
+              console.log(error);
+            }).then(function () {// always executed
+            });
+          })["catch"](function (error) {
+            /* Swal.fire({
+              position: "top-end",
+              type: "error",
+              title: "Error al Crear!",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            console.log(error); */
+          });
+        } else {
           axios.get("/getPersona", {
             params: {
               id: me.documento
@@ -1854,9 +2212,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             me.infoPersonaC = response.data;
 
             if (me.infoPersonaC == "") {
-              console.log("No hay datos para mostrar de mi BD");
-              console.log("No hay datos para mostrar de Unisangil");
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                background: "#fff1d5",
+                //warning
+                type: "warning",
+                title: "¡Persona NO ENCONTRADA!",
+                showConfirmButton: false,
+                timer: 3000
+              }); //console.log("No hay datos para mostrar de mi BD");
+              //console.log("No hay datos para mostrar de Unisangil");
             } else {
+              if (me.infoPersonaC[0].estado_persona == "Activo") {
+                Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  background: "#e0f1ff",
+                  //info
+                  type: "info",
+                  title: "Persona Activa",
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              } else {
+                Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  background: "#fff1d5",
+                  //warning
+                  type: "warning",
+                  title: "Persona Inactiva!",
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              }
+
               console.log("Busqueda exitosa en BD");
               console.log("No hay datos para mostrar de Unisangil");
             }
@@ -1864,18 +2255,86 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             console.log(error);
           }).then(function () {// always executed
           });
-        } else {
-          console.log("Busqueda exitosa BD Unisangil");
         }
+        /* if (me.infoPersonaU == "") {
+        } else {
+          if (me.infoPersonaU[0].estp_estado == "Activo") {
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              background: "#e0f1ff", //info
+              type: "info",
+              title: "Persona Activa",
+              showConfirmButton: false,
+              timer: 3000
+            });
+          } else {
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              background: "#fff1d5", //warning
+              type: "warning",
+              title: "Persona Inactiva!",
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+          console.log("Busqueda exitosa BD Unisangil");
+        } */
+
       })["catch"](function (error) {
         console.log(error);
       }).then(function () {// always executed
+      });
+    },
+    crearIngreso: function crearIngreso() {
+      var me = this;
+      axios.post("/crearIngreso", {
+        personas_id: me.infoPersonaC[0].id,
+        periodos_id: me.infoPeriodo[0].id,
+        users_id: me.infoUserAuth[0].id,
+        sedes_id: me.infoUserAuth[0].sedes_id
+      }).then(function (response) {
+        Swal.fire({
+          position: "top-end",
+          type: "success",
+          title: "Ingreso registrado con éxito",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        console.log(response);
+      })["catch"](function (error) {
+        Swal.fire({
+          position: "top-end",
+          type: "error",
+          title: "Error al registrar!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        console.log(error);
+      });
+    },
+    alerta: function alerta() {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        //background: "#f6e1e1",//error
+        //background: "#d9ffe7", //success
+        //background: "#fff1d5", //warning
+        //background: "#e0f1ff", //info
+        background: "#f5f8fb",
+        //question
+        type: "question",
+        title: "No hay Servicio a buscar",
+        showConfirmButton: false,
+        timer: 2500
       });
     }
   }),
   mounted: function mounted() {
     //optener el Usuario autenticado
     this.getUserAuth();
+    this.getPeriodo();
     this.$refs.buscarId.focus();
   }
 });
@@ -21350,7 +21809,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.infoUserAuth.length
+  return _vm.infoUserAuth.length && _vm.infoPeriodo.length
     ? _c("main", { staticClass: "main" }, [
         _c("ol", { staticClass: "breadcrumb" }, [
           _vm._m(0),
@@ -21380,83 +21839,1082 @@ var render = function() {
             _c("div", [
               _c("div", { staticClass: "animated fadeIn" }, [
                 _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-sm-6 col-md-4" }, [
-                    _c("div", { staticClass: "card card-accent-primary" }, [
-                      _vm._m(2),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("div", { staticClass: "input-group" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.documento,
-                                expression: "documento"
-                              }
-                            ],
-                            ref: "buscarId",
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "ID o Documento"
-                            },
-                            domProps: { value: _vm.documento },
-                            on: {
-                              keyup: function($event) {
-                                if (
-                                  !$event.type.indexOf("key") &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "enter",
-                                    13,
-                                    $event.key,
-                                    "Enter"
-                                  )
-                                ) {
-                                  return null
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-10 col-md-8 col-lg-6 col-xl-4" },
+                    [
+                      _c("div", { staticClass: "card card-accent-primary" }, [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.documento,
+                                  expression: "documento"
                                 }
-                                return _vm.buscarPersonaID($event)
+                              ],
+                              ref: "buscarId",
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                placeholder: "ID o Documento"
                               },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                              domProps: { value: _vm.documento },
+                              on: {
+                                keyup: function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "enter",
+                                      13,
+                                      $event.key,
+                                      "Enter"
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  return _vm.buscarPersonaID($event)
+                                },
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.documento = $event.target.value
                                 }
-                                _vm.documento = $event.target.value
                               }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "input-group-append" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-primary",
-                                attrs: { type: "button" },
-                                on: { click: _vm.buscarPersonaID }
-                              },
-                              [
-                                _c("i", { staticClass: "fas fa-search" }),
-                                _vm._v(" Buscar\n                      ")
-                              ]
-                            )
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "input-group-append" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: { type: "button" },
+                                  on: { click: _vm.buscarPersonaID }
+                                },
+                                [
+                                  _c("i", { staticClass: "fas fa-search" }),
+                                  _vm._v(" Buscar\n                      ")
+                                ]
+                              )
+                            ])
                           ])
                         ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm.infoPersonaU.length
-                      ? _c("div", { staticClass: "card card-accent-success" }, [
-                          _vm._v(_vm._s(_vm.infoPersonaU))
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.infoPersonaC.length
-                      ? _c("div", { staticClass: "card card-accent-success" }, [
-                          _vm._v(_vm._s(_vm.infoPersonaC))
-                        ])
-                      : _vm._e()
-                  ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.infoPersonaU.length
+                        ? _c("div", [
+                            _c(
+                              "div",
+                              { staticClass: "card card-accent-success" },
+                              [
+                                _vm._m(3),
+                                _vm._v(" "),
+                                _vm._l(_vm.infoPersonaU, function(data, index) {
+                                  return _c("div", { key: index }, [
+                                    _c("div", { staticClass: "card-body" }, [
+                                      _c(
+                                        "form",
+                                        { staticClass: "form-horizontal" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(4, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.pege_documentoidentidad,
+                                                        expression:
+                                                          "data.pege_documentoidentidad"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.pege_documentoidentidad
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "pege_documentoidentidad",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(5, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.peng_primernombre +
+                                                          " " +
+                                                          data.peng_segundonombre,
+                                                        expression:
+                                                          "data.peng_primernombre +' '+ data.peng_segundonombre"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.peng_primernombre +
+                                                        " " +
+                                                        data.peng_segundonombre
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data.peng_primernombre +
+                                                            " " +
+                                                            data,
+                                                          "peng_segundonombre",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(6, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.peng_primerapellido +
+                                                          " " +
+                                                          data.peng_segundoapellido,
+                                                        expression:
+                                                          "data.peng_primerapellido +' '+ data.peng_segundoapellido"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.peng_primerapellido +
+                                                        " " +
+                                                        data.peng_segundoapellido
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data.peng_primerapellido +
+                                                            " " +
+                                                            data,
+                                                          "peng_segundoapellido",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(7, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.cate_descripcion,
+                                                        expression:
+                                                          "data.cate_descripcion"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.cate_descripcion
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "cate_descripcion",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(8, true),
+                                              _vm._v(" "),
+                                              data.estp_estado == "Activo"
+                                                ? _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "col-md-9 col-lg-8 col-sm-8"
+                                                    },
+                                                    [
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              data.estp_estado,
+                                                            expression:
+                                                              "data.estp_estado"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control is-valid",
+                                                        attrs: {
+                                                          readonly: "",
+                                                          id: "vat",
+                                                          type: "text"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            data.estp_estado
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              data,
+                                                              "estp_estado",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                : _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "col-md-9 col-lg-8 col-sm-8"
+                                                    },
+                                                    [
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              data.estp_estado,
+                                                            expression:
+                                                              "data.estp_estado"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control is-invalid",
+                                                        attrs: {
+                                                          readonly: "",
+                                                          id: "vat",
+                                                          type: "text"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            data.estp_estado
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              data,
+                                                              "estp_estado",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(9, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: data.cige_nombre,
+                                                        expression:
+                                                          "data.cige_nombre"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value: data.cige_nombre
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "cige_nombre",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(10, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: data.prog_nombre,
+                                                        expression:
+                                                          "data.prog_nombre"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value: data.prog_nombre
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "prog_nombre",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "card-footer" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: { type: "submit" },
+                                      on: { click: _vm.crearIngreso }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fas fa-user-check"
+                                      }),
+                                      _vm._v(
+                                        " Registrar Ingreso\n                    "
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ],
+                              2
+                            )
+                          ])
+                        : _vm.infoPersonaC.length
+                        ? _c("div", [
+                            _c(
+                              "div",
+                              { staticClass: "card card-accent-success" },
+                              [
+                                _vm._m(11),
+                                _vm._v(" "),
+                                _vm._l(_vm.infoPersonaC, function(data, index) {
+                                  return _c("div", { key: index }, [
+                                    _c("div", { staticClass: "card-body" }, [
+                                      _c(
+                                        "form",
+                                        { staticClass: "form-horizontal" },
+                                        [
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(12, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.numero_documento,
+                                                        expression:
+                                                          "data.numero_documento"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.numero_documento
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "numero_documento",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(13, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.nombre1 +
+                                                          " " +
+                                                          data.nombre2,
+                                                        expression:
+                                                          "data.nombre1 +' '+ data.nombre2"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.nombre1 +
+                                                        " " +
+                                                        data.nombre2
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data.nombre1 +
+                                                            " " +
+                                                            data,
+                                                          "nombre2",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(14, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.apellido1 +
+                                                          " " +
+                                                          data.apellido2,
+                                                        expression:
+                                                          "data.apellido1 +' '+ data.apellido2"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value:
+                                                        data.apellido1 +
+                                                        " " +
+                                                        data.apellido2
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data.apellido1 +
+                                                            " " +
+                                                            data,
+                                                          "apellido2",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(15, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value:
+                                                          data.tipo_persona,
+                                                        expression:
+                                                          "data.tipo_persona"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value: data.tipo_persona
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "tipo_persona",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(16, true),
+                                              _vm._v(" "),
+                                              data.estado_persona == "Activo"
+                                                ? _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "col-md-9 col-lg-8 col-sm-8"
+                                                    },
+                                                    [
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              data.estado_persona,
+                                                            expression:
+                                                              "data.estado_persona"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control is-valid",
+                                                        attrs: {
+                                                          readonly: "",
+                                                          id: "vat",
+                                                          type: "text"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            data.estado_persona
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              data,
+                                                              "estado_persona",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                : _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "col-md-9 col-lg-8 col-sm-8"
+                                                    },
+                                                    [
+                                                      _c("input", {
+                                                        directives: [
+                                                          {
+                                                            name: "model",
+                                                            rawName: "v-model",
+                                                            value:
+                                                              data.estado_persona,
+                                                            expression:
+                                                              "data.estado_persona"
+                                                          }
+                                                        ],
+                                                        staticClass:
+                                                          "form-control is-invalid",
+                                                        attrs: {
+                                                          readonly: "",
+                                                          id: "vat",
+                                                          type: "text"
+                                                        },
+                                                        domProps: {
+                                                          value:
+                                                            data.estado_persona
+                                                        },
+                                                        on: {
+                                                          input: function(
+                                                            $event
+                                                          ) {
+                                                            if (
+                                                              $event.target
+                                                                .composing
+                                                            ) {
+                                                              return
+                                                            }
+                                                            _vm.$set(
+                                                              data,
+                                                              "estado_persona",
+                                                              $event.target
+                                                                .value
+                                                            )
+                                                          }
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(17, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: data.sede,
+                                                        expression: "data.sede"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value: data.sede
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "sede",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            { staticClass: "form-group row" },
+                                            [
+                                              _vm._m(18, true),
+                                              _vm._v(" "),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "col-md-9 col-lg-8 col-sm-8"
+                                                },
+                                                [
+                                                  _c("input", {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: data.programa,
+                                                        expression:
+                                                          "data.programa"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: {
+                                                      readonly: "",
+                                                      id: "vat",
+                                                      type: "text"
+                                                    },
+                                                    domProps: {
+                                                      value: data.programa
+                                                    },
+                                                    on: {
+                                                      input: function($event) {
+                                                        if (
+                                                          $event.target
+                                                            .composing
+                                                        ) {
+                                                          return
+                                                        }
+                                                        _vm.$set(
+                                                          data,
+                                                          "programa",
+                                                          $event.target.value
+                                                        )
+                                                      }
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "card-footer" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      attrs: { type: "submit" },
+                                      on: { click: _vm.crearIngreso }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fas fa-user-check"
+                                      }),
+                                      _vm._v(
+                                        " Registrar Ingreso\n                    "
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ],
+                              2
+                            )
+                          ])
+                        : _c(
+                            "div",
+                            {
+                              staticClass: "alert alert-warning text-center",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _vm._m(19),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-lg",
+                                    on: { click: _vm.alerta }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-plus-circle"
+                                    }),
+                                    _vm._v(" Crear Persona\n                  ")
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(20)
                 ])
               ])
             ])
@@ -21491,6 +22949,187 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "icon-magnifier icons" }),
       _vm._v("Buscar Persona\n                ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("i", { staticClass: "far fa-address-card" }),
+      _vm._v(" Información\n                  ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Documento:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Nombres:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Apellidos:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Tipo:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Estado:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Sede:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Programa:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("i", { staticClass: "far fa-address-card" }),
+      _vm._v(" Información\n                  ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Documento:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Nombres:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Apellidos:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Tipo:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Estado:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Sede:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-md-3 col-lg-4 col-sm-4 col-form-label" },
+      [_c("strong", [_vm._v("Programa:")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("strong", [_vm._v("¡Sin Información!")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-6 col-xl-8" }, [
+      _c("div", { staticClass: "card card-accent-danger" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("i", { staticClass: "far fa-list-alt" }),
+          _vm._v("Ingresos Actuales\n                ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" })
+      ])
     ])
   }
 ]
@@ -38941,12 +40580,16 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 
 var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
-    infoUserAuth: []
+    infoUserAuth: [],
+    infoPeriodo: []
   },
   mutations: {
     //capturamos el dato enviado desde actions getUserAuth
     llenarInfo: function llenarInfo(state, getUserAccion) {
       state.infoUserAuth = getUserAccion;
+    },
+    llenarPeriodo: function llenarPeriodo(state, getPeriodoAccion) {
+      state.infoPeriodo = getPeriodoAccion;
     }
   },
   actions: {
@@ -38986,6 +40629,43 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
       }
 
       return getUserAuth;
+    }(),
+    getPeriodo: function () {
+      var _getPeriodo = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref2) {
+        var commit, datos, dataPeriodo;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                commit = _ref2.commit;
+                _context2.next = 3;
+                return fetch('/getPeriodo');
+
+              case 3:
+                datos = _context2.sent;
+                _context2.next = 6;
+                return datos.json();
+
+              case 6:
+                dataPeriodo = _context2.sent;
+                //no es necesario pasarlo a json laravel ya lo envia en este formato
+                commit('llenarPeriodo', dataPeriodo);
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function getPeriodo(_x2) {
+        return _getPeriodo.apply(this, arguments);
+      }
+
+      return getPeriodo;
     }()
   }
 });

@@ -46,4 +46,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador de Registro
     Route::get('getPersona', 'IngresosController@getPersona')->name('getPersona');
+    Route::post('crearIngreso', 'IngresosController@crearIngreso')->name('crearIngreso');
+
+    //Controlador Periodos
+    Route::get('getPeriodo', 'PeriodosController@getPeriodo')->name('getPeriodo');
+
+    //Controlador Personas
+    Route::post('crearPersona', 'PersonasController@crearPersona')->name('crearPersona');
 });

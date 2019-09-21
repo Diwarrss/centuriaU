@@ -21,11 +21,11 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('estado_user', [1, 0])->default(1); //1 activo, 0 Inactivo
             $table->rememberToken();
-            $table->timestamps();
             $table->unsignedBigInteger('roles_id')->default(1);
             $table->foreign('roles_id')->references('id')->on('roles');
             $table->unsignedBigInteger('sedes_id')->default(1);
             $table->foreign('sedes_id')->references('id')->on('sedes');
+            $table->timestamps();
         });
     }
 

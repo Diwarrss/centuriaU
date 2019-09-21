@@ -12,8 +12,8 @@ class UsersController extends Controller
     {
         //if (!$request->ajax()) return redirect('/');
 
-        $userAuth = User::where('id', Auth::user()->id)->get();
+        $userAuth = User::select('id', 'estado_user', 'name', 'roles_id', 'sedes_id')->where('id', Auth::user()->id)->get();
 
-        return json_decode($userAuth);
+        return $userAuth;
     }
 }

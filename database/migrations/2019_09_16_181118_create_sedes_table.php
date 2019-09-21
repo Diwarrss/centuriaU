@@ -17,9 +17,9 @@ class CreateSedesTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre', 200);
             $table->enum('estado', [1, 0])->default(1); //1 activo, 0 inactivo
-            $table->timestamps();
             $table->unsignedBigInteger('universidad_id')->default(1);
             $table->foreign('universidad_id')->references('id')->on('universidades');
+            $table->timestamps();
         });
 
         $now = new \DateTime();

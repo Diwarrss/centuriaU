@@ -15,7 +15,6 @@ class CreateIngresosTable extends Migration
     {
         Schema::create('ingresos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
             $table->unsignedBigInteger('personas_id')->comment('Persona que se registra al ingresar');
             $table->foreign('personas_id')->references('id')->on('personas');
             $table->unsignedBigInteger('periodos_id')->comment('Periodo de registro');
@@ -24,6 +23,7 @@ class CreateIngresosTable extends Migration
             $table->foreign('users_id')->references('id')->on('users');
             $table->unsignedBigInteger('sedes_id');
             $table->foreign('sedes_id')->references('id')->on('sedes');
+            $table->timestamps();
         });
     }
 

@@ -16,7 +16,6 @@ class CreatePrestamosTable extends Migration
         Schema::create('prestamos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('estado_prestamo', [1, 0])->default(1); //1 Activo, 0 Inactivo = 1 Actualmente prestado el equipo; 0 Equipo ya entregado
-            $table->timestamps();
             $table->unsignedBigInteger('users_id')->comment('Usuario quien registra el prestamo');
             $table->foreign('users_id')->references('id')->on('users');
             $table->unsignedBigInteger('computadores_id')->comment('Computador que se presta');
@@ -25,6 +24,7 @@ class CreatePrestamosTable extends Migration
             $table->foreign('ingresos_id')->references('id')->on('ingresos');
             $table->unsignedBigInteger('sedes_id')->default(1);
             $table->foreign('sedes_id')->references('id')->on('sedes');
+            $table->timestamps();
         });
     }
 

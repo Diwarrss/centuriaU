@@ -1,5 +1,5 @@
 <template>
-  <main class="main" v-if="infoUserAuth.length">
+  <main class="main" v-if="infoUserAuth.length && infoPeriodo.length">
     <!-- Breadcrumb-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item active">
@@ -22,7 +22,8 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-6 col-md-4">
+              <!-- Div de buscar y mostrar informacion -->
+              <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4">
                 <div class="card card-accent-primary">
                   <div class="card-header">
                     <i class="icon-magnifier icons"></i>Buscar Persona
@@ -41,15 +42,285 @@
                         <button class="btn btn-primary" type="button" @click="buscarPersonaID">
                           <i class="fas fa-search"></i> Buscar
                         </button>
-                        <button class="btn btn-primary" type="button" @click="alerta">
-                          <i class="fas fa-search"></i> Alerta
-                        </button>
                       </span>
                     </div>
                   </div>
                 </div>
-                <div class="card card-accent-success" v-if="infoPersonaU.length">{{infoPersonaU}}</div>
-                <div class="card card-accent-success" v-if="infoPersonaC.length">{{infoPersonaC}}</div>
+                <div v-if="infoPersonaU.length">
+                  <div class="card card-accent-success">
+                    <div class="card-header">
+                      <i class="far fa-address-card"></i> Información
+                    </div>
+                    <div v-for="(data, index) in infoPersonaU" :key="index">
+                      <div class="card-body">
+                        <form class="form-horizontal">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Documento:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.pege_documentoidentidad"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Nombres:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.peng_primernombre +' '+ data.peng_segundonombre"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Apellidos:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.peng_primerapellido +' '+ data.peng_segundoapellido"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Tipo:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.cate_descripcion"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Estado:</strong>
+                            </label>
+                            <div
+                              class="col-md-9 col-lg-8 col-sm-8"
+                              v-if="data.estp_estado == 'Activo'"
+                            >
+                              <input
+                                readonly
+                                class="form-control is-valid"
+                                id="vat"
+                                type="text"
+                                v-model="data.estp_estado"
+                              />
+                            </div>
+                            <div class="col-md-9 col-lg-8 col-sm-8" v-else>
+                              <input
+                                readonly
+                                class="form-control is-invalid"
+                                id="vat"
+                                type="text"
+                                v-model="data.estp_estado"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Sede:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.cige_nombre"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Programa:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.prog_nombre"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-success" type="submit" @click="crearIngreso">
+                        <i class="fas fa-user-check"></i> Registrar Ingreso
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div v-else-if="infoPersonaC.length">
+                  <div class="card card-accent-success">
+                    <div class="card-header">
+                      <i class="far fa-address-card"></i> Información
+                    </div>
+                    <div v-for="(data, index) in infoPersonaC" :key="index">
+                      <div class="card-body">
+                        <form class="form-horizontal">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Documento:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.numero_documento"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Nombres:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.nombre1 +' '+ data.nombre2"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Apellidos:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.apellido1 +' '+ data.apellido2"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Tipo:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.tipo_persona"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Estado:</strong>
+                            </label>
+                            <div
+                              class="col-md-9 col-lg-8 col-sm-8"
+                              v-if="data.estado_persona == 'Activo'"
+                            >
+                              <input
+                                readonly
+                                class="form-control is-valid"
+                                id="vat"
+                                type="text"
+                                v-model="data.estado_persona"
+                              />
+                            </div>
+                            <div class="col-md-9 col-lg-8 col-sm-8" v-else>
+                              <input
+                                readonly
+                                class="form-control is-invalid"
+                                id="vat"
+                                type="text"
+                                v-model="data.estado_persona"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Sede:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.sede"
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
+                              <strong>Programa:</strong>
+                            </label>
+                            <div class="col-md-9 col-lg-8 col-sm-8">
+                              <input
+                                readonly
+                                class="form-control"
+                                id="vat"
+                                type="text"
+                                v-model="data.programa"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-success" type="submit" @click="crearIngreso">
+                        <i class="fas fa-user-check"></i> Registrar Ingreso
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div v-else class="alert alert-warning text-center" role="alert">
+                  <div class="form-group">
+                    <strong>¡Sin Información!</strong>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-success btn-lg" @click="alerta">
+                      <i class="fas fa-plus-circle"></i> Crear Persona
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Div de ingresos actuales -->
+              <div class="col-sm-12 col-md-4 col-lg-6 col-xl-8">
+                <div class="card card-accent-danger">
+                  <div class="card-header">
+                    <i class="far fa-list-alt"></i>Ingresos Actuales
+                  </div>
+                  <div class="card-body"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -70,10 +341,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["infoUserAuth"])
+    ...mapState(["infoUserAuth", "infoPeriodo"])
   },
   methods: {
-    ...mapActions(["getUserAuth"]),
+    ...mapActions(["getUserAuth", "getPeriodo"]),
     buscarPersonaID() {
       let me = this;
       axios
@@ -84,8 +355,94 @@ export default {
         })
         .then(function(response) {
           me.infoPersonaU = response.data;
-
-          if (me.infoPersonaU == "") {
+          if (me.infoPersonaU != "") {
+            /* TIDG_ID == 1 CC, TIDG_ID == 2 TI */
+            axios
+              .post("/crearPersona", {
+                tipo_documento: me.infoPersonaU[0].tidg_id,
+                numero_documento: me.infoPersonaU[0].pege_documentoidentidad,
+                nombre1: me.infoPersonaU[0].peng_primernombre,
+                nombre2: me.infoPersonaU[0].peng_segundonombre,
+                apellido1: me.infoPersonaU[0].peng_primerapellido,
+                apellido2: me.infoPersonaU[0].peng_segundoapellido,
+                estado_persona: me.infoPersonaU[0].estp_estado,
+                tipo_persona: me.infoPersonaU[0].cate_descripcion,
+                programa: me.infoPersonaU[0].prog_nombre,
+                sede: me.infoPersonaU[0].cige_nombre
+              })
+              .then(function(response) {
+                /* Swal.fire({
+                  position: "top-end",
+                  type: "success",
+                  title: "Persona creada con éxito",
+                  showConfirmButton: false,
+                  timer: 1500
+                }); */
+                //console.log(response);
+                axios
+                  .get("/getPersona", {
+                    params: {
+                      id: me.infoPersonaU[0].pege_documentoidentidad
+                    }
+                  }) //para buscar el usuario en mi BD
+                  .then(function(response) {
+                    me.infoPersonaC = response.data;
+                    if (me.infoPersonaC == "") {
+                      Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        background: "#fff1d5", //warning
+                        type: "warning",
+                        title: "¡Persona NO ENCONTRADA!",
+                        showConfirmButton: false,
+                        timer: 3000
+                      });
+                      //console.log("No hay datos para mostrar de mi BD");
+                      //console.log("No hay datos para mostrar de Unisangil");
+                    } else {
+                      if (me.infoPersonaC[0].estado_persona == "Activo") {
+                        Swal.fire({
+                          toast: true,
+                          position: "top-end",
+                          background: "#e0f1ff", //info
+                          type: "info",
+                          title: "Persona Activa",
+                          showConfirmButton: false,
+                          timer: 3000
+                        });
+                      } else {
+                        Swal.fire({
+                          toast: true,
+                          position: "top-end",
+                          background: "#fff1d5", //warning
+                          type: "warning",
+                          title: "Persona Inactiva!",
+                          showConfirmButton: false,
+                          timer: 3000
+                        });
+                      }
+                      console.log("Busqueda exitosa en BD");
+                      console.log("No hay datos para mostrar de Unisangil");
+                    }
+                  })
+                  .catch(function(error) {
+                    console.log(error);
+                  })
+                  .then(function() {
+                    // always executed
+                  });
+              })
+              .catch(function(error) {
+                /* Swal.fire({
+                  position: "top-end",
+                  type: "error",
+                  title: "Error al Crear!",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                console.log(error); */
+              });
+          } else {
             axios
               .get("/getPersona", {
                 params: {
@@ -95,9 +452,39 @@ export default {
               .then(function(response) {
                 me.infoPersonaC = response.data;
                 if (me.infoPersonaC == "") {
-                  console.log("No hay datos para mostrar de mi BD");
-                  console.log("No hay datos para mostrar de Unisangil");
+                  Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    background: "#fff1d5", //warning
+                    type: "warning",
+                    title: "¡Persona NO ENCONTRADA!",
+                    showConfirmButton: false,
+                    timer: 3000
+                  });
+                  //console.log("No hay datos para mostrar de mi BD");
+                  //console.log("No hay datos para mostrar de Unisangil");
                 } else {
+                  if (me.infoPersonaC[0].estado_persona == "Activo") {
+                    Swal.fire({
+                      toast: true,
+                      position: "top-end",
+                      background: "#e0f1ff", //info
+                      type: "info",
+                      title: "Persona Activa",
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+                  } else {
+                    Swal.fire({
+                      toast: true,
+                      position: "top-end",
+                      background: "#fff1d5", //warning
+                      type: "warning",
+                      title: "Persona Inactiva!",
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+                  }
                   console.log("Busqueda exitosa en BD");
                   console.log("No hay datos para mostrar de Unisangil");
                 }
@@ -108,15 +495,68 @@ export default {
               .then(function() {
                 // always executed
               });
-          } else {
-            console.log("Busqueda exitosa BD Unisangil");
           }
+          /* if (me.infoPersonaU == "") {
+          } else {
+            if (me.infoPersonaU[0].estp_estado == "Activo") {
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                background: "#e0f1ff", //info
+                type: "info",
+                title: "Persona Activa",
+                showConfirmButton: false,
+                timer: 3000
+              });
+            } else {
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                background: "#fff1d5", //warning
+                type: "warning",
+                title: "Persona Inactiva!",
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }
+            console.log("Busqueda exitosa BD Unisangil");
+          } */
         })
         .catch(function(error) {
           console.log(error);
         })
         .then(function() {
           // always executed
+        });
+    },
+    crearIngreso() {
+      let me = this;
+      axios
+        .post("/crearIngreso", {
+          personas_id: me.infoPersonaC[0].id,
+          periodos_id: me.infoPeriodo[0].id,
+          users_id: me.infoUserAuth[0].id,
+          sedes_id: me.infoUserAuth[0].sedes_id
+        })
+        .then(function(response) {
+          Swal.fire({
+            position: "top-end",
+            type: "success",
+            title: "Ingreso registrado con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(response);
+        })
+        .catch(function(error) {
+          Swal.fire({
+            position: "top-end",
+            type: "error",
+            title: "Error al registrar!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(error);
         });
     },
     alerta() {
@@ -138,6 +578,7 @@ export default {
   mounted() {
     //optener el Usuario autenticado
     this.getUserAuth();
+    this.getPeriodo();
     this.$refs.buscarId.focus();
   }
 };
