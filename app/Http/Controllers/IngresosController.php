@@ -49,7 +49,7 @@ class IngresosController extends Controller
 
     public function getIngresosActuales(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $fechahoy = Carbon::now()->format('Y-m-d');
 
         $ingresosActuales = Ingreso::where('created_at', 'like', '%' . $fechahoy . '%')->get();

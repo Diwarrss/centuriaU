@@ -4,17 +4,16 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 /* Trae Axios */
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 //importacion de libreria Vue Router
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 //importando VUEX
-import Vuex from 'vuex';
+import Vuex from "vuex";
 Vue.use(Vuex);
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -26,10 +25,22 @@ Vue.use(Vuex);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('navbarheader', require('./components/panelAdmin/navbarHeader.vue').default);
-Vue.component('sidebardleft', require('./components/panelAdmin/sidebardLeft.vue').default);
-Vue.component('sidebardright', require('./components/panelAdmin/sidebardRight.vue').default);
+Vue.component(
+    "example-component",
+    require("./components/ExampleComponent.vue").default
+);
+Vue.component(
+    "navbarheader",
+    require("./components/panelAdmin/navbarHeader.vue").default
+);
+Vue.component(
+    "sidebardleft",
+    require("./components/panelAdmin/sidebardLeft.vue").default
+);
+Vue.component(
+    "sidebardright",
+    require("./components/panelAdmin/sidebardRight.vue").default
+);
 
 //----*********** Aqui agregaremos todo configurado con Vue-Router*********
 // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
@@ -51,7 +62,8 @@ const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
-const routes = [{
+const routes = [
+    {
         path: "*",
         component: Error404
     },
@@ -62,7 +74,7 @@ const routes = [{
     {
         path: "/ingresos",
         component: Ingresos
-    },
+    }
 ];
 
 // 3. Create the router instance and pass the `routes` option
@@ -83,32 +95,28 @@ const store = new Vuex.Store({
     mutations: {
         //capturamos el dato enviado desde actions getUserAuth
         llenarInfo(state, getUserAccion) {
-            state.infoUserAuth = getUserAccion
+            state.infoUserAuth = getUserAccion;
         },
         llenarPeriodo(state, getPeriodoAccion) {
-            state.infoPeriodo = getPeriodoAccion
+            state.infoPeriodo = getPeriodoAccion;
         }
     },
     actions: {
-        getUserAuth: async function ({
-            commit
-        }) {
-            const data = await fetch('/getUserAuth');
+        getUserAuth: async function({ commit }) {
+            const data = await fetch("/getUserAuth");
             const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
-            commit('llenarInfo', dataUser)
+            commit("llenarInfo", dataUser);
         },
-        getPeriodo: async function ({
-            commit
-        }) {
-            const datos = await fetch('/getPeriodo');
+        getPeriodo: async function({ commit }) {
+            const datos = await fetch("/getPeriodo");
             const dataPeriodo = await datos.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
-            commit('llenarPeriodo', dataPeriodo)
+            commit("llenarPeriodo", dataPeriodo);
         }
     }
 });
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
     router,
     store
 });

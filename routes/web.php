@@ -47,7 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Controlador de Registro
     Route::get('getPersona', 'IngresosController@getPersona')->name('getPersona');
     Route::post('crearIngreso', 'IngresosController@crearIngreso')->name('crearIngreso');
-
+    Route::get('getIngresosActuales', 'IngresosController@getIngresosActuales')->name('getIngresosActuales');
+    
     //Controlador Periodos
     Route::get('getPeriodo', 'PeriodosController@getPeriodo')->name('getPeriodo');
 

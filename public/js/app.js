@@ -2597,7 +2597,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* colocar estilo al router-link-active */\n.router-link-exact-active[data-v-aca6ead0] {\n  background: black;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* colocar estilo al router-link-active */\n.router-link-exact-active[data-v-aca6ead0] {\r\n  background: black;\n}\r\n", ""]);
 
 // exports
 
@@ -40531,10 +40531,10 @@ Vue.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
-Vue.component('navbarheader', __webpack_require__(/*! ./components/panelAdmin/navbarHeader.vue */ "./resources/js/components/panelAdmin/navbarHeader.vue")["default"]);
-Vue.component('sidebardleft', __webpack_require__(/*! ./components/panelAdmin/sidebardLeft.vue */ "./resources/js/components/panelAdmin/sidebardLeft.vue")["default"]);
-Vue.component('sidebardright', __webpack_require__(/*! ./components/panelAdmin/sidebardRight.vue */ "./resources/js/components/panelAdmin/sidebardRight.vue")["default"]); //----*********** Aqui agregaremos todo configurado con Vue-Router*********
+Vue.component("example-component", __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+Vue.component("navbarheader", __webpack_require__(/*! ./components/panelAdmin/navbarHeader.vue */ "./resources/js/components/panelAdmin/navbarHeader.vue")["default"]);
+Vue.component("sidebardleft", __webpack_require__(/*! ./components/panelAdmin/sidebardLeft.vue */ "./resources/js/components/panelAdmin/sidebardLeft.vue")["default"]);
+Vue.component("sidebardright", __webpack_require__(/*! ./components/panelAdmin/sidebardRight.vue */ "./resources/js/components/panelAdmin/sidebardRight.vue")["default"]); //----*********** Aqui agregaremos todo configurado con Vue-Router*********
 // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
 // and then call `Vue.use(VueRouter)`.
 // 1. Define route components.
@@ -40604,7 +40604,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
               case 0:
                 commit = _ref.commit;
                 _context.next = 3;
-                return fetch('/getUserAuth');
+                return fetch("/getUserAuth");
 
               case 3:
                 data = _context.sent;
@@ -40614,7 +40614,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
               case 6:
                 dataUser = _context.sent;
                 //no es necesario pasarlo a json laravel ya lo envia en este formato
-                commit('llenarInfo', dataUser);
+                commit("llenarInfo", dataUser);
 
               case 8:
               case "end":
@@ -40641,7 +40641,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
               case 0:
                 commit = _ref2.commit;
                 _context2.next = 3;
-                return fetch('/getPeriodo');
+                return fetch("/getPeriodo");
 
               case 3:
                 datos = _context2.sent;
@@ -40651,7 +40651,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
               case 6:
                 dataPeriodo = _context2.sent;
                 //no es necesario pasarlo a json laravel ya lo envia en este formato
-                commit('llenarPeriodo', dataPeriodo);
+                commit("llenarPeriodo", dataPeriodo);
 
               case 8:
               case "end":
@@ -40670,7 +40670,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   }
 });
 var app = new Vue({
-  el: '#app',
+  el: "#app",
   router: router,
   store: store
 });
