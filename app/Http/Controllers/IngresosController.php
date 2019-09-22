@@ -52,7 +52,18 @@ class IngresosController extends Controller
         //if (!$request->ajax()) return redirect('/');
         $fechahoy = Carbon::now()->format('Y-m-d');
 
-        $ingresosActuales = Ingreso::where('created_at', 'like', '%' . $fechahoy . '%')->get();
+        $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+            ->select(
+                'ingresos.created_at',
+                'personas.id as personaID',
+                'ingresos.id as ingresosID',
+                'personas.numero_documento',
+                'personas.nombre1',
+                'personas.nombre2',
+                'personas.apellido1',
+                'personas.apellido2'
+            )
+            ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')->get();
 
         return $ingresosActuales;
     }

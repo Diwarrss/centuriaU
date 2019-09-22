@@ -34,7 +34,7 @@
                         class="form-control"
                         type="text"
                         placeholder="ID o Documento"
-                        ref="buscarId"
+                        id="buscarId"
                         v-model="documento"
                         @keyup.enter="buscarPersonaID"
                       />
@@ -51,7 +51,7 @@
                     <div class="card-header">
                       <i class="far fa-address-card"></i> Información
                     </div>
-                    <div v-for="(data, index) in infoPersonaU" :key="index">
+                    <div v-for="data in infoPersonaU" :key="data.id">
                       <div class="card-body">
                         <form class="form-horizontal">
                           <div class="form-group row">
@@ -319,7 +319,24 @@
                   <div class="card-header">
                     <i class="far fa-list-alt"></i>Ingresos Actuales
                   </div>
-                  <div class="card-body"></div>
+                  <div class="card-body">
+                    <table class="table table-responsive-md table-hover table-md">
+                      <thead>
+                        <tr>
+                          <th>Fecha Ingreso</th>
+                          <th>Nombres y Apellidos</th>
+                          <th>Documento</th>
+                        </tr>
+                      </thead>
+                      <tbody v-for="data in arrayIngresosA" :key="data.id">
+                        <tr>
+                          <td>{{data.created_at}}</td>
+                          <td>{{data.nombre1+' '+data.nombre2+' '+data.apellido1+' '+data.apellido2}}</td>
+                          <td>{{data.numero_documento}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -337,7 +354,8 @@ export default {
     return {
       documento: "",
       infoPersonaU: [], //persona de la bd Unisangil
-      infoPersonaC: [] //persona creada en mi bd
+      infoPersonaC: [], //persona creada en mi bd
+      arrayIngresosA: []
     };
   },
   computed: {
@@ -559,6 +577,23 @@ export default {
           console.log(error);
         });
     },
+    getIngresosActuales() {
+      let me = this;
+      axios
+        .get("/getIngresosActuales")
+        .then(function(response) {
+          // handle success
+          me.arrayIngresosA = response.data;
+          console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
+    },
+    focus() {
+      $("#buscarId").focus();
+    },
     alerta() {
       Swal.fire({
         toast: true,
@@ -576,10 +611,11 @@ export default {
     }
   },
   mounted() {
+    this.focus();
     //optener el Usuario autenticado
     this.getUserAuth();
     this.getPeriodo();
-    this.$refs.buscarId.focus();
+    this.getIngresosActuales();
   }
 };
 </script>
