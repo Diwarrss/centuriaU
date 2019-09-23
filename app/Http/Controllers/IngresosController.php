@@ -20,6 +20,8 @@ class IngresosController extends Controller
         return $personabyID;
     }
 
+    
+
     public function crearIngreso(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

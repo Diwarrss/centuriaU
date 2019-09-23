@@ -46,135 +46,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="infoPersonaU.length">
-                  <div class="card card-accent-success">
-                    <div class="card-header">
-                      <i class="far fa-address-card"></i> Información
-                    </div>
-                    <div v-for="data in infoPersonaU" :key="data.id">
-                      <div class="card-body">
-                        <form class="form-horizontal">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Documento:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.pege_documentoidentidad"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Nombres:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.peng_primernombre +' '+ data.peng_segundonombre"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Apellidos:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.peng_primerapellido +' '+ data.peng_segundoapellido"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Tipo:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.cate_descripcion"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Estado:</strong>
-                            </label>
-                            <div
-                              class="col-md-9 col-lg-8 col-sm-8"
-                              v-if="data.estp_estado == 'Activo'"
-                            >
-                              <input
-                                readonly
-                                class="form-control is-valid"
-                                id="vat"
-                                type="text"
-                                v-model="data.estp_estado"
-                              />
-                            </div>
-                            <div class="col-md-9 col-lg-8 col-sm-8" v-else>
-                              <input
-                                readonly
-                                class="form-control is-invalid"
-                                id="vat"
-                                type="text"
-                                v-model="data.estp_estado"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Sede:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.cige_nombre"
-                              />
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-lg-4 col-sm-4 col-form-label">
-                              <strong>Programa:</strong>
-                            </label>
-                            <div class="col-md-9 col-lg-8 col-sm-8">
-                              <input
-                                readonly
-                                class="form-control"
-                                id="vat"
-                                type="text"
-                                v-model="data.prog_nombre"
-                              />
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <button class="btn btn-success" type="submit" @click="crearIngreso">
-                        <i class="fas fa-user-check"></i> Registrar Ingreso
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div v-else-if="infoPersonaC.length">
+                <div v-if="infoPersonaC.length">
                   <div class="card card-accent-success">
                     <div class="card-header">
                       <i class="far fa-address-card"></i> Información
@@ -206,7 +78,7 @@
                                 class="form-control"
                                 id="vat"
                                 type="text"
-                                v-model="data.nombre1 +' '+ data.nombre2"
+                                v-model="data.nombre1 ||' '|| data.nombre2"
                               />
                             </div>
                           </div>
@@ -220,7 +92,7 @@
                                 class="form-control"
                                 id="vat"
                                 type="text"
-                                v-model="data.apellido1 +' '+ data.apellido2"
+                                v-model="data.apellido1 ||' '|| data.apellido2"
                               />
                             </div>
                           </div>
@@ -331,7 +203,7 @@
                       <tbody v-for="data in arrayIngresosA" :key="data.id">
                         <tr>
                           <td>{{data.created_at}}</td>
-                          <td>{{data.nombre1+' '+data.nombre2+' '+data.apellido1+' '+data.apellido2}}</td>
+                          <td>{{data.nombre1 ||' '|| data.nombre2 ||' '|| data.apellido1 ||' '|| data.apellido2}}</td>
                           <td>{{data.numero_documento}}</td>
                         </tr>
                       </tbody>
@@ -564,7 +436,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-          console.log(response);
+          //console.log(response);
         })
         .catch(function(error) {
           Swal.fire({
@@ -584,7 +456,7 @@ export default {
         .then(function(response) {
           // handle success
           me.arrayIngresosA = response.data;
-          console.log(response);
+          //console.log(response);
         })
         .catch(function(error) {
           // handle error

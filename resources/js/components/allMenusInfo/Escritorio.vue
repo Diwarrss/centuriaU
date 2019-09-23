@@ -22,9 +22,7 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-12 col-lg-12">
-                <example-component></example-component>
-              </div>
+              <div class="col-sm-12 col-lg-12"></div>
             </div>
           </div>
         </div>
