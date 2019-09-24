@@ -81,4 +81,39 @@ class PersonasController extends Controller
             }
         }
     }
+    public function savePersona(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $request->validate([
+            'tipo_documento' => 'required|max:5',
+            'numero_documento' => 'required|unique:personas|max:20',
+            'nombre1' => 'required|max:50',
+            'apellido1' => 'required|max:50',
+            'estado_persona' => 'required|max:50',
+            'tipo_persona' => 'required|max:100',
+            'programa' => 'required|max:255',
+            'sede' => 'required|max:100'
+        ]);
+        try {
+            //usaremos transacciones
+            DB::beginTransaction();
+
+            $persona =  new Persona();
+            $persona->tipo_documento = $request->tipo_documento;
+            $persona->numero_documento = $request->numero_documento;
+            $persona->nombre1 = $request->nombre1;
+            $persona->nombre2 = $request->nombre2;
+            $persona->apellido1 = $request->apellido1;
+            $persona->apellido2 = $request->apellido2;
+            $persona->estado_persona = $request->estado_persona;
+            $persona->tipo_persona = $request->tipo_persona;
+            $persona->programa = $request->programa;
+            $persona->sede = $request->sede;
+            $persona->save(); //guardamos en la tabla personas
+
+            DB::commit(); //commit de la transaccion
+        } catch (Exception $e) {
+            DB::rollBack(); //si hay error no ejecute la transaccion
+        }
+    }
 }

@@ -286,13 +286,151 @@
               </button>
             </div>
             <div class="modal-body">
-              <p>One fine body…</p>
+              <form class="form-horizontal" action method="post" enctype="multipart/form-data">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right" for="text-input">Tipo Documento</label>
+                  <div class="col-md-8">
+                    <select class="form-control" v-model="tipo_documento">
+                      <option value selected>Seleccionar...</option>
+                      <option value="CC">CC</option>
+                      <option value="TI">TI</option>
+                      <option value="CE">CE</option>
+                      <option value="CARNET">CARNET</option>
+                    </select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.tipo_documento"
+                      v-text="arrayErrors.tipo_documento[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Documento</label>
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" v-model="numero_documento" />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.numero_documento"
+                      v-text="arrayErrors.numero_documento[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Nombres</label>
+                  <div class="col-md-4">
+                    <input class="form-control" type="text" v-model="nombre1" placeholder="Primero" />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.nombre1"
+                      v-text="arrayErrors.nombre1[0]"
+                    ></span>
+                  </div>
+                  <div class="col-md-4">
+                    <input class="form-control" type="text" v-model="nombre2" placeholder="Segundo" />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.nombre2"
+                      v-text="arrayErrors.nombre2[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Apellidos</label>
+                  <div class="col-md-4">
+                    <input
+                      class="form-control"
+                      type="text"
+                      v-model="apellido1"
+                      placeholder="Primero"
+                    />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.apellido1"
+                      v-text="arrayErrors.apellido1[0]"
+                    ></span>
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      class="form-control"
+                      type="text"
+                      v-model="apellido2"
+                      placeholder="Segundo"
+                    />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.apellido2"
+                      v-text="arrayErrors.apellido2[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right" for="text-input">Estado</label>
+                  <div class="col-md-8">
+                    <select class="form-control" v-model="estado_persona">
+                      <option value="Activo" selected>Activo</option>
+                      <option value="Inactivo">Inactivo</option>
+                    </select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.estado_persona"
+                      v-text="arrayErrors.estado_persona[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Tipo Persona</label>
+                  <div class="col-md-8">
+                    <select class="form-control" v-model="tipo_persona">
+                      <option value selected>Seleccionar...</option>
+                      <option value="Estudiante">Estudiante</option>
+                      <option value="Profesor">Profesor</option>
+                      <option value="Egresado">Egresado</option>
+                    </select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.tipo_persona"
+                      v-text="arrayErrors.tipo_persona[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Programa</label>
+                  <div class="col-md-8">
+                    <select class="form-control" v-model="programa">
+                      <option value selected>Seleccionar...</option>
+                      <option value="Sistemas">Sistemas</option>
+                      <option value="Electro">Electro</option>
+                    </select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.programa"
+                      v-text="arrayErrors.programa[0]"
+                    ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right">Sede</label>
+                  <div class="col-md-8">
+                    <select class="form-control" v-model="sede">
+                      <option value selected>Seleccionar...</option>
+                      <option value="San Gil">San Gil</option>
+                      <option value="Yopal">Yopal</option>
+                      <option value="Chiquinquira">Chiquinquira</option>
+                    </select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.sede"
+                      v-text="arrayErrors.sede[0]"
+                    ></span>
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" type="button" data-dismiss="modal">
                 <i class="far fa-times-circle"></i> Cancelar
               </button>
-              <button class="btn btn-primary" type="button">
+              <button class="btn btn-primary" @click="crearPersona">
                 <i class="far fa-check-circle"></i> Guardar
               </button>
             </div>
@@ -312,7 +450,19 @@ export default {
       infoPersonaU: [], //persona de la bd Unisangil
       infoPersonaC: [], //persona creada en mi bd
       arrayIngresosA: [],
-      search: ""
+      search: "",
+      arrayErrors: [],
+      tipo_documento: "",
+      numero_documento: "",
+      nombre1: "",
+      nombre2: "",
+      apellido1: "",
+      apellido2: "",
+      estado_persona: "Activo",
+      tipo_persona: "",
+      tipo_persona: "",
+      programa: "",
+      sede: ""
     };
   },
   computed: {
@@ -376,7 +526,7 @@ export default {
                   }) //para buscar el usuario en mi BD
                   .then(function(response) {
                     me.infoPersonaC = response.data;
-                    if (me.infoPersonaC == "") {
+                    if (!me.infoPersonaC) {
                       Swal.fire({
                         toast: true,
                         position: "top-end",
@@ -410,15 +560,12 @@ export default {
                           timer: 3000
                         });
                       }
-                      console.log("Busqueda exitosa en BD");
-                      console.log("No hay datos para mostrar de Unisangil");
+                      //console.log("Busqueda exitosa en BD");
+                      //console.log("No hay datos para mostrar de Unisangil");
                     }
                   })
                   .catch(function(error) {
                     console.log(error);
-                  })
-                  .then(function() {
-                    // always executed
                   });
               })
               .catch(function(error) {
@@ -428,8 +575,8 @@ export default {
                   title: "Error al Crear!",
                   showConfirmButton: false,
                   timer: 1500
-                });
-                console.log(error); */
+                }); */
+                console.log(error);
               });
           } else {
             axios
@@ -440,7 +587,7 @@ export default {
               }) //para buscar el usuario en mi BD
               .then(function(response) {
                 me.infoPersonaC = response.data;
-                if (me.infoPersonaC == "") {
+                if (!me.infoPersonaC) {
                   Swal.fire({
                     toast: true,
                     position: "top-end",
@@ -474,48 +621,17 @@ export default {
                       timer: 3000
                     });
                   }
-                  console.log("Busqueda exitosa en BD");
-                  console.log("No hay datos para mostrar de Unisangil");
+                  //console.log("Busqueda exitosa en BD");
+                  //console.log("No hay datos para mostrar de Unisangil");
                 }
               })
               .catch(function(error) {
                 console.log(error);
-              })
-              .then(function() {
-                // always executed
               });
           }
-          /* if (me.infoPersonaU == "") {
-          } else {
-            if (me.infoPersonaU[0].estp_estado == "Activo") {
-              Swal.fire({
-                toast: true,
-                position: "top-end",
-                background: "#e0f1ff", //info
-                type: "info",
-                title: "Persona Activa",
-                showConfirmButton: false,
-                timer: 3000
-              });
-            } else {
-              Swal.fire({
-                toast: true,
-                position: "top-end",
-                background: "#fff1d5", //warning
-                type: "warning",
-                title: "Persona Inactiva!",
-                showConfirmButton: false,
-                timer: 3000
-              });
-            }
-            console.log("Busqueda exitosa BD Unisangil");
-          } */
         })
         .catch(function(error) {
           console.log(error);
-        })
-        .then(function() {
-          // always executed
         });
     },
     crearIngreso() {
@@ -551,6 +667,39 @@ export default {
     },
     crearPersona() {
       let me = this;
+      axios
+        .post("/savePersona", {
+          tipo_documento: me.tipo_documento,
+          tipo_documento: me.tipo_documento,
+          numero_documento: me.numero_documento,
+          nombre1: me.nombre1,
+          nombre2: me.nombre2,
+          apellido1: me.apellido1,
+          apellido2: me.apellido2,
+          estado_persona: me.estado_persona,
+          tipo_persona: me.tipo_persona,
+          tipo_persona: me.tipo_persona,
+          programa: me.programa,
+          sede: me.sede
+        })
+        .then(function(response) {
+          $("[data-dismiss=modal]").trigger({ type: "click" });
+          Swal.fire({
+            position: "top-end",
+            type: "success",
+            title: "Persona Creada con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.log(response);
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
+        });
     },
     getIngresosActuales() {
       let me = this;
