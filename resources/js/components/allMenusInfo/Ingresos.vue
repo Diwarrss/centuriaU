@@ -237,7 +237,7 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in filteredList" :key="data.id">
+                      <tbody v-for="data in filteredList" :key="data.ingresosID">
                         <tr>
                           <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
                           <td>{{data.numero_documento}}</td>
@@ -248,12 +248,22 @@
                             </h4>
                           </td>
                           <td>
-                            <button class="btn btn-primary">
-                              <i class="fas fa-laptop"></i> Prestamó
-                            </button>
-                            <button class="btn btn-success">
-                              <i class="far fa-check-circle"></i> Entregado
-                            </button>
+                            <div v-if="!data.estado_prestamo || data.estado_prestamo==0">
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#modalPrestamo"
+                                class="btn btn-primary"
+                                @click="modalPrestarEquipo(data.ingresosID)"
+                              >
+                                <i class="fas fa-laptop"></i> Prestamó
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 1">
+                              <button class="btn btn-success">
+                                <i class="far fa-check-circle"></i> Entregado
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       </tbody>
@@ -266,37 +276,29 @@
         </div>
       </div>
     </div>
+    <!-- Modal modalCrearPersona-->
     <section>
-      <!-- Modal -->
-      <div
-        class="modal"
-        id="modalCrearPersona"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="myModalLabel"
-      >
+      <div class="modal" id="modalCrearPersona" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog modal-primary" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">
                 <i class="fas fa-user-edit"></i> Crear Persona
               </h4>
-              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <button class="close" type="button" @click="cerrarModalPersona" aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" action method="post" enctype="multipart/form-data">
+              <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-right" for="text-input">Tipo Documento</label>
                   <div class="col-md-8">
-                    <select class="form-control" v-model="tipo_documento">
-                      <option value selected>Seleccionar...</option>
-                      <option value="CC">CC</option>
-                      <option value="TI">TI</option>
-                      <option value="CE">CE</option>
-                      <option value="CARNET">CARNET</option>
-                    </select>
+                    <v-select
+                      :options="['CC', 'TI', 'CE', 'CARNET']"
+                      placeholder="Seleccionar..."
+                      v-model="tipo_documento"
+                    ></v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.tipo_documento"
@@ -366,7 +368,7 @@
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-right" for="text-input">Estado</label>
                   <div class="col-md-8">
-                    <select class="form-control" v-model="estado_persona">
+                    <select class="form-control" v-model="estado">
                       <option value="Activo" selected>Activo</option>
                       <option value="Inactivo">Inactivo</option>
                     </select>
@@ -380,12 +382,11 @@
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-right">Tipo Persona</label>
                   <div class="col-md-8">
-                    <select class="form-control" v-model="tipo_persona">
-                      <option value selected>Seleccionar...</option>
-                      <option value="Estudiante">Estudiante</option>
-                      <option value="Profesor">Profesor</option>
-                      <option value="Egresado">Egresado</option>
-                    </select>
+                    <v-select
+                      :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
+                      placeholder="Seleccionar..."
+                      v-model="tipo_persona"
+                    ></v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.tipo_persona"
@@ -396,11 +397,12 @@
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-right">Programa</label>
                   <div class="col-md-8">
-                    <select class="form-control" v-model="programa">
-                      <option value selected>Seleccionar...</option>
-                      <option value="Sistemas">Sistemas</option>
-                      <option value="Electro">Electro</option>
-                    </select>
+                    <v-select
+                      :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
+                      , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
+                      placeholder="Seleccionar..."
+                      v-model="programa"
+                    ></v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.programa"
@@ -411,12 +413,11 @@
                 <div class="form-group row">
                   <label class="col-md-4 col-form-label text-right">Sede</label>
                   <div class="col-md-8">
-                    <select class="form-control" v-model="sede">
-                      <option value selected>Seleccionar...</option>
-                      <option value="San Gil">San Gil</option>
-                      <option value="Yopal">Yopal</option>
-                      <option value="Chiquinquira">Chiquinquira</option>
-                    </select>
+                    <v-select
+                      :options="['San Gil', 'Yopal', 'Chiquinquirá']"
+                      placeholder="Seleccionar..."
+                      v-model="sede"
+                    ></v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.sede"
@@ -438,6 +439,52 @@
         </div>
       </div>
     </section>
+    <!-- Modal modalCrearPersona-->
+    <section>
+      <div class="modal" id="modalPrestamo" role="dialog" aria-labelledby="myModalLabel1">
+        <div class="modal-dialog modal-primary" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <i class="fas fa-laptop-code"></i> Crear Prestamó
+              </h4>
+              <button class="close" type="button" @click="cerrarModalPrestamo" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right" for="text-input">Computador:</label>
+                  <div class="col-md-8">
+                    <v-select
+                      :options="arrayCompuLibres"
+                      :reduce="computa => computa.id"
+                      label="nombre"
+                      placeholder="Seleccionar..."
+                      v-model="computadores_id"
+                    ></v-select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.computadores_id"
+                      v-text="arrayErrors.computadores_id[0]"
+                    ></span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" @click="cerrarModalPrestamo">
+                <i class="far fa-times-circle"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" @click="crearPrestamo">
+                <i class="far fa-check-circle"></i> Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 <script>
@@ -451,6 +498,7 @@ export default {
       infoPersonaC: [], //persona creada en mi bd
       arrayIngresosA: [],
       search: "",
+      estado_persona: "",
       arrayErrors: [],
       tipo_documento: "",
       numero_documento: "",
@@ -458,11 +506,13 @@ export default {
       nombre2: "",
       apellido1: "",
       apellido2: "",
-      estado_persona: "Activo",
-      tipo_persona: "",
+      estado: "Activo",
       tipo_persona: "",
       programa: "",
-      sede: ""
+      sede: "",
+      arrayCompuLibres: [],
+      ingresosID: "",
+      computadores_id: ""
     };
   },
   computed: {
@@ -587,7 +637,7 @@ export default {
               }) //para buscar el usuario en mi BD
               .then(function(response) {
                 me.infoPersonaC = response.data;
-                if (!me.infoPersonaC) {
+                if (me.infoPersonaC == "") {
                   Swal.fire({
                     toast: true,
                     position: "top-end",
@@ -676,14 +726,13 @@ export default {
           nombre2: me.nombre2,
           apellido1: me.apellido1,
           apellido2: me.apellido2,
-          estado_persona: me.estado_persona,
-          tipo_persona: me.tipo_persona,
+          estado_persona: me.estado,
           tipo_persona: me.tipo_persona,
           programa: me.programa,
           sede: me.sede
         })
         .then(function(response) {
-          $("[data-dismiss=modal]").trigger({ type: "click" });
+          me.cerrarModalPersona();
           Swal.fire({
             position: "top-end",
             type: "success",
@@ -701,6 +750,22 @@ export default {
           //console.log(error);
         });
     },
+    cerrarModalPersona() {
+      let me = this;
+      //$("[data-dismiss=modal]").trigger({ type: "click" });
+      //limpiar las variables
+      (me.arrayErrors = []),
+        (me.tipo_documento = ""),
+        (me.numero_documento = ""),
+        (me.nombre1 = ""),
+        (me.nombre2 = ""),
+        (me.apellido1 = ""),
+        (me.apellido2 = ""),
+        (me.estado_persona = "Activo"),
+        (me.tipo_persona = ""),
+        (me.programa = ""),
+        (me.sede = "");
+    },
     getIngresosActuales() {
       let me = this;
       axios
@@ -708,6 +773,64 @@ export default {
         .then(function(response) {
           // handle success
           me.arrayIngresosA = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
+    },
+    modalPrestarEquipo(ingresosID) {
+      let me = this;
+      me.getComputadorlibre();
+      //capturo el id del ingreso
+      me.ingresosID = ingresosID;
+    },
+    crearPrestamo() {
+      let me = this;
+      axios
+        .post("/crearPrestamo", {
+          ingresosID: me.ingresosID,
+          estado_prestamo: 1,
+          users_id: me.infoUserAuth[0].id,
+          sedes_id: me.infoUserAuth[0].sedes_id,
+          computadores_id: me.computadores_id
+        })
+        .then(function(response) {
+          me.cerrarModalPrestamo();
+          me.getIngresosActuales();
+          Swal.fire({
+            position: "top-end",
+            type: "success",
+            title: "Prestamó creado con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.log(response);
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
+        });
+    },
+    cerrarModalPrestamo() {
+      let me = this;
+      //cerrar modal prestamo
+      $("[data-dismiss=modal]").trigger({ type: "click" });
+      //limpio las variables del prestamo
+      me.ingresosID = "";
+      me.computadores_id = "";
+    },
+    getComputadorlibre() {
+      let me = this;
+      axios
+        .get("/getComputadorlibre")
+        .then(function(response) {
+          // handle success
+          me.arrayCompuLibres = response.data;
           //console.log(response);
         })
         .catch(function(error) {

@@ -51,7 +51,7 @@ class IngresosController extends Controller
 
     public function getIngresosActuales(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $fechahoy = Carbon::now()->format('Y-m-d');
 
         $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
@@ -67,6 +67,7 @@ class IngresosController extends Controller
                 'personas.apellido1',
                 'personas.apellido2',
                 'prestamos.id as prestamoID',
+                'prestamos.estado_prestamo',
                 'computadores.id as computadorID',
                 'computadores.nombre as nombrePC'
             )

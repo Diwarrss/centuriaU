@@ -18,10 +18,14 @@ Vue.use(Vuex);
 //import vue-moment CONFIGURADO AL ESPAÑOL
 const moment = require('moment')
 require('moment/locale/es')
-
 Vue.use(require('vue-moment'), {
     moment
 })
+
+//import vue-select
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+import 'vue-select/dist/vue-select.css';
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

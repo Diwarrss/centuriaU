@@ -26,11 +26,7 @@
           >Today</div>
           <div class="list-group-item list-group-item-accent-warning list-group-item-divider">
             <div class="avatar float-right">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
             </div>
             <div>
               Meeting with
@@ -45,11 +41,7 @@
           </div>
           <div class="list-group-item list-group-item-accent-info">
             <div class="avatar float-right">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/4.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
             </div>
             <div>
               Skype with
@@ -78,39 +70,19 @@
             </small>
             <div class="avatars-stack mt-2">
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/2.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/3.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/4.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/5.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/6.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
             </div>
           </div>
@@ -137,53 +109,25 @@
             </small>
             <div class="avatars-stack mt-2">
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/2.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/3.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/4.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/5.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/6.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/7.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
               <div class="avatar avatar-xs">
-                <img
-                  class="img-avatar"
-                  src="adminCoreui/img/avatars/8.jpg"
-                  alt="admin@bootstrapmaster.com"
-                />
+
               </div>
             </div>
           </div>
@@ -193,11 +137,7 @@
         <div class="message">
           <div class="py-3 pb-5 mr-3 float-left">
             <div class="avatar">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
               <span class="avatar-status badge-success"></span>
             </div>
           </div>
@@ -214,11 +154,7 @@
         <div class="message">
           <div class="py-3 pb-5 mr-3 float-left">
             <div class="avatar">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
               <span class="avatar-status badge-success"></span>
             </div>
           </div>
@@ -235,11 +171,7 @@
         <div class="message">
           <div class="py-3 pb-5 mr-3 float-left">
             <div class="avatar">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
               <span class="avatar-status badge-success"></span>
             </div>
           </div>
@@ -256,11 +188,7 @@
         <div class="message">
           <div class="py-3 pb-5 mr-3 float-left">
             <div class="avatar">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
               <span class="avatar-status badge-success"></span>
             </div>
           </div>
@@ -277,11 +205,7 @@
         <div class="message">
           <div class="py-3 pb-5 mr-3 float-left">
             <div class="avatar">
-              <img
-                class="img-avatar"
-                src="adminCoreui/img/avatars/7.jpg"
-                alt="admin@bootstrapmaster.com"
-              />
+
               <span class="avatar-status badge-success"></span>
             </div>
           </div>

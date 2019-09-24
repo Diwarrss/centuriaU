@@ -55,4 +55,10 @@ Route::group(['middleware' => 'auth'], function () {
     //Controlador Personas
     Route::post('crearPersona', 'PersonasController@crearPersona')->name('crearPersona');
     Route::post('savePersona', 'PersonasController@savePersona')->name('savePersona');
+
+    //Controlador Computadores
+    Route::get('getComputadorlibre', 'ComputadoresController@getComputadorlibre')->name('getComputadorlibre');
+
+    //Controlador Prestamos
+    Route::post('crearPrestamo', 'PrestamosController@crearPrestamo')->name('crearPrestamo');
 });
