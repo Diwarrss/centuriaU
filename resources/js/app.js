@@ -14,6 +14,14 @@ Vue.use(VueRouter);
 //importando VUEX
 import Vuex from "vuex";
 Vue.use(Vuex);
+
+//import vue-moment CONFIGURADO AL ESPAÑOL
+const moment = require('moment')
+require('moment/locale/es')
+
+Vue.use(require('vue-moment'), {
+    moment
+})
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -62,8 +70,7 @@ const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
-const routes = [
-    {
+const routes = [{
         path: "*",
         component: Error404
     },
@@ -102,12 +109,16 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        getUserAuth: async function({ commit }) {
+        getUserAuth: async function ({
+            commit
+        }) {
             const data = await fetch("/getUserAuth");
             const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarInfo", dataUser);
         },
-        getPeriodo: async function({ commit }) {
+        getPeriodo: async function ({
+            commit
+        }) {
             const datos = await fetch("/getPeriodo");
             const dataPeriodo = await datos.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarPeriodo", dataPeriodo);

@@ -1,5 +1,5 @@
 <template>
-  <main class="main" v-if="infoUserAuth.length && infoPeriodo.length">
+  <main class="main">
     <!-- Breadcrumb-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item active">
@@ -17,7 +17,16 @@
         </div>
       </li>
     </ol>
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="!infoPeriodo.length">
+      <div role="alert" class="alert alert-warning text-center">
+        <div class="form-group">
+          <strong>
+            <h3>¡No hay Periodo habilitado!</h3>
+          </strong>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" v-if="infoUserAuth.length && infoPeriodo.length">
       <div class="ui-view">
         <div>
           <div class="animated fadeIn">
@@ -179,32 +188,73 @@
                     <strong>¡Sin Información!</strong>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-success btn-lg" @click="alerta">
+                    <button
+                      type="button"
+                      class="btn btn-success btn-lg"
+                      data-toggle="modal"
+                      data-target="#modalCrearPersona"
+                    >
                       <i class="fas fa-plus-circle"></i> Crear Persona
                     </button>
                   </div>
                 </div>
               </div>
               <!-- Div de ingresos actuales -->
-              <div class="col-sm-12 col-md-4 col-lg-6 col-xl-8">
+              <div class="col-sm-12 col-md-12 col-lg-6 col-xl-8">
                 <div class="card card-accent-danger">
                   <div class="card-header">
                     <i class="far fa-list-alt"></i>Ingresos Actuales
+                    <div class="card-header-actions">
+                      <div class="form-group">
+                        <input
+                          class="form-control"
+                          v-model="search"
+                          type="text"
+                          placeholder="Buscar..."
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div class="card-body">
                     <table class="table table-responsive-md table-hover table-md">
                       <thead>
                         <tr>
                           <th>Fecha Ingreso</th>
-                          <th>Nombres y Apellidos</th>
                           <th>Documento</th>
+                          <th>Nombres y Apellidos</th>
+                          <th>Computador</th>
+                          <th>Accion</th>
                         </tr>
                       </thead>
-                      <tbody v-for="data in arrayIngresosA" :key="data.id">
+                      <tbody v-if="!arrayIngresosA.length">
+                        <td colspan="5">
+                          <div role="alert" class="alert alert-danger text-center">
+                            <div class="form-group">
+                              <strong>
+                                <h5>¡Sin información!</h5>
+                              </strong>
+                            </div>
+                          </div>
+                        </td>
+                      </tbody>
+                      <tbody v-for="data in filteredList" :key="data.id">
                         <tr>
-                          <td>{{data.created_at}}</td>
-                          <td>{{data.nombre1 ||' '|| data.nombre2 ||' '|| data.apellido1 ||' '|| data.apellido2}}</td>
+                          <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
                           <td>{{data.numero_documento}}</td>
+                          <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                          <td class="text-center">
+                            <h4>
+                              <span class="badge badge-secondary">{{data.nombrePC}}</span>
+                            </h4>
+                          </td>
+                          <td>
+                            <button class="btn btn-primary">
+                              <i class="fas fa-laptop"></i> Prestamó
+                            </button>
+                            <button class="btn btn-success">
+                              <i class="far fa-check-circle"></i> Entregado
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -216,6 +266,40 @@
         </div>
       </div>
     </div>
+    <section>
+      <!-- Modal -->
+      <div
+        class="modal"
+        id="modalCrearPersona"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+      >
+        <div class="modal-dialog modal-primary" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <i class="fas fa-user-edit"></i> Crear Persona
+              </h4>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                <i class="far fa-times-circle"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" type="button">
+                <i class="far fa-check-circle"></i> Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 <script>
@@ -227,11 +311,26 @@ export default {
       documento: "",
       infoPersonaU: [], //persona de la bd Unisangil
       infoPersonaC: [], //persona creada en mi bd
-      arrayIngresosA: []
+      arrayIngresosA: [],
+      search: ""
     };
   },
   computed: {
-    ...mapState(["infoUserAuth", "infoPeriodo"])
+    ...mapState(["infoUserAuth", "infoPeriodo"]),
+    //metodo para filtrar el array q envio
+    filteredList() {
+      let me = this;
+      return me.arrayIngresosA.filter(post => {
+        return (
+          post.numero_documento
+            .toLowerCase()
+            .includes(me.search.toLowerCase()) ||
+          post.nombre1.toLowerCase().includes(me.search.toLowerCase()) ||
+          post.apellido1.toLowerCase().includes(me.search.toLowerCase()) ||
+          post.created_at.toLowerCase().includes(me.search.toLowerCase())
+        );
+      });
+    }
   },
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
@@ -429,6 +528,7 @@ export default {
           sedes_id: me.infoUserAuth[0].sedes_id
         })
         .then(function(response) {
+          me.getIngresosActuales();
           Swal.fire({
             position: "top-end",
             type: "success",
@@ -448,6 +548,9 @@ export default {
           });
           console.log(error);
         });
+    },
+    crearPersona() {
+      let me = this;
     },
     getIngresosActuales() {
       let me = this;
@@ -483,10 +586,10 @@ export default {
     }
   },
   mounted() {
+    this.getPeriodo();
     this.focus();
     //optener el Usuario autenticado
     this.getUserAuth();
-    this.getPeriodo();
     this.getIngresosActuales();
   }
 };

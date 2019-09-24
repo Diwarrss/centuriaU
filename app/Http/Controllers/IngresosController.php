@@ -20,7 +20,7 @@ class IngresosController extends Controller
         return $personabyID;
     }
 
-    
+
 
     public function crearIngreso(Request $request)
     {
@@ -55,6 +55,8 @@ class IngresosController extends Controller
         $fechahoy = Carbon::now()->format('Y-m-d');
 
         $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+            ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+            ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
             ->select(
                 'ingresos.created_at',
                 'personas.id as personaID',
@@ -63,9 +65,14 @@ class IngresosController extends Controller
                 'personas.nombre1',
                 'personas.nombre2',
                 'personas.apellido1',
-                'personas.apellido2'
+                'personas.apellido2',
+                'prestamos.id as prestamoID',
+                'computadores.id as computadorID',
+                'computadores.nombre as nombrePC'
             )
-            ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')->get();
+            ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+            ->orderBy('ingresos.created_at', 'desc')
+            ->get();
 
         return $ingresosActuales;
     }

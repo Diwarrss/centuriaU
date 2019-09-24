@@ -19,7 +19,7 @@ class CreatePrestamosTable extends Migration
             $table->unsignedBigInteger('users_id')->comment('Usuario quien registra el prestamo');
             $table->foreign('users_id')->references('id')->on('users');
             $table->unsignedBigInteger('computadores_id')->comment('Computador que se presta');
-            $table->foreign('computadores_id')->references('id')->on('ingresos');
+            $table->foreign('computadores_id')->references('id')->on('computadores');
             $table->unsignedBigInteger('ingresos_id')->comment('Ingresos del día actual');
             $table->foreign('ingresos_id')->references('id')->on('ingresos');
             $table->unsignedBigInteger('sedes_id')->default(1);
