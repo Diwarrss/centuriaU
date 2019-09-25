@@ -177,7 +177,7 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button class="btn btn-success" type="submit" @click="crearIngreso">
+                      <button class="btn btn-success btn-lg" type="submit" @click="crearIngreso">
                         <i class="fas fa-user-check"></i> Registrar Ingreso
                       </button>
                     </div>
@@ -223,7 +223,7 @@
                           <th>Documento</th>
                           <th>Nombres y Apellidos</th>
                           <th>Computador</th>
-                          <th>Accion</th>
+                          <th>Préstamos</th>
                         </tr>
                       </thead>
                       <tbody v-if="!arrayIngresosA.length">
@@ -244,11 +244,18 @@
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
                           <td class="text-center">
                             <h4>
-                              <span class="badge badge-secondary">{{data.nombrePC}}</span>
+                              <span
+                                v-if="data.estado_prestamo == 1"
+                                class="badge badge-warning"
+                              >{{data.nombrePC}}</span>
+                              <span
+                                v-if="data.estado_prestamo == 0"
+                                class="badge badge-success"
+                              >{{data.nombrePC}}</span>
                             </h4>
                           </td>
                           <td>
-                            <div v-if="!data.estado_prestamo || data.estado_prestamo==0">
+                            <div v-if="!data.estado_prestamo">
                               <button
                                 type="button"
                                 data-toggle="modal"
@@ -256,12 +263,20 @@
                                 class="btn btn-primary"
                                 @click="modalPrestarEquipo(data.ingresosID)"
                               >
-                                <i class="fas fa-laptop"></i> Prestamó
+                                <i class="fas fa-laptop"></i> Prestar
                               </button>
                             </div>
                             <div v-else-if="data.estado_prestamo == 1">
-                              <button class="btn btn-success">
-                                <i class="far fa-check-circle"></i> Entregado
+                              <button
+                                class="btn btn-secondary"
+                                @click="recibirEquipo(data.computadorID, data.prestamoID)"
+                              >
+                                <i class="far fa-check-circle"></i> Recibido
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 0">
+                              <button class="btn btn-success" disabled>
+                                <i class="far fa-check-circle"></i> Ya Recibido
                               </button>
                             </div>
                           </td>
@@ -298,7 +313,9 @@
                       :options="['CC', 'TI', 'CE', 'CARNET']"
                       placeholder="Seleccionar..."
                       v-model="tipo_documento"
-                    ></v-select>
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.tipo_documento"
@@ -386,7 +403,9 @@
                       :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
                       placeholder="Seleccionar..."
                       v-model="tipo_persona"
-                    ></v-select>
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.tipo_persona"
@@ -402,7 +421,9 @@
                       , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
                       placeholder="Seleccionar..."
                       v-model="programa"
-                    ></v-select>
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.programa"
@@ -417,7 +438,9 @@
                       :options="['San Gil', 'Yopal', 'Chiquinquirá']"
                       placeholder="Seleccionar..."
                       v-model="sede"
-                    ></v-select>
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.sede"
@@ -428,7 +451,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" data-dismiss="modal">
+              <button class="btn btn-secondary" type="button" @click="cerrarModalPersona">
                 <i class="far fa-times-circle"></i> Cancelar
               </button>
               <button class="btn btn-primary" @click="crearPersona">
@@ -463,7 +486,9 @@
                       label="nombre"
                       placeholder="Seleccionar..."
                       v-model="computadores_id"
-                    ></v-select>
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.computadores_id"
@@ -752,7 +777,7 @@ export default {
     },
     cerrarModalPersona() {
       let me = this;
-      //$("[data-dismiss=modal]").trigger({ type: "click" });
+      $("#modalCrearPersona").modal("hide");
       //limpiar las variables
       (me.arrayErrors = []),
         (me.tipo_documento = ""),
@@ -819,10 +844,56 @@ export default {
     cerrarModalPrestamo() {
       let me = this;
       //cerrar modal prestamo
-      $("[data-dismiss=modal]").trigger({ type: "click" });
+      $("#modalPrestamo").modal("hide");
       //limpio las variables del prestamo
       me.ingresosID = "";
       me.computadores_id = "";
+    },
+    recibirEquipo(computadorID, prestamoID) {
+      let me = this;
+      Swal.fire({
+        title: "¿Computador recibido?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "green",
+        cancelButtonColor: "red",
+        confirmButtonText: '<i class="fas fa-check"></i> Si',
+        cancelButtonText: '<i class="fas fa-times"></i> No'
+      }).then(result => {
+        if (result.value) {
+          // /recibir Equipo y marcar prestamo finalizado
+          axios
+            .post("/finalizarPrestamo", {
+              computadorID: computadorID,
+              prestamoID: prestamoID
+            })
+            .then(function(response) {
+              me.getIngresosActuales();
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                type: "success",
+                title: "Equipo disponible!",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            })
+            .catch(function(error) {
+              if (error.response.status == 422) {
+                //preguntamos si el error es 422
+                Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  type: "error",
+                  title: "Se produjo un Error, Reintentar",
+                  showConfirmButton: false,
+                  timer: 2500
+                });
+              }
+              console.log(error.response.data.errors);
+            });
+        }
+      });
     },
     getComputadorlibre() {
       let me = this;

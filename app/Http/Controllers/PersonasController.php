@@ -81,6 +81,7 @@ class PersonasController extends Controller
             }
         }
     }
+
     public function savePersona(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

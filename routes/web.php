@@ -61,4 +61,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador Prestamos
     Route::post('crearPrestamo', 'PrestamosController@crearPrestamo')->name('crearPrestamo');
+    Route::post('finalizarPrestamo', 'PrestamosController@finalizarPrestamo')->name('finalizarPrestamo');
 });
