@@ -41,4 +41,29 @@ class PrestamosController extends Controller
             DB::rollBack(); //si hay error no ejecute la transaccion
         }
     }
+
+    public function finalizarPrestamo(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        try {
+            //usaremos transacciones
+            DB::beginTransaction();
+            //para validar los formularios
+            $request->validate([
+                'computadorID' => 'required',
+                'prestamoID' => 'required'
+            ]);
+            $updateCompu = Computadore::findOrFail($request->computadorID);
+            $updateCompu->estado_computador = '1';
+            $updateCompu->save();
+
+            $updatePrestamo = Prestamo::findOrFail($request->prestamoID);
+            $updatePrestamo->estado_prestamo = '0';
+            $updatePrestamo->save();
+
+            DB::commit(); //commit de la transaccion
+        } catch (Exception $e) {
+            DB::rollBack(); //si hay error no ejecute la transaccion
+        }
+    }
 }
