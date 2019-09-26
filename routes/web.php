@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Controlador Personas
     Route::post('crearPersona', 'PersonasController@crearPersona')->name('crearPersona');
     Route::post('savePersona', 'PersonasController@savePersona')->name('savePersona');
+    Route::get('getPersonas', 'PersonasController@getPersonas')->name('getPersonas');
 
     //Controlador Computadores
     Route::get('getComputadorlibre', 'ComputadoresController@getComputadorlibre')->name('getComputadorlibre');

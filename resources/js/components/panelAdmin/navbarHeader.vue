@@ -10,9 +10,9 @@
     <a class="navbar-brand" href="/admin">
       <img
         class="navbar-brand-full"
-        src="adminCoreui/img/brand/banner.png"
-        width="145"
-        height="35"
+        src="adminCoreui/img/brand/logoCenturia.png"
+        width="40"
+        height="45"
         alt="Logotipo"
       />
       <!-- <img

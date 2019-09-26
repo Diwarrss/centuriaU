@@ -11,9 +11,9 @@
           <router-link class="btn" to="/">
             <i class="icon-graph"></i> Escritorio
           </router-link>
-          <a class="btn" href="#">
-            <i class="icon-settings"></i> Configuración
-          </a>
+          <router-link class="btn" to="/universidad">
+            <i class="fas fa-university"></i> Universidad
+          </router-link>
         </div>
       </li>
     </ol>

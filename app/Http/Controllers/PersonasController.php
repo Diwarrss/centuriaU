@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Persona;
+use Faker\Provider\ro_MD\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -86,7 +87,7 @@ class PersonasController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $request->validate([
-            'tipo_documento' => 'required|max:5',
+            'tipo_documento' => 'required|max:6',
             'numero_documento' => 'required|unique:personas|max:20',
             'nombre1' => 'required|max:50',
             'apellido1' => 'required|max:50',
@@ -116,5 +117,14 @@ class PersonasController extends Controller
         } catch (Exception $e) {
             DB::rollBack(); //si hay error no ejecute la transaccion
         }
+    }
+
+    public function getPersonas(Request $request)
+    {
+        //if (!$request->ajax()) return redirect('/');
+
+        $personas = Persona::all();
+
+        return $personas;
     }
 }

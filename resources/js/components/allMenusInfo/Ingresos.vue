@@ -11,9 +11,9 @@
           <router-link class="btn" to="/">
             <i class="icon-graph"></i> Escritorio
           </router-link>
-          <a class="btn" href="#">
-            <i class="icon-settings"></i> Configuración
-          </a>
+          <router-link class="btn" to="/universidad">
+            <i class="fas fa-university"></i> Universidad
+          </router-link>
         </div>
       </li>
     </ol>
@@ -35,7 +35,9 @@
               <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4">
                 <div class="card card-accent-primary">
                   <div class="card-header">
-                    <i class="icon-magnifier icons"></i>Buscar Persona
+                    <strong>
+                      <i class="icon-magnifier icons"></i> Buscar Persona
+                    </strong>
                   </div>
                   <div class="card-body">
                     <div class="input-group">
@@ -203,7 +205,9 @@
               <div class="col-sm-12 col-md-12 col-lg-6 col-xl-8">
                 <div class="card card-accent-danger">
                   <div class="card-header">
-                    <i class="far fa-list-alt"></i>Ingresos Actuales
+                    <strong>
+                      <i class="far fa-list-alt"></i> Ingresos Actuales
+                    </strong>
                     <div class="card-header-actions">
                       <div class="form-group">
                         <input
@@ -843,6 +847,7 @@ export default {
     },
     cerrarModalPrestamo() {
       let me = this;
+      me.arrayErrors = [];
       //cerrar modal prestamo
       $("#modalPrestamo").modal("hide");
       //limpio las variables del prestamo

@@ -64,6 +64,11 @@ const Error404 = require("./components/Error404.vue").default;
 //para el Admin
 const Escritorio = require("./components/allMenusInfo/Escritorio.vue").default;
 const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
+const Personas = require("./components/allMenusInfo/Personas.vue").default;
+const Computadores = require("./components/allMenusInfo/Computadores.vue").default;
+const Usuarios = require("./components/allMenusInfo/Usuarios.vue").default;
+const Universidad = require("./components/allMenusInfo/Universidad.vue").default;
+const Perfil = require("./components/allMenusInfo/Perfil.vue").default;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -85,6 +90,26 @@ const routes = [{
     {
         path: "/ingresos",
         component: Ingresos
+    },
+    {
+        path: "/personas",
+        component: Personas
+    },
+    {
+        path: "/computadores",
+        component: Computadores
+    },
+    {
+        path: "/usuarios",
+        component: Usuarios
+    },
+    {
+        path: "/universidad",
+        component: Universidad
+    },
+    {
+        path: "/perfil",
+        component: Perfil
     }
 ];
 

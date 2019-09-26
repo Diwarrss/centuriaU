@@ -6,6 +6,7 @@ use App\Ingreso;
 use App\Persona;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class IngresosController extends Controller
@@ -70,7 +71,7 @@ class IngresosController extends Controller
                 'computadores.id as computadorID',
                 'computadores.nombre as nombrePC'
             )
-            ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+            ->where([['ingresos.created_at', 'like', '%' . $fechahoy . '%'], ['ingresos.sedes_id', Auth::user()->sedes_id]])
             ->orderBy('ingresos.created_at', 'desc')
             ->get();
 
