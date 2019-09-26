@@ -123,7 +123,19 @@ class PersonasController extends Controller
     {
         //if (!$request->ajax()) return redirect('/');
 
-        $personas = Persona::all();
+        $personas = Persona::select(
+            'id',
+            'tipo_documento',
+            'numero_documento',
+            'nombre1',
+            'nombre2',
+            'apellido1',
+            'apellido2',
+            'estado_persona',
+            'tipo_persona',
+            'programa',
+            'sede'
+        )->paginate(5);
 
         return $personas;
     }

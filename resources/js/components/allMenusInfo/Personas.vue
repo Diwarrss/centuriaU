@@ -27,7 +27,8 @@
                 <div class="card card-accent-primary">
                   <div class="card-header">
                     <strong>
-                      <i class="fas fa-list-ul"></i> Listado de Personas
+                      <i class="fas fa-list-ul"></i>
+                      Listado de Personas (Total: {{objectPersonas.total}})
                     </strong>
                     <div class="card-header-actions">
                       <button class="btn btn-success mb-2">
@@ -42,13 +43,32 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <div>
-                      <select class="form-control">
-                        <option value="Activo" selected>Nombres</option>
-                        <option value="Inactivo">Apellidos</option>
-                        <option value="Inactivo">Programa</option>
-                      </select>
-                      <input type="text" class="form-control" placeholder="Buscar..." />
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <select class="form-control col-md-5" v-model="criterio">
+                            <option value="numero_documento">Número Documento</option>
+                            <option value="programa">Programa</option>
+                            <option value="sede">Sede</option>
+                          </select>
+                          <input
+                            type="text"
+                            placeholder="Texto..."
+                            v-model="buscar"
+                            class="form-control"
+                            @keyup.enter="getPersonas(1,buscar,criterio)"
+                          />
+                          <span class="input-group-append">
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              @click="getPersonas(1,buscar,criterio)"
+                            >
+                              <i class="fas fa-search"></i> Buscar
+                            </button>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <table class="table table-responsive-md table-hover table-md">
                       <thead>
@@ -63,7 +83,8 @@
                           <th>Acción</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!arrayPersonas.length">
+                      <!-- verificamos si el objeto es vacio -->
+                      <tbody v-if="objectPersonas.data ==''">
                         <td colspan="8">
                           <div role="alert" class="alert alert-danger text-center">
                             <div class="form-group">
@@ -74,7 +95,7 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in arrayPersonas" :key="data.id">
+                      <tbody v-for="data in objectPersonas.data" :key="data.id">
                         <tr>
                           <td v-text="data.id"></td>
                           <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
@@ -89,6 +110,14 @@
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                  <div class="card-footer">
+                    <!-- Implementa el vue pagination -->
+                    <pagination
+                      :data="objectPersonas"
+                      @pagination-change-page="getPersonas"
+                      align="center"
+                    ></pagination>
                   </div>
                 </div>
               </div>
@@ -105,7 +134,10 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      arrayPersonas: []
+      objectPersonas: {},
+      cant: 5,
+      criterio: "numero_documento",
+      buscar: ""
     };
   },
   computed: {
@@ -113,20 +145,27 @@ export default {
   },
   methods: {
     ...mapActions(["getUserAuth"]),
-    getPersonas() {
+    //metodo para obtener las personas y el array completo
+    getPersonas(page = 1) {
+      let me = this;
+      axios.get("getPersonas?page=" + page).then(response => {
+        this.objectPersonas = response.data;
+      });
+    },
+    /* getPersonas() {
       let me = this;
       axios
         .get("/getPersonas")
         .then(function(response) {
           // handle success
-          me.arrayPersonas = response.data;
+          me.objectPersonas = response.data;
           //console.log(response);
         })
         .catch(function(error) {
           // handle error
           console.log(error);
         });
-    },
+    }, */
     editarUsuario(id) {
       Swal.fire({
         toast: true,

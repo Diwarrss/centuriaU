@@ -16,16 +16,16 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 //import vue-moment CONFIGURADO AL ESPAÑOL
-const moment = require('moment')
-require('moment/locale/es')
-Vue.use(require('vue-moment'), {
+const moment = require("moment");
+require("moment/locale/es");
+Vue.use(require("vue-moment"), {
     moment
-})
+});
 
 //import vue-select
-import vSelect from 'vue-select'
-Vue.component('v-select', vSelect)
-import 'vue-select/dist/vue-select.css';
+import vSelect from "vue-select";
+Vue.component("v-select", vSelect);
+import "vue-select/dist/vue-select.css";
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -54,6 +54,9 @@ Vue.component(
     require("./components/panelAdmin/sidebardRight.vue").default
 );
 
+//LLAMAMOS EL COMPONENTE DE VUE PAGINATION
+Vue.component("pagination", require("laravel-vue-pagination"));
+
 //----*********** Aqui agregaremos todo configurado con Vue-Router*********
 // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
 // and then call `Vue.use(VueRouter)`.
@@ -65,9 +68,11 @@ const Error404 = require("./components/Error404.vue").default;
 const Escritorio = require("./components/allMenusInfo/Escritorio.vue").default;
 const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
 const Personas = require("./components/allMenusInfo/Personas.vue").default;
-const Computadores = require("./components/allMenusInfo/Computadores.vue").default;
+const Computadores = require("./components/allMenusInfo/Computadores.vue")
+    .default;
 const Usuarios = require("./components/allMenusInfo/Usuarios.vue").default;
-const Universidad = require("./components/allMenusInfo/Universidad.vue").default;
+const Universidad = require("./components/allMenusInfo/Universidad.vue")
+    .default;
 const Perfil = require("./components/allMenusInfo/Perfil.vue").default;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -79,7 +84,8 @@ const Perfil = require("./components/allMenusInfo/Perfil.vue").default;
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
-const routes = [{
+const routes = [
+    {
         path: "*",
         component: Error404
     },
@@ -138,16 +144,12 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        getUserAuth: async function ({
-            commit
-        }) {
+        getUserAuth: async function({ commit }) {
             const data = await fetch("/getUserAuth");
             const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarInfo", dataUser);
         },
-        getPeriodo: async function ({
-            commit
-        }) {
+        getPeriodo: async function({ commit }) {
             const datos = await fetch("/getPeriodo");
             const dataPeriodo = await datos.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarPeriodo", dataPeriodo);

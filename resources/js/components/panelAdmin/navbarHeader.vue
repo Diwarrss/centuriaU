@@ -42,8 +42,8 @@
         </router-link>
       </li>
       <li class="nav-item px-3">
-        <router-link class="nav-link" to="/usuarios">
-          <i class="fas fa-wrench"></i> Configuración
+        <router-link class="nav-link" to="/universidad">
+          <i class="fas fa-university"></i> Universidad
         </router-link>
       </li>
     </ul>
@@ -71,8 +71,8 @@
           <router-link class="dropdown-item" to="/perfil">
             <i class="fa fa-user"></i> Perfil
           </router-link>
-          <router-link class="dropdown-item" to="/config">
-            <i class="fa fa-wrench"></i> Configuración
+          <router-link class="dropdown-item" to="/universidad">
+            <i class="fas fa-university"></i> Universidad
           </router-link>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/logout" @click="logout()">
