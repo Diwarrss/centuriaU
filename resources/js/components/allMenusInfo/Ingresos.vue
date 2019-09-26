@@ -188,16 +188,7 @@
                 <div v-else class="alert alert-warning text-center" role="alert">
                   <div class="form-group">
                     <strong>¡Sin Información!</strong>
-                  </div>
-                  <div class="form-group">
-                    <button
-                      type="button"
-                      class="btn btn-success btn-lg"
-                      data-toggle="modal"
-                      data-target="#modalCrearPersona"
-                    >
-                      <i class="fas fa-plus-circle"></i> Crear Persona
-                    </button>
+                    <crearpersona></crearpersona>
                   </div>
                 </div>
               </div>
@@ -220,7 +211,7 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <table class="table table-responsive-md table-hover table-md">
+                    <table class="table table-responsive-md table-hover table-sm">
                       <thead>
                         <tr>
                           <th>Fecha Ingreso</th>
@@ -295,178 +286,7 @@
         </div>
       </div>
     </div>
-    <!-- Modal modalCrearPersona-->
-    <section>
-      <div class="modal" id="modalCrearPersona" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog modal-primary" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">
-                <i class="fas fa-user-edit"></i> Crear Persona
-              </h4>
-              <button class="close" type="button" @click="cerrarModalPersona" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form class="form-horizontal" enctype="multipart/form-data">
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Tipo Documento</label>
-                  <div class="col-md-8">
-                    <v-select
-                      :options="['CC', 'TI', 'CE', 'CARNET']"
-                      placeholder="Seleccionar..."
-                      v-model="tipo_documento"
-                    >
-                      <div slot="no-options">No hay Resultados!</div>
-                    </v-select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.tipo_documento"
-                      v-text="arrayErrors.tipo_documento[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Documento</label>
-                  <div class="col-md-8">
-                    <input class="form-control" type="text" v-model="numero_documento" />
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.numero_documento"
-                      v-text="arrayErrors.numero_documento[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Nombres</label>
-                  <div class="col-md-4">
-                    <input class="form-control" type="text" v-model="nombre1" placeholder="Primero" />
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.nombre1"
-                      v-text="arrayErrors.nombre1[0]"
-                    ></span>
-                  </div>
-                  <div class="col-md-4">
-                    <input class="form-control" type="text" v-model="nombre2" placeholder="Segundo" />
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.nombre2"
-                      v-text="arrayErrors.nombre2[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Apellidos</label>
-                  <div class="col-md-4">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="apellido1"
-                      placeholder="Primero"
-                    />
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.apellido1"
-                      v-text="arrayErrors.apellido1[0]"
-                    ></span>
-                  </div>
-                  <div class="col-md-4">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="apellido2"
-                      placeholder="Segundo"
-                    />
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.apellido2"
-                      v-text="arrayErrors.apellido2[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Estado</label>
-                  <div class="col-md-8">
-                    <select class="form-control" v-model="estado">
-                      <option value="Activo" selected>Activo</option>
-                      <option value="Inactivo">Inactivo</option>
-                    </select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.estado_persona"
-                      v-text="arrayErrors.estado_persona[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Tipo Persona</label>
-                  <div class="col-md-8">
-                    <v-select
-                      :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
-                      placeholder="Seleccionar..."
-                      v-model="tipo_persona"
-                    >
-                      <div slot="no-options">No hay Resultados!</div>
-                    </v-select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.tipo_persona"
-                      v-text="arrayErrors.tipo_persona[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Programa</label>
-                  <div class="col-md-8">
-                    <v-select
-                      :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
-                      , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
-                      placeholder="Seleccionar..."
-                      v-model="programa"
-                    >
-                      <div slot="no-options">No hay Resultados!</div>
-                    </v-select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.programa"
-                      v-text="arrayErrors.programa[0]"
-                    ></span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Sede</label>
-                  <div class="col-md-8">
-                    <v-select
-                      :options="['San Gil', 'Yopal', 'Chiquinquirá']"
-                      placeholder="Seleccionar..."
-                      v-model="sede"
-                    >
-                      <div slot="no-options">No hay Resultados!</div>
-                    </v-select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.sede"
-                      v-text="arrayErrors.sede[0]"
-                    ></span>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" @click="cerrarModalPersona">
-                <i class="far fa-times-circle"></i> Cancelar
-              </button>
-              <button class="btn btn-primary" @click="crearPersona">
-                <i class="far fa-check-circle"></i> Guardar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Modal modalCrearPersona-->
+    <!-- Modal modal Crear prestamo-->
     <section>
       <div class="modal" id="modalPrestamo" role="dialog" aria-labelledby="myModalLabel1">
         <div class="modal-dialog modal-primary" role="document">
@@ -529,16 +349,7 @@ export default {
       search: "",
       estado_persona: "",
       arrayErrors: [],
-      tipo_documento: "",
-      numero_documento: "",
-      nombre1: "",
-      nombre2: "",
-      apellido1: "",
-      apellido2: "",
-      estado: "Activo",
-      tipo_persona: "",
-      programa: "",
-      sede: "",
+
       arrayCompuLibres: [],
       ingresosID: "",
       computadores_id: ""
@@ -744,57 +555,7 @@ export default {
           console.log(error);
         });
     },
-    crearPersona() {
-      let me = this;
-      axios
-        .post("/savePersona", {
-          tipo_documento: me.tipo_documento,
-          tipo_documento: me.tipo_documento,
-          numero_documento: me.numero_documento,
-          nombre1: me.nombre1,
-          nombre2: me.nombre2,
-          apellido1: me.apellido1,
-          apellido2: me.apellido2,
-          estado_persona: me.estado,
-          tipo_persona: me.tipo_persona,
-          programa: me.programa,
-          sede: me.sede
-        })
-        .then(function(response) {
-          me.cerrarModalPersona();
-          Swal.fire({
-            position: "top-end",
-            type: "success",
-            title: "Persona Creada con éxito",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          //console.log(response);
-        })
-        .catch(function(error) {
-          if (error.response.status == 422) {
-            //preguntamos si el error es 422
-            me.arrayErrors = error.response.data.errors;
-          }
-          //console.log(error);
-        });
-    },
-    cerrarModalPersona() {
-      let me = this;
-      $("#modalCrearPersona").modal("hide");
-      //limpiar las variables
-      (me.arrayErrors = []),
-        (me.tipo_documento = ""),
-        (me.numero_documento = ""),
-        (me.nombre1 = ""),
-        (me.nombre2 = ""),
-        (me.apellido1 = ""),
-        (me.apellido2 = ""),
-        (me.estado_persona = "Activo"),
-        (me.tipo_persona = ""),
-        (me.programa = ""),
-        (me.sede = "");
-    },
+
     getIngresosActuales() {
       let me = this;
       axios

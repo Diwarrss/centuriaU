@@ -121,22 +121,52 @@ class PersonasController extends Controller
 
     public function getPersonas(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
+        $id = $request->id;
+        $buscar = $request->buscar;
+        if ($id) {
+            $personasid = Persona::select(
+                'id',
+                'tipo_documento',
+                'numero_documento',
+                'nombre1',
+                'nombre2',
+                'apellido1',
+                'apellido2',
+                'estado_persona',
+                'tipo_persona',
+                'programa',
+                'sede'
+            )->where('id', $id)->get();
 
-        $personas = Persona::select(
-            'id',
-            'tipo_documento',
-            'numero_documento',
-            'nombre1',
-            'nombre2',
-            'apellido1',
-            'apellido2',
-            'estado_persona',
-            'tipo_persona',
-            'programa',
-            'sede'
-        )->paginate(5);
+            return $personasid;
+        } else {
+            //cuando hay otros parametros y hacemos or where para solo mostrar esos datos
+            $personas = Persona::select(
+                'id',
+                'tipo_documento',
+                'numero_documento',
+                'nombre1',
+                'nombre2',
+                'apellido1',
+                'apellido2',
+                'estado_persona',
+                'tipo_persona',
+                'programa',
+                'sede'
+            )->orWhere('id', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('tipo_documento', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('numero_documento', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('nombre1', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('nombre2', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('apellido1', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('apellido2', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('estado_persona', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('tipo_persona', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('programa', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate(5);
 
-        return $personas;
+            return $personas;
+        }
     }
 }

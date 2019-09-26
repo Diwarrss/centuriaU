@@ -53,6 +53,11 @@ Vue.component(
     "sidebardright",
     require("./components/panelAdmin/sidebardRight.vue").default
 );
+//crear personas mmodal etc
+Vue.component(
+    "crearpersona",
+    require("./components/allMenusInfo/CrearPersona.vue").default
+);
 
 //LLAMAMOS EL COMPONENTE DE VUE PAGINATION
 Vue.component("pagination", require("laravel-vue-pagination"));
@@ -84,8 +89,7 @@ const Perfil = require("./components/allMenusInfo/Perfil.vue").default;
 // either be an actual component constructor created via
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
-const routes = [
-    {
+const routes = [{
         path: "*",
         component: Error404
     },
@@ -144,12 +148,16 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        getUserAuth: async function({ commit }) {
+        getUserAuth: async function ({
+            commit
+        }) {
             const data = await fetch("/getUserAuth");
             const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarInfo", dataUser);
         },
-        getPeriodo: async function({ commit }) {
+        getPeriodo: async function ({
+            commit
+        }) {
             const datos = await fetch("/getPeriodo");
             const dataPeriodo = await datos.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
             commit("llenarPeriodo", dataPeriodo);

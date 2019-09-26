@@ -1,142 +1,25 @@
 <template>
-  <main class="main">
-    <!-- Breadcrumb-->
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item active">
-        <i class="nav-icon icon-people"></i> Personas
-      </li>
-      <!-- Breadcrumb Menu-->
-      <li class="breadcrumb-menu d-md-down-none">
-        <div class="btn-group" role="group" aria-label="Button group">
-          <router-link class="btn" to="/">
-            <i class="icon-graph"></i> Escritorio
-          </router-link>
-          <router-link class="btn" to="/universidad">
-            <i class="fas fa-university"></i> Universidad
-          </router-link>
-        </div>
-      </li>
-    </ol>
-    <div class="container-fluid" v-if="infoUserAuth.length">
-      <div class="ui-view">
-        <div>
-          <div class="animated fadeIn">
-            <div class="row">
-              <div class="col-sm-12 col-lg-12">
-                <crearpersona></crearpersona>
-              </div>
-              <div class="col-sm-12 col-lg-12">
-                <div class="card card-accent-primary">
-                  <div class="card-header">
-                    <strong>
-                      <i class="fas fa-list-ul"></i>
-                      Listado de Personas (Total: {{objectPersonas.total}})
-                    </strong>
-                    <div class="card-header-actions">
-                      <button class="btn btn-success mb-2">
-                        <i class="far fa-file-excel"></i> Descargar Datos
-                      </button>
-                      <button class="btn btn-primary mb-2">
-                        <i class="fas fa-file-import"></i> Cargar Datos
-                      </button>
-                      <button class="btn btn-secondary mb-2">
-                        <i class="fas fa-file-download"></i> Formato
-                      </button>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <!-- keydown para ejecutar cuando vayan escribiendo -->
-                          <input
-                            type="text"
-                            placeholder="Texto..."
-                            v-model="buscar"
-                            class="form-control"
-                            @keydown="getPersonas(1,buscar)"
-                            @keyup.enter="getPersonas(1,buscar)"
-                          />
-                          <span class="input-group-append">
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              @click="getPersonas(1,buscar)"
-                            >
-                              <i class="fas fa-search"></i> Buscar
-                            </button>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Documento</th>
-                          <th>Nombres y Apellidos</th>
-                          <th>Estado</th>
-                          <th>Tipo</th>
-                          <th>Programa</th>
-                          <th>Sede</th>
-                          <th>Acción</th>
-                        </tr>
-                      </thead>
-                      <!-- verificamos si el objeto es vacio -->
-                      <tbody v-if="objectPersonas.data ==''">
-                        <td colspan="8">
-                          <div role="alert" class="alert alert-danger text-center">
-                            <div class="form-group">
-                              <strong>
-                                <h5>¡Sin información!</h5>
-                              </strong>
-                            </div>
-                          </div>
-                        </td>
-                      </tbody>
-                      <tbody v-for="data in objectPersonas.data" :key="data.id">
-                        <tr>
-                          <td v-text="data.id"></td>
-                          <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
-                          <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
-                          <td v-text="data.estado_persona"></td>
-                          <td v-text="data.tipo_persona"></td>
-                          <td v-text="data.programa"></td>
-                          <td v-text="data.sede"></td>
-                          <td>
-                            <button class="btn btn-secondary" @click="abrirEditar(data.id)">
-                              <i class="far fa-edit"></i> Editar
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="card-footer">
-                    <!-- Implementa el vue pagination -->
-                    <pagination
-                      :data="objectPersonas"
-                      @pagination-change-page="getPersonas"
-                      align="center"
-                    ></pagination>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div>
+    <div class="form-group">
+      <button
+        type="button"
+        class="btn btn-success btn-lg mb-"
+        data-toggle="modal"
+        data-target="#modalCrearPersona"
+      >
+        <i class="fas fa-plus-circle"></i> Crear Persona
+      </button>
     </div>
-    <!-- Modal Editar Persona-->
+    <!-- Modal modalCrearPersona-->
     <section>
-      <div class="modal" id="modalEditarPersona" role="dialog" aria-labelledby="myModalLabel2">
+      <div class="modal" id="modalCrearPersona" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog modal-primary" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">
-                <i class="far fa-edit"></i> Editar Persona
+                <i class="fas fa-user-edit"></i> Crear Persona
               </h4>
-              <button class="close" type="button" @click="cerrarModal" aria-label="Close">
+              <button class="close" type="button" @click="cerrarModalPersona" aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
@@ -287,10 +170,10 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" @click="cerrarModal">
+              <button class="btn btn-secondary" type="button" @click="cerrarModalPersona">
                 <i class="far fa-times-circle"></i> Cancelar
               </button>
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" @click="crearPersona">
                 <i class="far fa-check-circle"></i> Guardar
               </button>
             </div>
@@ -298,18 +181,12 @@
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </template>
 <script>
-//importamos para usar el mapState, mapActions
-import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      objectPersonas: {},
-      cant: 5,
-      criterio: "numero_documento",
-      buscar: "",
       arrayErrors: [],
       tipo_documento: "",
       numero_documento: "",
@@ -320,82 +197,48 @@ export default {
       estado: "Activo",
       tipo_persona: "",
       programa: "",
-      sede: "",
-      arrayPersona: []
+      sede: ""
     };
   },
-  computed: {
-    ...mapState(["infoUserAuth"])
-  },
   methods: {
-    ...mapActions(["getUserAuth"]),
-    //metodo para obtener las personas y el array completo
-    getPersonas(page = 1) {
-      let me = this;
-      //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
-      axios
-        .get("getPersonas?page=" + page + "&buscar=" + me.buscar)
-        .then(response => {
-          this.objectPersonas = response.data;
-        });
-    },
-    /* getPersonas() {
+    crearPersona() {
       let me = this;
       axios
-        .get("/getPersonas")
-        .then(function(response) {
-          // handle success
-          me.objectPersonas = response.data;
-          //console.log(response);
-        })
-        .catch(function(error) {
-          // handle error
-          console.log(error);
-        });
-    }, */
-    abrirEditar(id) {
-      let me = this;
-      axios
-        .get("/getPersonas", {
-          params: {
-            id: id
-          }
+        .post("/savePersona", {
+          tipo_documento: me.tipo_documento,
+          tipo_documento: me.tipo_documento,
+          numero_documento: me.numero_documento,
+          nombre1: me.nombre1,
+          nombre2: me.nombre2,
+          apellido1: me.apellido1,
+          apellido2: me.apellido2,
+          estado_persona: me.estado,
+          tipo_persona: me.tipo_persona,
+          programa: me.programa,
+          sede: me.sede
         })
         .then(function(response) {
-          // handle success
-          me.arrayPersona = response.data;
-          //llenamos las variables con los datos obtenidos
-          me.tipo_documento = me.arrayPersona[0]["tipo_documento"];
-          me.numero_documento = me.arrayPersona[0]["numero_documento"];
-          me.nombre1 = me.arrayPersona[0]["nombre1"];
-          me.nombre2 = me.arrayPersona[0]["nombre2"];
-          me.apellido1 = me.arrayPersona[0]["apellido1"];
-          me.apellido2 = me.arrayPersona[0]["apellido2"];
-          me.estado_persona = me.arrayPersona[0]["estado_persona"];
-          me.tipo_persona = me.arrayPersona[0]["tipo_persona"];
-          me.programa = me.arrayPersona[0]["programa"];
-          me.sede = me.arrayPersona[0]["sede"];
-          //console.log(response);
-          me.abrirModal();
-        })
-        .catch(function(error) {
-          // handle error
+          me.cerrarModalPersona();
           Swal.fire({
             position: "top-end",
-            type: "error",
-            title: "Error! Reintentar",
+            type: "success",
+            title: "Persona Creada con éxito",
             showConfirmButton: false,
             timer: 1500
           });
-          console.log(error);
+          //console.log(response);
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
         });
     },
-    abrirModal() {
-      $("#modalEditarPersona").modal("show");
-    },
-    cerrarModal() {
+    cerrarModalPersona() {
       let me = this;
-      $("#modalEditarPersona").modal("hide");
+      $("#modalCrearPersona").modal("hide");
       //limpiar las variables
       (me.arrayErrors = []),
         (me.tipo_documento = ""),
@@ -409,10 +252,6 @@ export default {
         (me.programa = ""),
         (me.sede = "");
     }
-  },
-  mounted() {
-    this.getUserAuth();
-    this.getPersonas();
   }
 };
 </script>
