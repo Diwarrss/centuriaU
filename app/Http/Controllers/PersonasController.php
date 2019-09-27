@@ -18,20 +18,36 @@ class PersonasController extends Controller
             'numero_documento' => 'required',
             'nombre1' => 'required',
             'apellido1' => 'required',
-            'estado_persona' => 'required',
-            'tipo_persona' => 'required',
             'programa' => 'required',
             'sede' => 'required'
         ]);
 
         $documento = $request->numero_documento;
         $tipoDoc = $request->tipo_documento;
+        $tipo_persona = $request->tipo_persona;
+        $estado_persona = $request->estado_persona;
+        $maac_estado = $request->maac_estado;
 
         //valido el tipo de datos y lo convierto a formato especifico
         if ($tipoDoc == 1) {
             $tipoDocumento = "CC";
         } else {
             $tipoDocumento = "TI";
+        }
+
+        //cambiamos el valor de tipo persona dependiendo del q aparezca
+        if ($estado_persona == 'Inactivo' && $maac_estado == null) {
+            $tipo_persona = 'Estudiante';
+            $estado_persona = 'Inactivo';
+        } else if ($maac_estado == null && $tipo_persona != 'CONTINUIDAD ACADEMICA - EGRESADO') {
+            $estado_persona = 'Inactivo';
+            $tipo_persona = 'Estudiante';
+        } else if ($tipo_persona == 'CONTINUIDAD ACADEMICA - EGRESADO') {
+            $estado_persona = 'Activo';
+            $tipo_persona = 'Egresado';
+        } else {
+            $estado_persona = 'Activo';
+            $tipo_persona = 'Estudiante';
         }
 
         $personabyID = Persona::where('numero_documento', $documento)->first();
@@ -48,8 +64,8 @@ class PersonasController extends Controller
                 $persona->nombre2 = $request->nombre2;
                 $persona->apellido1 = $request->apellido1;
                 $persona->apellido2 = $request->apellido2;
-                $persona->estado_persona = $request->estado_persona;
-                $persona->tipo_persona = $request->tipo_persona;
+                $persona->estado_persona = $estado_persona;
+                $persona->tipo_persona = $tipo_persona;
                 $persona->programa = $request->programa;
                 $persona->sede = $request->sede;
                 $persona->save(); //guardamos en la tabla personas
@@ -70,8 +86,8 @@ class PersonasController extends Controller
                 $persona->nombre2 = $request->nombre2;
                 $persona->apellido1 = $request->apellido1;
                 $persona->apellido2 = $request->apellido2;
-                $persona->estado_persona = $request->estado_persona;
-                $persona->tipo_persona = $request->tipo_persona;
+                $persona->estado_persona = $estado_persona;
+                $persona->tipo_persona = $tipo_persona;
                 $persona->programa = $request->programa;
                 $persona->sede = $request->sede;
                 $persona->save(); //guardamos en la tabla users con el metodo save en la BD
@@ -101,6 +117,45 @@ class PersonasController extends Controller
             DB::beginTransaction();
 
             $persona =  new Persona();
+            $persona->tipo_documento = $request->tipo_documento;
+            $persona->numero_documento = $request->numero_documento;
+            $persona->nombre1 = $request->nombre1;
+            $persona->nombre2 = $request->nombre2;
+            $persona->apellido1 = $request->apellido1;
+            $persona->apellido2 = $request->apellido2;
+            $persona->estado_persona = $request->estado_persona;
+            $persona->tipo_persona = $request->tipo_persona;
+            $persona->programa = $request->programa;
+            $persona->sede = $request->sede;
+            $persona->save(); //guardamos en la tabla personas
+
+            DB::commit(); //commit de la transaccion
+        } catch (Exception $e) {
+            DB::rollBack(); //si hay error no ejecute la transaccion
+        }
+    }
+
+    public function updatePersona(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        try {
+            //usaremos transacciones
+            DB::beginTransaction();
+            //buscar primero el Persona a modificar
+            $persona = Persona::findOrFail($request->id);
+
+            $request->validate([
+                'tipo_documento' => 'required|max:6',
+                'numero_documento' => 'required|max:20|string|unique:personas,numero_documento,' . $persona->id,
+                'nombre1' => 'required|max:50',
+                'apellido1' => 'required|max:50',
+                'estado_persona' => 'required|max:50',
+                'tipo_persona' => 'required|max:100',
+                'programa' => 'required|max:255',
+                'sede' => 'required|max:100'
+            ]);
+
             $persona->tipo_documento = $request->tipo_documento;
             $persona->numero_documento = $request->numero_documento;
             $persona->nombre1 = $request->nombre1;
@@ -164,7 +219,7 @@ class PersonasController extends Controller
                 ->orWhere('estado_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('tipo_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('programa', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate(5);
+                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate(8);
 
             return $personas;
         }

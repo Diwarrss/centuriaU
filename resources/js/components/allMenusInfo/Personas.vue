@@ -99,12 +99,17 @@
                           <td v-text="data.id"></td>
                           <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
-                          <td v-text="data.estado_persona"></td>
+                          <td v-if="data.estado_persona == 'Activo'">
+                            <span class="badge badge-success" v-text="data.estado_persona"></span>
+                          </td>
+                          <td v-else>
+                            <span class="badge badge-danger" v-text="data.estado_persona"></span>
+                          </td>
                           <td v-text="data.tipo_persona"></td>
                           <td v-text="data.programa"></td>
                           <td v-text="data.sede"></td>
                           <td>
-                            <button class="btn btn-secondary" @click="abrirEditar(data.id)">
+                            <button class="btn btn-secondary" @click="abrirEditar(data)">
                               <i class="far fa-edit"></i> Editar
                             </button>
                           </td>
@@ -113,11 +118,12 @@
                     </table>
                   </div>
                   <div class="card-footer">
-                    <!-- Implementa el vue pagination -->
+                    <!-- Implementa el vue pagination para poder cambiar pagina -->
                     <pagination
                       :data="objectPersonas"
                       @pagination-change-page="getPersonas"
                       align="center"
+                      :limit="1"
                     ></pagination>
                   </div>
                 </div>
@@ -129,7 +135,14 @@
     </div>
     <!-- Modal Editar Persona-->
     <section>
-      <div class="modal" id="modalEditarPersona" role="dialog" aria-labelledby="myModalLabel2">
+      <div
+        class="modal"
+        id="modalEditarPersona"
+        role="dialog"
+        aria-labelledby="myModalLabel2"
+        data-backdrop="static"
+        data-keyboard="false"
+      >
         <div class="modal-dialog modal-primary" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -143,8 +156,11 @@
             <div class="modal-body">
               <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Tipo Documento</label>
-                  <div class="col-md-8">
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    for="text-input"
+                  >Tipo Documento:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['CC', 'TI', 'CE', 'CARNET']"
                       placeholder="Seleccionar..."
@@ -160,8 +176,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Documento</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Documento:</label>
+                  <div class="col-md-8 col-sm-7">
                     <input class="form-control" type="text" v-model="numero_documento" />
                     <span
                       class="help-block text-danger"
@@ -171,8 +187,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Nombres</label>
-                  <div class="col-md-4">
+                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Nombres:</label>
+                  <div class="col-md-4 col-sm-4">
                     <input class="form-control" type="text" v-model="nombre1" placeholder="Primero" />
                     <span
                       class="help-block text-danger"
@@ -180,7 +196,7 @@
                       v-text="arrayErrors.nombre1[0]"
                     ></span>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-sm-4">
                     <input class="form-control" type="text" v-model="nombre2" placeholder="Segundo" />
                     <span
                       class="help-block text-danger"
@@ -190,8 +206,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Apellidos</label>
-                  <div class="col-md-4">
+                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Apellidos:</label>
+                  <div class="col-md-4 col-sm-4">
                     <input
                       class="form-control"
                       type="text"
@@ -204,7 +220,7 @@
                       v-text="arrayErrors.apellido1[0]"
                     ></span>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-sm-4">
                     <input
                       class="form-control"
                       type="text"
@@ -219,9 +235,12 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Estado</label>
-                  <div class="col-md-8">
-                    <select class="form-control" v-model="estado">
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    for="text-input"
+                  >Estado:</label>
+                  <div class="col-md-8 col-sm-7">
+                    <select class="form-control" v-model="estado_persona">
                       <option value="Activo" selected>Activo</option>
                       <option value="Inactivo">Inactivo</option>
                     </select>
@@ -233,8 +252,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Tipo Persona</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
                       placeholder="Seleccionar..."
@@ -250,8 +269,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Programa</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Programa:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
                       , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
@@ -268,8 +287,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Sede</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Sede:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['San Gil', 'Yopal', 'Chiquinquirá']"
                       placeholder="Seleccionar..."
@@ -290,7 +309,7 @@
               <button class="btn btn-secondary" type="button" @click="cerrarModal">
                 <i class="far fa-times-circle"></i> Cancelar
               </button>
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" @click="updatePersona">
                 <i class="far fa-check-circle"></i> Guardar
               </button>
             </div>
@@ -307,7 +326,7 @@ export default {
   data() {
     return {
       objectPersonas: {},
-      cant: 5,
+      pagActual: "1",
       criterio: "numero_documento",
       buscar: "",
       arrayErrors: [],
@@ -317,11 +336,11 @@ export default {
       nombre2: "",
       apellido1: "",
       apellido2: "",
-      estado: "Activo",
+      estado_persona: "",
       tipo_persona: "",
       programa: "",
       sede: "",
-      arrayPersona: []
+      idPersona: ""
     };
   },
   computed: {
@@ -330,13 +349,14 @@ export default {
   methods: {
     ...mapActions(["getUserAuth"]),
     //metodo para obtener las personas y el array completo
-    getPersonas(page = 1) {
+    getPersonas(page, buscar) {
       let me = this;
       //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
       axios
         .get("getPersonas?page=" + page + "&buscar=" + me.buscar)
         .then(response => {
-          this.objectPersonas = response.data;
+          me.objectPersonas = response.data;
+          me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
         });
     },
     /* getPersonas() {
@@ -353,42 +373,23 @@ export default {
           console.log(error);
         });
     }, */
-    abrirEditar(id) {
+    abrirEditar(data) {
       let me = this;
-      axios
-        .get("/getPersonas", {
-          params: {
-            id: id
-          }
-        })
-        .then(function(response) {
-          // handle success
-          me.arrayPersona = response.data;
-          //llenamos las variables con los datos obtenidos
-          me.tipo_documento = me.arrayPersona[0]["tipo_documento"];
-          me.numero_documento = me.arrayPersona[0]["numero_documento"];
-          me.nombre1 = me.arrayPersona[0]["nombre1"];
-          me.nombre2 = me.arrayPersona[0]["nombre2"];
-          me.apellido1 = me.arrayPersona[0]["apellido1"];
-          me.apellido2 = me.arrayPersona[0]["apellido2"];
-          me.estado_persona = me.arrayPersona[0]["estado_persona"];
-          me.tipo_persona = me.arrayPersona[0]["tipo_persona"];
-          me.programa = me.arrayPersona[0]["programa"];
-          me.sede = me.arrayPersona[0]["sede"];
-          //console.log(response);
-          me.abrirModal();
-        })
-        .catch(function(error) {
-          // handle error
-          Swal.fire({
-            position: "top-end",
-            type: "error",
-            title: "Error! Reintentar",
-            showConfirmButton: false,
-            timer: 1500
-          });
-          console.log(error);
-        });
+
+      //llenamos las variables con los datos obtenidos
+      me.idPersona = data["id"];
+      me.tipo_documento = data["tipo_documento"];
+      me.numero_documento = data["numero_documento"];
+      me.nombre1 = data["nombre1"];
+      me.nombre2 = data["nombre2"];
+      me.apellido1 = data["apellido1"];
+      me.apellido2 = data["apellido2"];
+      me.estado_persona = data["estado_persona"];
+      me.tipo_persona = data["tipo_persona"];
+      me.programa = data["programa"];
+      me.sede = data["sede"];
+
+      me.abrirModal();
     },
     abrirModal() {
       $("#modalEditarPersona").modal("show");
@@ -404,15 +405,52 @@ export default {
         (me.nombre2 = ""),
         (me.apellido1 = ""),
         (me.apellido2 = ""),
-        (me.estado_persona = "Activo"),
+        (me.estado_persona = ""),
         (me.tipo_persona = ""),
         (me.programa = ""),
         (me.sede = "");
+    },
+    updatePersona() {
+      let me = this;
+      axios
+        .post("/updatePersona", {
+          id: me.idPersona,
+          tipo_documento: me.tipo_documento,
+          tipo_documento: me.tipo_documento,
+          numero_documento: me.numero_documento,
+          nombre1: me.nombre1,
+          nombre2: me.nombre2,
+          apellido1: me.apellido1,
+          apellido2: me.apellido2,
+          estado_persona: me.estado_persona,
+          tipo_persona: me.tipo_persona,
+          programa: me.programa,
+          sede: me.sede
+        })
+        .then(function(response) {
+          me.cerrarModal();
+          me.getPersonas(me.pagActual, me.buscar); //permanecer en la pagina actual al actualizar
+          Swal.fire({
+            position: "top-end",
+            type: "success",
+            title: "Persona Actualizada con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.log(response);
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
+        });
     }
   },
   mounted() {
     this.getUserAuth();
-    this.getPersonas();
+    this.getPersonas(this.pagActual, "");
   }
 };
 </script>

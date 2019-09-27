@@ -6,6 +6,8 @@
         class="btn btn-success btn-lg mb-"
         data-toggle="modal"
         data-target="#modalCrearPersona"
+        data-backdrop="static"
+        data-keyboard="false"
       >
         <i class="fas fa-plus-circle"></i> Crear Persona
       </button>
@@ -26,8 +28,11 @@
             <div class="modal-body">
               <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Tipo Documento</label>
-                  <div class="col-md-8">
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    for="text-input"
+                  >Tipo Documento:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['CC', 'TI', 'CE', 'CARNET']"
                       placeholder="Seleccionar..."
@@ -43,8 +48,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Documento</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Documento:</label>
+                  <div class="col-md-8 col-sm-7">
                     <input class="form-control" type="text" v-model="numero_documento" />
                     <span
                       class="help-block text-danger"
@@ -54,8 +59,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Nombres</label>
-                  <div class="col-md-4">
+                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Nombres:</label>
+                  <div class="col-md-4 col-sm-4">
                     <input class="form-control" type="text" v-model="nombre1" placeholder="Primero" />
                     <span
                       class="help-block text-danger"
@@ -63,7 +68,7 @@
                       v-text="arrayErrors.nombre1[0]"
                     ></span>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-sm-4">
                     <input class="form-control" type="text" v-model="nombre2" placeholder="Segundo" />
                     <span
                       class="help-block text-danger"
@@ -73,8 +78,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Apellidos</label>
-                  <div class="col-md-4">
+                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Apellidos:</label>
+                  <div class="col-md-4 col-sm-4">
                     <input
                       class="form-control"
                       type="text"
@@ -87,7 +92,7 @@
                       v-text="arrayErrors.apellido1[0]"
                     ></span>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-sm-4">
                     <input
                       class="form-control"
                       type="text"
@@ -102,8 +107,11 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right" for="text-input">Estado</label>
-                  <div class="col-md-8">
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    for="text-input"
+                  >Estado:</label>
+                  <div class="col-md-8 col-sm-7">
                     <select class="form-control" v-model="estado">
                       <option value="Activo" selected>Activo</option>
                       <option value="Inactivo">Inactivo</option>
@@ -116,8 +124,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Tipo Persona</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
                       placeholder="Seleccionar..."
@@ -133,8 +141,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Programa</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Programa:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
                       , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
@@ -151,8 +159,8 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-form-label text-right">Sede</label>
-                  <div class="col-md-8">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Sede:</label>
+                  <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['San Gil', 'Yopal', 'Chiquinquirá']"
                       placeholder="Seleccionar..."
@@ -205,7 +213,6 @@ export default {
       let me = this;
       axios
         .post("/savePersona", {
-          tipo_documento: me.tipo_documento,
           tipo_documento: me.tipo_documento,
           numero_documento: me.numero_documento,
           nombre1: me.nombre1,

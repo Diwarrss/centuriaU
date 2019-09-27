@@ -56,11 +56,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('crearPersona', 'PersonasController@crearPersona')->name('crearPersona');
     Route::post('savePersona', 'PersonasController@savePersona')->name('savePersona');
     Route::get('getPersonas', 'PersonasController@getPersonas')->name('getPersonas');
+    Route::post('updatePersona', 'PersonasController@updatePersona')->name('updatePersona');
 
     //Controlador Computadores
     Route::get('getComputadorlibre', 'ComputadoresController@getComputadorlibre')->name('getComputadorlibre');
+    Route::get('getCompu', 'ComputadoresController@getCompu')->name('getCompu');
+    Route::post('saveCompu', 'ComputadoresController@saveCompu')->name('saveCompu');
+    Route::put('updateCompu', 'ComputadoresController@updateCompu')->name('updateCompu');
 
     //Controlador Prestamos
     Route::post('crearPrestamo', 'PrestamosController@crearPrestamo')->name('crearPrestamo');
     Route::post('finalizarPrestamo', 'PrestamosController@finalizarPrestamo')->name('finalizarPrestamo');
+
+    //Controlador Sedes
+    Route::get('getSedes', 'SedesController@getSedes')->name('getSedes');
 });

@@ -185,11 +185,15 @@
                     </div>
                   </div>
                 </div>
-                <div v-else class="alert alert-warning text-center" role="alert">
-                  <div class="form-group">
-                    <strong>¡Sin Información!</strong>
-                    <crearpersona></crearpersona>
+                <div v-else>
+                  <div class="alert alert-warning text-center" role="alert">
+                    <div class="form-group">
+                      <h4>
+                        <strong>¡Sin Información!</strong>
+                      </h4>
+                    </div>
                   </div>
+                  <crearpersona class="text-center"></crearpersona>
                 </div>
               </div>
               <!-- Div de ingresos actuales -->
@@ -288,7 +292,14 @@
     </div>
     <!-- Modal modal Crear prestamo-->
     <section>
-      <div class="modal" id="modalPrestamo" role="dialog" aria-labelledby="myModalLabel1">
+      <div
+        class="modal"
+        id="modalPrestamo"
+        role="dialog"
+        aria-labelledby="myModalLabel1"
+        data-backdrop="static"
+        data-keyboard="false"
+      >
         <div class="modal-dialog modal-primary" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -397,7 +408,8 @@ export default {
                 estado_persona: me.infoPersonaU[0].estp_estado,
                 tipo_persona: me.infoPersonaU[0].cate_descripcion,
                 programa: me.infoPersonaU[0].prog_nombre,
-                sede: me.infoPersonaU[0].cige_nombre
+                sede: me.infoPersonaU[0].cige_nombre,
+                maac_estado: me.infoPersonaU[0].maac_estado
               })
               .then(function(response) {
                 /* Swal.fire({
