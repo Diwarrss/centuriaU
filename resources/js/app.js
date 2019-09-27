@@ -59,6 +59,12 @@ Vue.component(
     require("./components/allMenusInfo/CrearPersona.vue").default
 );
 
+//crear personas mmodal etc
+Vue.component(
+    "ingresostotales",
+    require("./components/allMenusInfo/IngresosTotales.vue").default
+);
+
 //LLAMAMOS EL COMPONENTE DE VUE PAGINATION
 Vue.component("pagination", require("laravel-vue-pagination"));
 

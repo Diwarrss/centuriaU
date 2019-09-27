@@ -285,6 +285,9 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-12 col-lg-12">
+                <ingresostotales></ingresostotales>
+              </div>
             </div>
           </div>
         </div>
