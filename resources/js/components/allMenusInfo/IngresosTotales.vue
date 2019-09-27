@@ -3,7 +3,8 @@
     <div class="card card-accent-danger">
       <div class="card-header">
         <strong>
-          <i class="far fa-list-alt"></i> Ingresos Actuales
+          <i class="far fa-list-alt"></i>
+          Ingresos Totales ({{objectIngresos.total}})
         </strong>
         <div class="card-header-actions">
           <div class="form-group">
