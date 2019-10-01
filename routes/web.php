@@ -44,15 +44,16 @@ Route::group(['middleware' => 'auth'], function () {
     //Controlador de Users
     Route::get('getUserAuth', 'UsersController@getUserAuth')->name('getUserAuth');
 
-    //Controlador de Registro
-    Route::get('getPersona', 'IngresosController@getPersona')->name('getPersona');
+    //Controlador de Ingresos
     Route::post('crearIngreso', 'IngresosController@crearIngreso')->name('crearIngreso');
     Route::get('getIngresosActuales', 'IngresosController@getIngresosActuales')->name('getIngresosActuales');
+    Route::get('getIngresos', 'IngresosController@getIngresos')->name('getIngresos');
 
     //Controlador Periodos
     Route::get('getPeriodo', 'PeriodosController@getPeriodo')->name('getPeriodo');
 
     //Controlador Personas
+    Route::get('getPersona', 'PersonasController@getPersona')->name('getPersona');
     Route::post('crearPersona', 'PersonasController@crearPersona')->name('crearPersona');
     Route::post('savePersona', 'PersonasController@savePersona')->name('savePersona');
     Route::get('getPersonas', 'PersonasController@getPersonas')->name('getPersonas');
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('updateCompu', 'ComputadoresController@updateCompu')->name('updateCompu');
 
     //Controlador Prestamos
+    Route::get('getPrestamos', 'PrestamosController@getPrestamos')->name('getPrestamos');
     Route::post('crearPrestamo', 'PrestamosController@crearPrestamo')->name('crearPrestamo');
     Route::post('finalizarPrestamo', 'PrestamosController@finalizarPrestamo')->name('finalizarPrestamo');
 

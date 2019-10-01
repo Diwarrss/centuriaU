@@ -60,10 +60,10 @@ Vue.component(
 );
 
 //crear personas mmodal etc
-Vue.component(
+/* Vue.component(
     "ingresostotales",
     require("./components/allMenusInfo/IngresosTotales.vue").default
-);
+); */
 
 //LLAMAMOS EL COMPONENTE DE VUE PAGINATION
 Vue.component("pagination", require("laravel-vue-pagination"));

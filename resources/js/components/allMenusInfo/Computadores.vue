@@ -53,7 +53,6 @@
                             placeholder="Texto..."
                             v-model="buscar"
                             class="form-control"
-                            @keydown="getCompu(1,buscar)"
                             @keyup.enter="getCompu(1,buscar)"
                           />
                           <span class="input-group-append">
@@ -289,7 +288,7 @@ export default {
           me.getCompu(me.pagActual, me.buscar);
           me.cerrarModal();
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Computador creado con éxito",
             showConfirmButton: false,
@@ -320,7 +319,7 @@ export default {
           me.getCompu(me.pagActual, me.buscar);
           me.cerrarModal();
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Computador actualizado con éxito",
             showConfirmButton: false,
@@ -385,7 +384,7 @@ export default {
   mounted() {
     this.getUserAuth();
     this.getSedes();
-    this.getCompu(this.pagActual, "");
+    this.getCompu(this.pagActual, this.buscar);
   }
 };
 </script>

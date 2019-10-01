@@ -9,6 +9,32 @@ use Illuminate\Http\Request;
 
 class PrestamosController extends Controller
 {
+    public function getPrestamos(Request $request)
+    {
+        //if (!$request->ajax()) return redirect('/');
+        $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+            ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
+            ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+            ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
+            ->select(
+                'computadores.nombre as nombrePC',
+                'prestamos.estado_prestamo',
+                'prestamos.id as prestamoID',
+                'prestamos.created_at as fechaPrestamo',
+                'sedes.nombre as nombreSede',
+                'personas.nombre1',
+                'personas.nombre2',
+                'personas.apellido1',
+                'personas.apellido2',
+                'personas.tipo_documento',
+                'personas.numero_documento'
+            )
+            ->paginate(5);
+
+        return $prestamos;
+    }
+
+
     public function crearPrestamo(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

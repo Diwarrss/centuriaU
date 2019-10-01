@@ -201,20 +201,57 @@
                 <div class="card card-accent-danger">
                   <div class="card-header">
                     <strong>
-                      <i class="far fa-list-alt"></i> Ingresos Actuales
+                      <i class="far fa-list-alt"></i>
+                      Ingresos Actuales ({{objectIngresosA.total}})
                     </strong>
-                    <div class="card-header-actions">
-                      <div class="form-group">
-                        <input
-                          class="form-control"
-                          v-model="search"
-                          type="text"
-                          placeholder="Buscar..."
-                        />
-                      </div>
-                    </div>
                   </div>
                   <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Texto..."
+                              v-model="buscarA"
+                              class="form-control"
+                              @keyup.enter="getIngresosActuales(1,buscarA,cantidadA)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getIngresosActuales(1,buscarA,cantidadA)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-12 col-sm-4">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidadA"
+                              v-on:change="getIngresosActuales(1,buscarA,cantidadA)"
+                            >
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <table class="table table-responsive-md table-hover table-sm">
                       <thead>
                         <tr>
@@ -225,7 +262,7 @@
                           <th>Préstamos</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!arrayIngresosA.length">
+                      <tbody v-if="objectIngresosA == ''">
                         <td colspan="5">
                           <div role="alert" class="alert alert-danger text-center">
                             <div class="form-group">
@@ -236,12 +273,12 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in filteredList" :key="data.ingresosID">
+                      <tbody v-for="data in objectIngresosA.data" :key="data.ingresosID">
                         <tr>
                           <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
                           <td>{{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
-                          <td class="text-center">
+                          <td>
                             <h4>
                               <span
                                 v-if="data.estado_prestamo == 1"
@@ -283,10 +320,152 @@
                       </tbody>
                     </table>
                   </div>
+                  <div class="card-footer">
+                    <!-- Implementa el vue pagination para poder cambiar pagina -->
+                    <pagination
+                      :data="objectIngresosA"
+                      @pagination-change-page="getIngresosActuales"
+                      align="center"
+                      :limit="1"
+                    ></pagination>
+                  </div>
                 </div>
               </div>
               <div class="col-md-12 col-lg-12">
-                <ingresostotales></ingresostotales>
+                <div class="card card-accent-success">
+                  <div class="card-header">
+                    <strong>
+                      <i class="far fa-list-alt"></i>
+                      Ingresos Totales ({{objectIngresos.total}})
+                    </strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Texto..."
+                              v-model="buscar"
+                              class="form-control"
+                              @keyup.enter="getIngresos(1,buscar,cantidadT)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getIngresos(1,buscar,cantidadT)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 col-12 col-sm-4 col-lg-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidadT"
+                              v-on:change="getIngresos(1,buscar,cantidadT)"
+                            >
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-responsive-md table-hover table-sm">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Fecha Ingreso</th>
+                          <th>Documento</th>
+                          <th>Nombres y Apellidos</th>
+                          <th>Computador</th>
+                          <th>Préstamos</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="objectIngresos.data ==''">
+                        <td colspan="6">
+                          <div role="alert" class="alert alert-danger text-center">
+                            <div class="form-group">
+                              <strong>
+                                <h5>¡Sin información!</h5>
+                              </strong>
+                            </div>
+                          </div>
+                        </td>
+                      </tbody>
+                      <tbody v-for="data in objectIngresos.data" :key="data.ingresosID">
+                        <tr>
+                          <td v-text="data.ingresosID"></td>
+                          <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
+                          <td>{{data.numero_documento}}</td>
+                          <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                          <td>
+                            <h4>
+                              <span
+                                v-if="data.estado_prestamo == 1"
+                                class="badge badge-warning"
+                              >{{data.nombrePC}}</span>
+                              <span
+                                v-if="data.estado_prestamo == 0"
+                                class="badge badge-success"
+                              >{{data.nombrePC}}</span>
+                            </h4>
+                          </td>
+                          <td>
+                            <div v-if="!data.estado_prestamo">
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#modalPrestamo"
+                                class="btn btn-primary"
+                                @click="modalPrestarEquipo(data.ingresosID)"
+                              >
+                                <i class="fas fa-laptop"></i> Prestar
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 1">
+                              <button
+                                class="btn btn-secondary"
+                                @click="recibirEquipo(data.computadorID, data.prestamoID)"
+                              >
+                                <i class="far fa-check-circle"></i> Recibido
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 0">
+                              <button class="btn btn-success" disabled>
+                                <i class="far fa-check-circle"></i> Ya Recibido
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <!-- Implementa el vue pagination para poder cambiar pagina -->
+                    <pagination
+                      :data="objectIngresos"
+                      @pagination-change-page="getIngresos"
+                      align="center"
+                      :limit="1"
+                    ></pagination>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -359,22 +538,28 @@ export default {
       documento: "",
       infoPersonaU: [], //persona de la bd Unisangil
       infoPersonaC: [], //persona creada en mi bd
-      arrayIngresosA: [],
-      search: "",
+      objectIngresosA: {},
+      //search: "",
       estado_persona: "",
       arrayErrors: [],
-
       arrayCompuLibres: [],
       ingresosID: "",
-      computadores_id: ""
+      computadores_id: "",
+      buscar: "",
+      buscarA: "",
+      objectIngresos: {},
+      pagActual: "",
+      pagActualA: "",
+      cantidadA: 5,
+      cantidadT: 5
     };
   },
   computed: {
-    ...mapState(["infoUserAuth", "infoPeriodo"]),
+    ...mapState(["infoUserAuth", "infoPeriodo"])
     //metodo para filtrar el array q envio
-    filteredList() {
+    /* filteredList() {
       let me = this;
-      return me.arrayIngresosA.filter(post => {
+      return me.objectIngresosA.filter(post => {
         return (
           post.numero_documento
             .toLowerCase()
@@ -384,10 +569,27 @@ export default {
           post.created_at.toLowerCase().includes(me.search.toLowerCase())
         );
       });
-    }
+    } */
   },
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
+    getIngresos(page, buscar, cantidadT) {
+      let me = this;
+      //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
+      axios
+        .get(
+          "getIngresos?page=" +
+            page +
+            "&buscar=" +
+            me.buscar +
+            "&cantidad=" +
+            me.cantidadT
+        )
+        .then(response => {
+          me.objectIngresos = response.data;
+          me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
+        });
+    },
     buscarPersonaID() {
       let me = this;
       axios
@@ -416,7 +618,7 @@ export default {
               })
               .then(function(response) {
                 /* Swal.fire({
-                  position: "top-end",
+                  position: "top",
                   type: "success",
                   title: "Persona creada con éxito",
                   showConfirmButton: false,
@@ -434,7 +636,7 @@ export default {
                     if (!me.infoPersonaC) {
                       Swal.fire({
                         toast: true,
-                        position: "top-end",
+                        position: "top",
                         background: "#fff1d5", //warning
                         type: "warning",
                         title: "¡Persona NO ENCONTRADA!",
@@ -447,7 +649,7 @@ export default {
                       if (me.infoPersonaC[0].estado_persona == "Activo") {
                         Swal.fire({
                           toast: true,
-                          position: "top-end",
+                          position: "top",
                           background: "#e0f1ff", //info
                           type: "info",
                           title: "Persona Activa",
@@ -457,7 +659,7 @@ export default {
                       } else {
                         Swal.fire({
                           toast: true,
-                          position: "top-end",
+                          position: "top",
                           background: "#fff1d5", //warning
                           type: "warning",
                           title: "Persona Inactiva!",
@@ -495,7 +697,7 @@ export default {
                 if (me.infoPersonaC == "") {
                   Swal.fire({
                     toast: true,
-                    position: "top-end",
+                    position: "top",
                     background: "#fff1d5", //warning
                     type: "warning",
                     title: "¡Persona NO ENCONTRADA!",
@@ -508,7 +710,7 @@ export default {
                   if (me.infoPersonaC[0].estado_persona == "Activo") {
                     Swal.fire({
                       toast: true,
-                      position: "top-end",
+                      position: "top",
                       background: "#e0f1ff", //info
                       type: "info",
                       title: "Persona Activa",
@@ -518,7 +720,7 @@ export default {
                   } else {
                     Swal.fire({
                       toast: true,
-                      position: "top-end",
+                      position: "top",
                       background: "#fff1d5", //warning
                       type: "warning",
                       title: "Persona Inactiva!",
@@ -549,9 +751,10 @@ export default {
           sedes_id: me.infoUserAuth[0].sedes_id
         })
         .then(function(response) {
-          me.getIngresosActuales();
+          me.getIngresosActuales(me.pagActualA, me.buscarA);
+          me.getIngresos(me.pagActual, me.buscar);
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Ingreso registrado con éxito",
             showConfirmButton: false,
@@ -561,7 +764,7 @@ export default {
         })
         .catch(function(error) {
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "error",
             title: "Error al registrar!",
             showConfirmButton: false,
@@ -571,18 +774,20 @@ export default {
         });
     },
 
-    getIngresosActuales() {
+    getIngresosActuales(page, buscarA, cantidadA) {
       let me = this;
       axios
-        .get("/getIngresosActuales")
-        .then(function(response) {
-          // handle success
-          me.arrayIngresosA = response.data;
-          //console.log(response);
-        })
-        .catch(function(error) {
-          // handle error
-          console.log(error);
+        .get(
+          "getIngresosActuales?page=" +
+            page +
+            "&buscar=" +
+            me.buscarA +
+            "&cantidad=" +
+            me.cantidadA
+        )
+        .then(response => {
+          me.objectIngresosA = response.data;
+          me.pagActualA = response.data.current_page; //capturamos el id de la pagina actual mostrando
         });
     },
     modalPrestarEquipo(ingresosID) {
@@ -603,9 +808,10 @@ export default {
         })
         .then(function(response) {
           me.cerrarModalPrestamo();
-          me.getIngresosActuales();
+          me.getIngresosActuales(me.pagActualA, me.buscarA);
+          me.getIngresos(me.pagActual, me.buscar);
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Prestamó creado con éxito",
             showConfirmButton: false,
@@ -649,10 +855,11 @@ export default {
               prestamoID: prestamoID
             })
             .then(function(response) {
-              me.getIngresosActuales();
+              me.getIngresosActuales(me.pagActualA, me.buscarA);
+              me.getIngresos(me.pagActual, me.buscar);
               Swal.fire({
                 toast: true,
-                position: "top-end",
+                position: "top",
                 type: "success",
                 title: "Equipo disponible!",
                 showConfirmButton: false,
@@ -664,7 +871,7 @@ export default {
                 //preguntamos si el error es 422
                 Swal.fire({
                   toast: true,
-                  position: "top-end",
+                  position: "top",
                   type: "error",
                   title: "Se produjo un Error, Reintentar",
                   showConfirmButton: false,
@@ -696,7 +903,7 @@ export default {
     alerta() {
       Swal.fire({
         toast: true,
-        position: "top-end",
+        position: "top",
         //background: "#f6e1e1",//error
         //background: "#d9ffe7", //success
         //background: "#fff1d5", //warning
@@ -714,7 +921,8 @@ export default {
     this.focus();
     //optener el Usuario autenticado
     this.getUserAuth();
-    this.getIngresosActuales();
+    this.getIngresosActuales(this.pagActualA, this.buscarA, this.cantidadA);
+    this.getIngresos(this.pagActual, this.buscar, this.cantidadT);
   }
 };
 </script>

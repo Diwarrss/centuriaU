@@ -227,7 +227,7 @@ export default {
         .then(function(response) {
           me.cerrarModalPersona();
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Persona Creada con éxito",
             showConfirmButton: false,

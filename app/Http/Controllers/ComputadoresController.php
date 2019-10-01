@@ -30,7 +30,7 @@ class ComputadoresController extends Controller
 
     public function getCompu(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
 
         $computadores = Computadore::join('sedes', 'computadores.sedes_id', '=', 'sedes.id')->select(
@@ -53,7 +53,8 @@ class ComputadoresController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $request->validate([
-            'nombre' => 'required|max:150|unique:computadores',
+            'nombre' => 'required|max:150',
+            //'nombre' => 'required|max:150|unique:computadores',
             'descripcion' => 'max:200',
             'estado' => 'required',
             'sede' => 'required'
@@ -86,7 +87,8 @@ class ComputadoresController extends Controller
             $computador = Computadore::findOrFail($request->compuId);
 
             $request->validate([
-                'nombre' => 'required|max:150|unique:computadores,nombre,' . $computador->id,
+                'nombre' => 'required|max:150',
+                //'nombre' => 'required|max:150|unique:computadores,nombre,' . $computador->id,
                 'descripcion' => 'max:200',
                 'estado' => 'required',
                 'sede' => 'required'

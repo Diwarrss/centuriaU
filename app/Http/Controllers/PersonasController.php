@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class PersonasController extends Controller
 {
+    public function getPersona(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $numDocumento = $request->id;
+
+        $personabyID = Persona::where('numero_documento', $numDocumento)->get();
+
+        return $personabyID;
+    }
+
     public function crearPersona(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

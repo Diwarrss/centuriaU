@@ -54,7 +54,6 @@
                             placeholder="Texto..."
                             v-model="buscar"
                             class="form-control"
-                            @keydown="getPersonas(1,buscar)"
                             @keyup.enter="getPersonas(1,buscar)"
                           />
                           <span class="input-group-append">
@@ -431,7 +430,7 @@ export default {
           me.cerrarModal();
           me.getPersonas(me.pagActual, me.buscar); //permanecer en la pagina actual al actualizar
           Swal.fire({
-            position: "top-end",
+            position: "top",
             type: "success",
             title: "Persona Actualizada con éxito",
             showConfirmButton: false,
