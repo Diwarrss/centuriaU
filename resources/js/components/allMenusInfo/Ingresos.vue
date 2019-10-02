@@ -179,9 +179,12 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button class="btn btn-success btn-lg" type="submit" @click="crearIngreso">
-                        <i class="fas fa-user-check"></i> Registrar Ingreso
-                      </button>
+                      <div v-if="infoUserAuth[0].sedes_id == null"></div>
+                      <div v-else>
+                        <button class="btn btn-success btn-lg" type="submit" @click="crearIngreso">
+                          <i class="fas fa-user-check"></i> Registrar Ingreso
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -210,19 +213,24 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <div class="input-group">
+                            <select class="form-control" v-model="criterioA">
+                              <option value="numero_documento">ID o Documento</option>
+                              <option value="nombre1">Nombre</option>
+                              <option value="apellido1">Apellido</option>
+                            </select>
                             <!-- keydown para ejecutar cuando vayan escribiendo -->
                             <input
                               type="text"
-                              placeholder="Texto..."
+                              placeholder="Escriba aquí"
                               v-model="buscarA"
                               class="form-control"
-                              @keyup.enter="getIngresosActuales(1,buscarA,cantidadA)"
+                              @keyup.enter="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
                             />
                             <span class="input-group-append">
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                @click="getIngresosActuales(1,buscarA,cantidadA)"
+                                @click="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
                               >
                                 <i class="fas fa-search"></i> Buscar
                               </button>
@@ -236,7 +244,7 @@
                             <select
                               class="form-control"
                               v-model="cantidadA"
-                              v-on:change="getIngresosActuales(1,buscarA,cantidadA)"
+                              v-on:change="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -262,7 +270,7 @@
                           <th>Préstamos</th>
                         </tr>
                       </thead>
-                      <tbody v-if="objectIngresosA == ''">
+                      <tbody v-if="objectIngresosA.data == ''">
                         <td colspan="5">
                           <div role="alert" class="alert alert-danger text-center">
                             <div class="form-group">
@@ -276,7 +284,7 @@
                       <tbody v-for="data in objectIngresosA.data" :key="data.ingresosID">
                         <tr>
                           <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
-                          <td>{{data.numero_documento}}</td>
+                          <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
                           <td>
                             <h4>
@@ -291,7 +299,8 @@
                             </h4>
                           </td>
                           <td>
-                            <div v-if="!data.estado_prestamo">
+                            <div v-if="infoUserAuth[0].sedes_id == null"></div>
+                            <div v-else-if="!data.estado_prestamo">
                               <button
                                 type="button"
                                 data-toggle="modal"
@@ -344,19 +353,24 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <div class="input-group">
+                            <select class="form-control" v-model="criterio">
+                              <option value="numero_documento">ID o Documento</option>
+                              <option value="nombre1">Nombre</option>
+                              <option value="apellido1">Apellido</option>
+                            </select>
                             <!-- keydown para ejecutar cuando vayan escribiendo -->
                             <input
                               type="text"
-                              placeholder="Texto..."
+                              placeholder="Escriba aquí"
                               v-model="buscar"
                               class="form-control"
-                              @keyup.enter="getIngresos(1,buscar,cantidadT)"
+                              @keyup.enter="getIngresos(1,criterio,buscar,cantidadT)"
                             />
                             <span class="input-group-append">
                               <button
                                 type="button"
                                 class="btn btn-primary"
-                                @click="getIngresos(1,buscar,cantidadT)"
+                                @click="getIngresos(1,criterio,buscar,cantidadT)"
                               >
                                 <i class="fas fa-search"></i> Buscar
                               </button>
@@ -370,7 +384,7 @@
                             <select
                               class="form-control"
                               v-model="cantidadT"
-                              v-on:change="getIngresos(1,buscar,cantidadT)"
+                              v-on:change="getIngresos(1,criterio,buscar,cantidadT)"
                             >
                               <option value="5">5</option>
                               <option value="10">10</option>
@@ -408,11 +422,11 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in objectIngresos.data" :key="data.ingresosID">
+                      <tbody v-for="(data, index) in objectIngresos.data" :key="data.ingresosID">
                         <tr>
-                          <td v-text="data.ingresosID"></td>
+                          <td>{{++index}}</td>
                           <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
-                          <td>{{data.numero_documento}}</td>
+                          <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
                           <td>
                             <h4>
@@ -427,7 +441,8 @@
                             </h4>
                           </td>
                           <td>
-                            <div v-if="!data.estado_prestamo">
+                            <div v-if="infoUserAuth[0].sedes_id == null"></div>
+                            <div v-else-if="!data.estado_prestamo">
                               <button
                                 type="button"
                                 data-toggle="modal"
@@ -535,6 +550,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      sedes_id: "",
       documento: "",
       infoPersonaU: [], //persona de la bd Unisangil
       infoPersonaC: [], //persona creada en mi bd
@@ -546,7 +562,9 @@ export default {
       ingresosID: "",
       computadores_id: "",
       buscar: "",
+      criterio: "numero_documento",
       buscarA: "",
+      criterioA: "numero_documento",
       objectIngresos: {},
       pagActual: "",
       pagActualA: "",
@@ -573,23 +591,6 @@ export default {
   },
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
-    getIngresos(page, buscar, cantidadT) {
-      let me = this;
-      //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
-      axios
-        .get(
-          "getIngresos?page=" +
-            page +
-            "&buscar=" +
-            me.buscar +
-            "&cantidad=" +
-            me.cantidadT
-        )
-        .then(response => {
-          me.objectIngresos = response.data;
-          me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
-        });
-    },
     buscarPersonaID() {
       let me = this;
       axios
@@ -741,6 +742,23 @@ export default {
           console.log(error);
         });
     },
+    getIngresos(page, criterio, buscar, cantidadT) {
+      let me = this;
+      //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
+      axios
+        .get("getIngresos", {
+          params: {
+            page: page,
+            criterio: me.criterio,
+            buscar: me.buscar,
+            cantidad: me.cantidadT
+          }
+        })
+        .then(response => {
+          me.objectIngresos = response.data;
+          me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
+        });
+    },
     crearIngreso() {
       let me = this;
       axios
@@ -751,8 +769,8 @@ export default {
           sedes_id: me.infoUserAuth[0].sedes_id
         })
         .then(function(response) {
-          me.getIngresosActuales(me.pagActualA, me.buscarA);
-          me.getIngresos(me.pagActual, me.buscar);
+          me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+          me.getIngresos(me.pagActual, me.criterio, me.buscar);
           Swal.fire({
             position: "top",
             type: "success",
@@ -774,17 +792,17 @@ export default {
         });
     },
 
-    getIngresosActuales(page, buscarA, cantidadA) {
+    getIngresosActuales(page, criterioA, buscarA, cantidadA) {
       let me = this;
       axios
-        .get(
-          "getIngresosActuales?page=" +
-            page +
-            "&buscar=" +
-            me.buscarA +
-            "&cantidad=" +
-            me.cantidadA
-        )
+        .get("getIngresosActuales", {
+          params: {
+            page: page,
+            criterio: me.criterioA,
+            buscar: me.buscarA,
+            cantidad: me.cantidadA
+          }
+        })
         .then(response => {
           me.objectIngresosA = response.data;
           me.pagActualA = response.data.current_page; //capturamos el id de la pagina actual mostrando
@@ -808,8 +826,8 @@ export default {
         })
         .then(function(response) {
           me.cerrarModalPrestamo();
-          me.getIngresosActuales(me.pagActualA, me.buscarA);
-          me.getIngresos(me.pagActual, me.buscar);
+          me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+          me.getIngresos(me.pagActual, me.criterio, me.buscar);
           Swal.fire({
             position: "top",
             type: "success",
@@ -855,8 +873,8 @@ export default {
               prestamoID: prestamoID
             })
             .then(function(response) {
-              me.getIngresosActuales(me.pagActualA, me.buscarA);
-              me.getIngresos(me.pagActual, me.buscar);
+              me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+              me.getIngresos(me.pagActual, me.criterio, me.buscar);
               Swal.fire({
                 toast: true,
                 position: "top",
@@ -921,8 +939,18 @@ export default {
     this.focus();
     //optener el Usuario autenticado
     this.getUserAuth();
-    this.getIngresosActuales(this.pagActualA, this.buscarA, this.cantidadA);
-    this.getIngresos(this.pagActual, this.buscar, this.cantidadT);
+    this.getIngresosActuales(
+      this.pagActualA,
+      this.criterioA,
+      this.buscarA,
+      this.cantidadA
+    );
+    this.getIngresos(
+      this.pagActual,
+      this.criterio,
+      this.buscar,
+      this.cantidadT
+    );
   }
 };
 </script>

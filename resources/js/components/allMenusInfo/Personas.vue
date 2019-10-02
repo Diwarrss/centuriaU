@@ -45,26 +45,49 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <!-- keydown para ejecutar cuando vayan escribiendo -->
-                          <input
-                            type="text"
-                            placeholder="Texto..."
-                            v-model="buscar"
-                            class="form-control"
-                            @keyup.enter="getPersonas(1,buscar)"
-                          />
-                          <span class="input-group-append">
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              @click="getPersonas(1,buscar)"
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Escriba aquí"
+                              v-model="buscar"
+                              class="form-control"
+                              @keyup.enter="getPersonas(1,buscar,cantidad)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getPersonas(1,buscar,cantidad)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 col-12 col-sm-4">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidad"
+                              v-on:change="getPersonas(1,buscar,cantidad)"
                             >
-                              <i class="fas fa-search"></i> Buscar
-                            </button>
-                          </span>
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -93,9 +116,9 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in objectPersonas.data" :key="data.id">
+                      <tbody v-for="(data, index) in objectPersonas.data" :key="data.id">
                         <tr>
-                          <td v-text="data.id"></td>
+                          <td>{{++index}}</td>
                           <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
                           <td v-if="data.estado_persona == 'Activo'">
@@ -326,6 +349,7 @@ export default {
     return {
       objectPersonas: {},
       pagActual: "1",
+      cantidad: "5",
       criterio: "numero_documento",
       buscar: "",
       arrayErrors: [],
@@ -348,11 +372,18 @@ export default {
   methods: {
     ...mapActions(["getUserAuth"]),
     //metodo para obtener las personas y el array completo
-    getPersonas(page, buscar) {
+    getPersonas(page, buscar, cantidad) {
       let me = this;
       //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
       axios
-        .get("getPersonas?page=" + page + "&buscar=" + me.buscar)
+        .get(
+          "getPersonas?page=" +
+            page +
+            "&buscar=" +
+            me.buscar +
+            "&cantidad=" +
+            me.cantidad
+        )
         .then(response => {
           me.objectPersonas = response.data;
           me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
@@ -449,7 +480,7 @@ export default {
   },
   mounted() {
     this.getUserAuth();
-    this.getPersonas(this.pagActual, "");
+    this.getPersonas(this.pagActual, this.buscar, this.cantidad);
   }
 };
 </script>

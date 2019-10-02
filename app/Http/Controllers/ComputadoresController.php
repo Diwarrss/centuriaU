@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Computadore;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +12,8 @@ class ComputadoresController extends Controller
     public function getComputadorlibre(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
+        $sedes_id = Auth::user()->sedes_id;
+
         $compulibres = Computadore::select(
             'id',
             'nombre',
@@ -20,7 +22,7 @@ class ComputadoresController extends Controller
             'sedes_id'
         )->where(
             [
-                ['sedes_id', Auth::user()->sedes_id],
+                ['sedes_id', $sedes_id],
                 ['estado_computador', '=', '1']
             ]
         )->get();
@@ -32,28 +34,43 @@ class ComputadoresController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
+        $cantidad = $request->cantidad;
+        $criterio = $request->criterio;
+        $sedes_id = Auth::user()->sedes_id;
 
-        $computadores = Computadore::join('sedes', 'computadores.sedes_id', '=', 'sedes.id')->select(
-            'computadores.id as compuId',
-            'computadores.nombre as nombreCompu',
-            'computadores.descripcion',
-            'computadores.estado_computador',
-            'computadores.sedes_id',
-            'computadores.created_at',
-            'sedes.nombre as nombreSede'
-        )->orWhere('computadores.id', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('computadores.descripcion', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('sedes.nombre', 'LIKE', '%' . $buscar . '%')->paginate(6);
+        if ($sedes_id) {
+            $computadores = Computadore::join('sedes', 'computadores.sedes_id', '=', 'sedes.id')->select(
+                'computadores.id as compuId',
+                'computadores.nombre as nombreCompu',
+                'computadores.descripcion',
+                'computadores.estado_computador',
+                'computadores.sedes_id',
+                'computadores.created_at',
+                'sedes.nombre as nombreSede'
+            )->where('computadores.sedes_id', $sedes_id)
+                ->where('computadores.' . $criterio, 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
 
-        return $computadores;
+            return $computadores;
+        } else {
+            $computadores = Computadore::join('sedes', 'computadores.sedes_id', '=', 'sedes.id')->select(
+                'computadores.id as compuId',
+                'computadores.nombre as nombreCompu',
+                'computadores.descripcion',
+                'computadores.estado_computador',
+                'computadores.sedes_id',
+                'computadores.created_at',
+                'sedes.nombre as nombreSede'
+            )->where('computadores.' . $criterio, 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
+
+            return $computadores;
+        }
     }
 
     public function saveCompu(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
         $request->validate([
-            'nombre' => 'required|max:150',
+            'nombre' => 'required|max:20',
             //'nombre' => 'required|max:150|unique:computadores',
             'descripcion' => 'max:200',
             'estado' => 'required',

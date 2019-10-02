@@ -15,7 +15,7 @@ class CreateComputadoresTable extends Migration
     {
         Schema::create('computadores', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre', 150);
+            $table->string('nombre', 20);
             $table->string('descripcion', 200)->nullable();
             $table->enum('estado_computador', [0, 1, 2])->default(1); //2 Ocupado, 1 activo, 0 Inactivo
             $table->unsignedBigInteger('sedes_id');

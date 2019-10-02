@@ -44,26 +44,52 @@
                     </strong>
                   </div>
                   <div class="card-body">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <!-- keydown para ejecutar cuando vayan escribiendo -->
-                          <input
-                            type="text"
-                            placeholder="Texto..."
-                            v-model="buscar"
-                            class="form-control"
-                            @keyup.enter="getCompu(1,buscar)"
-                          />
-                          <span class="input-group-append">
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              @click="getCompu(1,buscar)"
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select class="form-control" v-model="criterio">
+                              <option value="nombre">Nombre</option>
+                            </select>
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Escriba aquí"
+                              v-model="buscar"
+                              class="form-control"
+                              @keyup.enter="getCompu(1,criterio,buscar,cantidad)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getCompu(1,criterio,buscar,cantidad)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-12 col-sm-4 col-lg-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidad"
+                              v-on:change="getCompu(1,criterio,buscar,cantidad)"
                             >
-                              <i class="fas fa-search"></i> Buscar
-                            </button>
-                          </span>
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -91,9 +117,10 @@
                           </div>
                         </td>
                       </tbody>
-                      <tbody v-for="data in objectCompu.data" :key="data.compuId">
+                      <tbody v-for="(data, index) in objectCompu.data" :key="data.compuId">
                         <tr>
-                          <td v-text="data.compuId"></td>
+                          <!-- para mostrar numericamente -->
+                          <td>{{++index}}</td>
                           <td v-text="data.nombreCompu"></td>
                           <td v-text="data.descripcion"></td>
                           <td v-if="data.estado_computador == '2'">
@@ -124,6 +151,139 @@
                     <pagination
                       :data="objectCompu"
                       @pagination-change-page="getCompu"
+                      align="center"
+                      :limit="1"
+                    ></pagination>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-12">
+                <div class="card card-accent-success">
+                  <div class="card-header">
+                    <strong>
+                      <i class="fas fa-laptop"></i>
+                      Listado de Préstamos (Total: {{objectPrestamos.total}})
+                    </strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select class="form-control" v-model="criterioP">
+                              <option value="nombre1">Nombre Persona</option>
+                              <option value="numero_documento">ID o Documento</option>
+                            </select>
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Escriba aquí"
+                              v-model="buscarP"
+                              class="form-control"
+                              @keyup.enter="getPrestamos(1,criterioP,buscarP,cantidadP)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getPrestamos(1,criterioP,buscarP,cantidadP)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-12 col-sm-4 col-lg-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidadP"
+                              v-on:change="getPrestamos(1,criterioP,buscarP,cantidadP)"
+                            >
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Computador</th>
+                          <th>Documento</th>
+                          <th>Persona</th>
+                          <th>Sede</th>
+                          <th>Fecha Inicio</th>
+                          <th>Fecha Fin</th>
+                          <th>Estado</th>
+                          <th>Acción</th>
+                        </tr>
+                      </thead>
+                      <!-- verificamos si el objeto es vacio -->
+                      <tbody v-if="objectPrestamos.data ==''">
+                        <td colspan="8">
+                          <div role="alert" class="alert alert-danger text-center">
+                            <div class="form-group">
+                              <strong>
+                                <h5>¡Sin información!</h5>
+                              </strong>
+                            </div>
+                          </div>
+                        </td>
+                      </tbody>
+                      <tbody v-for="(data, index) in objectPrestamos.data" :key="data.ingresosID">
+                        <tr>
+                          <!-- para mostrar numericamente -->
+                          <td>{{++index}}</td>
+                          <td v-text="data.nombrePC"></td>
+                          <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
+                          <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                          <td v-text="data.nombreSede"></td>
+                          <td>{{data.fechaPrestamo | moment('DD/MM/YYYY h:mm a')}}</td>
+                          <td v-if="data.fechaPrestamo == data.fechaFin"></td>
+                          <td v-else>{{data.fechaFin | moment('DD/MM/YYYY h:mm a')}}</td>
+                          <td v-if="data.estado_prestamo == '1'">
+                            <span class="badge badge-warning">Activo</span>
+                          </td>
+                          <td v-else-if="data.estado_prestamo == '0'">
+                            <span class="badge badge-success">Finalizado</span>
+                          </td>
+                          <td>
+                            <div v-if="infoUserAuth[0].sedes_id == null"></div>
+                            <div v-else-if="data.estado_prestamo == 1">
+                              <button
+                                class="btn btn-secondary"
+                                @click="recibirEquipo(data.computadorID, data.prestamoID)"
+                              >
+                                <i class="far fa-check-circle"></i> Recibido
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 0">
+                              <button class="btn btn-success" disabled>
+                                <i class="far fa-check-circle"></i> Ya Recibido
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <!-- Implementa el vue pagination para poder cambiar pagina -->
+                    <pagination
+                      :data="objectPrestamos"
+                      @pagination-change-page="getPrestamos"
                       align="center"
                       :limit="1"
                     ></pagination>
@@ -243,13 +403,20 @@ export default {
   data() {
     return {
       objectCompu: {},
+      objectPrestamos: {},
       estadosCompu: [
         { id: "1", estado: "Disponible" },
         { id: "2", estado: "Ocupado" },
         { id: "0", estado: "Inactivo" }
       ],
       pagActual: "",
+      pagActualP: "",
       buscar: "",
+      buscarP: "",
+      cantidad: "5",
+      cantidadP: "5",
+      criterio: "nombre",
+      criterioP: "nombre1",
       arrayErrors: [],
       sedes: [],
       nombre: "",
@@ -265,14 +432,38 @@ export default {
   },
   methods: {
     ...mapActions(["getUserAuth"]),
-    getCompu(page, buscar) {
+    getCompu(page, criterio, buscar, cantidad) {
       let me = this;
       //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
       axios
-        .get("getCompu?page=" + page + "&buscar=" + me.buscar)
+        .get("getCompu", {
+          params: {
+            page: page,
+            criterio: me.criterio,
+            buscar: me.buscar,
+            cantidad: me.cantidad
+          }
+        })
         .then(response => {
           me.objectCompu = response.data;
           me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
+        });
+    },
+    getPrestamos(page, criterioP, buscarP, cantidadP) {
+      let me = this;
+      //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
+      axios
+        .get("getPrestamos", {
+          params: {
+            page: page,
+            criterio: me.criterioP,
+            buscar: me.buscarP,
+            cantidad: me.cantidadP
+          }
+        })
+        .then(response => {
+          me.objectPrestamos = response.data;
+          me.pagActualP = response.data.current_page; //capturamos el id de la pagina actual mostrando
         });
     },
     saveCompu() {
@@ -285,7 +476,7 @@ export default {
           sede: me.sede
         })
         .then(function(response) {
-          me.getCompu(me.pagActual, me.buscar);
+          me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
           me.cerrarModal();
           Swal.fire({
             position: "top",
@@ -316,7 +507,13 @@ export default {
           compuId: me.compuId
         })
         .then(function(response) {
-          me.getCompu(me.pagActual, me.buscar);
+          me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
+          me.getPrestamos(
+            me.pagActualP,
+            me.criterioP,
+            me.buscarP,
+            me.cantidadP
+          );
           me.cerrarModal();
           Swal.fire({
             position: "top",
@@ -379,12 +576,82 @@ export default {
         (me.descripcion = ""),
         (me.estado = "1"),
         (me.sede = "");
+    },
+    recibirEquipo(computadorID, prestamoID) {
+      let me = this;
+      Swal.fire({
+        title: "¿Computador recibido en buen estado?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "green",
+        cancelButtonColor: "red",
+        confirmButtonText: '<i class="fas fa-check"></i> Si',
+        cancelButtonText: '<i class="fas fa-times"></i> No'
+      }).then(result => {
+        if (result.value) {
+          // /recibir Equipo y marcar prestamo finalizado
+          axios
+            .post("/finalizarPrestamo", {
+              computadorID: computadorID,
+              prestamoID: prestamoID
+            })
+            .then(function(response) {
+              me.getPrestamos(
+                me.pagActualP,
+                me.criterioP,
+                me.buscarP,
+                me.cantidadP
+              );
+              me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
+              Swal.fire({
+                toast: true,
+                position: "top",
+                type: "success",
+                title: "Equipo disponible!",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            })
+            .catch(function(error) {
+              if (error.response.status == 422) {
+                //preguntamos si el error es 422
+                Swal.fire({
+                  toast: true,
+                  position: "top",
+                  type: "error",
+                  title: "Se produjo un Error, Reintentar",
+                  showConfirmButton: false,
+                  timer: 2500
+                });
+              }
+              console.log(error.response.data.errors);
+            });
+        } else {
+          me.abrirModalReporte();
+        }
+      });
+    },
+    abrirModalReporte() {
+      Swal.fire({
+        toast: true,
+        position: "top",
+        type: "error",
+        title: "Modal Reporte abierto",
+        showConfirmButton: false,
+        timer: 2500
+      });
     }
   },
   mounted() {
     this.getUserAuth();
     this.getSedes();
-    this.getCompu(this.pagActual, this.buscar);
+    this.getCompu(this.pagActual, this.criterio, this.buscar, this.cantidad);
+    this.getPrestamos(
+      this.pagActualP,
+      this.criterioP,
+      this.buscarP,
+      this.cantidadP
+    );
   }
 };
 </script>

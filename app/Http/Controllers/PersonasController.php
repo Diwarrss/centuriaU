@@ -115,8 +115,10 @@ class PersonasController extends Controller
         $request->validate([
             'tipo_documento' => 'required|max:6',
             'numero_documento' => 'required|unique:personas|max:20',
-            'nombre1' => 'required|max:50',
-            'apellido1' => 'required|max:50',
+            'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+            'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u',
+            'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+            'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u',
             'estado_persona' => 'required|max:50',
             'tipo_persona' => 'required|max:100',
             'programa' => 'required|max:255',
@@ -158,8 +160,10 @@ class PersonasController extends Controller
             $request->validate([
                 'tipo_documento' => 'required|max:6',
                 'numero_documento' => 'required|max:20|string|unique:personas,numero_documento,' . $persona->id,
-                'nombre1' => 'required|max:50',
-                'apellido1' => 'required|max:50',
+                'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u',
+                'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u',
                 'estado_persona' => 'required|max:50',
                 'tipo_persona' => 'required|max:100',
                 'programa' => 'required|max:255',
@@ -189,6 +193,7 @@ class PersonasController extends Controller
         if (!$request->ajax()) return redirect('/');
         $id = $request->id;
         $buscar = $request->buscar;
+        $cantidad = $request->cantidad;
         if ($id) {
             $personasid = Persona::select(
                 'id',
@@ -229,7 +234,7 @@ class PersonasController extends Controller
                 ->orWhere('estado_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('tipo_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('programa', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate(8);
+                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
 
             return $personas;
         }

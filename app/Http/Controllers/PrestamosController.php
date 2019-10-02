@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Computadore;
 use App\Prestamo;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 
@@ -12,26 +13,63 @@ class PrestamosController extends Controller
     public function getPrestamos(Request $request)
     {
         //if (!$request->ajax()) return redirect('/');
-        $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
-            ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
-            ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
-            ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
-            ->select(
-                'computadores.nombre as nombrePC',
-                'prestamos.estado_prestamo',
-                'prestamos.id as prestamoID',
-                'prestamos.created_at as fechaPrestamo',
-                'sedes.nombre as nombreSede',
-                'personas.nombre1',
-                'personas.nombre2',
-                'personas.apellido1',
-                'personas.apellido2',
-                'personas.tipo_documento',
-                'personas.numero_documento'
-            )
-            ->paginate(5);
+        $buscar = $request->buscar;
+        $cantidad = $request->cantidad;
+        $criterio = $request->criterio;
+        $sedes_id = Auth::user()->sedes_id;
 
-        return $prestamos;
+        if ($sedes_id) {
+            $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
+                ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
+                ->select(
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC',
+                    'computadores.descripcion',
+                    'prestamos.estado_prestamo',
+                    'prestamos.id as prestamoID',
+                    'prestamos.sedes_id',
+                    'prestamos.created_at as fechaPrestamo',
+                    'prestamos.updated_at as fechaFin',
+                    'sedes.nombre as nombreSede',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'personas.tipo_documento',
+                    'personas.numero_documento'
+                )->where('prestamos.sedes_id', $sedes_id)
+                ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                ->paginate($cantidad);
+
+            return $prestamos;
+        } else {
+            $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
+                ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
+                ->select(
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC',
+                    'computadores.descripcion',
+                    'prestamos.estado_prestamo',
+                    'prestamos.id as prestamoID',
+                    'ingresos.id as ingresosID',
+                    'prestamos.created_at as fechaPrestamo',
+                    'prestamos.updated_at as fechaFin',
+                    'sedes.nombre as nombreSede',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'personas.tipo_documento',
+                    'personas.numero_documento'
+                )->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                ->paginate(5);
+
+            return $prestamos;
+        }
     }
 
 

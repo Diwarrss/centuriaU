@@ -45,34 +45,66 @@ class IngresosController extends Controller
         $fechahoy = Carbon::now()->format('Y-m-d');
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
+        $criterio = $request->criterio;
+        $sedes_id = Auth::user()->sedes_id; //optenemos el id de la sede del user logueado
 
-        $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
-            ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
-            ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
-            ->select(
-                'ingresos.created_at',
-                'personas.id as personaID',
-                'ingresos.id as ingresosID',
-                'personas.numero_documento',
-                'personas.nombre1',
-                'personas.nombre2',
-                'personas.apellido1',
-                'personas.apellido2',
-                'prestamos.id as prestamoID',
-                'prestamos.estado_prestamo',
-                'computadores.id as computadorID',
-                'computadores.nombre as nombrePC'
-            )
-            ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
-            ->where('ingresos.sedes_id', Auth::user()->sedes_id)
-            ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%')
-            ->orderBy('ingresos.created_at', 'desc')
-            ->paginate($cantidad);
+        if ($sedes_id) {
+            $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
+                ->select(
+                    'ingresos.created_at',
+                    'personas.id as personaID',
+                    'ingresos.id as ingresosID',
+                    'ingresos.sedes_id as ingresosSede',
+                    'personas.tipo_documento',
+                    'personas.numero_documento',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'prestamos.id as prestamoID',
+                    'prestamos.estado_prestamo',
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC'
+                )
+                ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+                ->where('ingresos.sedes_id', $sedes_id)
+                ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                /* ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
+                ->orderBy('ingresos.created_at', 'desc')
+                ->paginate($cantidad);
 
-        return $ingresosActuales;
+            return $ingresosActuales;
+        } else {
+            $ingresosActuales = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
+                ->select(
+                    'ingresos.created_at',
+                    'personas.id as personaID',
+                    'ingresos.id as ingresosID',
+                    'personas.tipo_documento',
+                    'personas.numero_documento',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'prestamos.id as prestamoID',
+                    'prestamos.estado_prestamo',
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC'
+                )
+                ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+                ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
+                ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                ->orderBy('ingresos.created_at', 'desc')
+                ->paginate($cantidad);
+
+            return $ingresosActuales;
+        }
     }
 
     public function getIngresos(Request $request)
@@ -81,32 +113,64 @@ class IngresosController extends Controller
 
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
+        $criterio = $request->criterio;
+        $sedes_id = Auth::user()->sedes_id; //optenemos el id de la sede del user logueado
 
-        $ingresos = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
-            ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
-            ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
-            ->select(
-                'ingresos.created_at',
-                'personas.id as personaID',
-                'ingresos.id as ingresosID',
-                'personas.numero_documento',
-                'personas.nombre1',
-                'personas.nombre2',
-                'personas.apellido1',
-                'personas.apellido2',
-                'prestamos.id as prestamoID',
-                'prestamos.estado_prestamo',
-                'computadores.id as computadorID',
-                'computadores.nombre as nombrePC'
-            )
-            ->where('ingresos.sedes_id', Auth::user()->sedes_id)
-            ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
+        if ($sedes_id) {
+            $ingresos = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
+                ->select(
+                    'ingresos.created_at',
+                    'personas.id as personaID',
+                    'ingresos.id as ingresosID',
+                    'personas.tipo_documento',
+                    'personas.numero_documento',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'prestamos.id as prestamoID',
+                    'prestamos.estado_prestamo',
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC'
+                )
+                ->where('ingresos.sedes_id', $sedes_id)
+                ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                /* ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%')
-            ->orderBy('ingresos.id', 'asc')
-            ->paginate($cantidad);
+            ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
+                ->orderBy('ingresos.id', 'asc')
+                ->paginate($cantidad);
 
-        return $ingresos;
+            return $ingresos;
+        } else {
+            $ingresos = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
+                ->select(
+                    'ingresos.created_at',
+                    'personas.id as personaID',
+                    'ingresos.id as ingresosID',
+                    'personas.tipo_documento',
+                    'personas.numero_documento',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'prestamos.id as prestamoID',
+                    'prestamos.estado_prestamo',
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC'
+                )
+                ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                /* ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
+                ->orderBy('ingresos.id', 'asc')
+                ->paginate($cantidad);
+
+            return $ingresos;
+        }
     }
 }

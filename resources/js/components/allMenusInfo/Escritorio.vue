@@ -22,7 +22,28 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-12 col-lg-12"></div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body">
+                    <button class="btn btn-transparent p-0 float-right" title="Ver información">
+                      <i class="fas fa-user-check fa-4x"></i>
+                    </button>
+                    <div class="text-value">{{totalIngresos}}</div>
+                    <div>Total Ingresos</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                  <div class="card-body">
+                    <button class="btn btn-transparent p-0 float-right" title="Ver información">
+                      <i class="fas fa-laptop fa-4x"></i>
+                    </button>
+                    <div class="text-value">{{totalComputadores}}</div>
+                    <div>Total Computadores</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -30,3 +51,41 @@
     </div>
   </main>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      totalIngresos: "",
+      totalComputadores: ""
+    };
+  },
+  computed: {},
+  methods: {
+    getCantidades() {
+      let me = this;
+      axios
+        .get("/countIngresos")
+        .then(function(response) {
+          me.totalIngresos = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      axios
+        .get("/countComputadores")
+        .then(function(response) {
+          me.totalComputadores = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
+  mounted() {
+    this.getCantidades();
+  }
+};
+</script>

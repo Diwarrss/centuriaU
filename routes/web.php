@@ -72,4 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador Sedes
     Route::get('getSedes', 'SedesController@getSedes')->name('getSedes');
+
+    //Controlador de Escritorio
+    Route::get('countIngresos', 'EscritorioController@countIngresos')->name('countIngresos');
+    Route::get('countComputadores', 'EscritorioController@countComputadores')->name('countComputadores');
 });
