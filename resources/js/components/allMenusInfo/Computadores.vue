@@ -102,6 +102,7 @@
                           <th>Estado</th>
                           <th>Sede</th>
                           <th>Creación</th>
+                          <th>Observación</th>
                           <th>Acción</th>
                         </tr>
                       </thead>
@@ -134,6 +135,7 @@
                           </td>
                           <td v-text="data.nombreSede"></td>
                           <td>{{data.created_at | moment('DD/MM/YYYY h:mm a')}}</td>
+                          <td v-text="data.observacion"></td>
                           <td>
                             <button
                               class="btn btn-secondary"
@@ -221,6 +223,7 @@
                         <tr>
                           <th>#</th>
                           <th>Computador</th>
+                          <th>Observación</th>
                           <th>Documento</th>
                           <th>Persona</th>
                           <th>Sede</th>
@@ -232,7 +235,7 @@
                       </thead>
                       <!-- verificamos si el objeto es vacio -->
                       <tbody v-if="objectPrestamos.data ==''">
-                        <td colspan="8">
+                        <td colspan="10">
                           <div role="alert" class="alert alert-danger text-center">
                             <div class="form-group">
                               <strong>
@@ -247,6 +250,7 @@
                           <!-- para mostrar numericamente -->
                           <td>{{++index}}</td>
                           <td v-text="data.nombrePC"></td>
+                          <td v-text="data.observacion"></td>
                           <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
                           <td v-text="data.nombreSede"></td>
@@ -296,7 +300,14 @@
       </div>
       <!-- Modal modalComputador-->
       <section>
-        <div class="modal" id="modalComputador" role="dialog" aria-labelledby="myModalLabel2">
+        <div
+          class="modal"
+          id="modalComputador"
+          role="dialog"
+          aria-labelledby="myModalLabel2"
+          data-backdrop="static"
+          data-keyboard="false"
+        >
           <div class="modal-dialog modal-primary" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -393,6 +404,53 @@
           </div>
         </div>
       </section>
+      <!-- Modal modal Reporte daño Computador-->
+      <section>
+        <div
+          class="modal"
+          id="modalObservacion"
+          role="dialog"
+          aria-labelledby="myModalLabel2"
+          data-backdrop="static"
+          data-keyboard="false"
+        >
+          <div class="modal-dialog modal-dialog-centered modal-warning" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">
+                  <i class="fas fa-exclamation-triangle"></i> Observación Préstamo
+                </h4>
+                <button class="close" type="button" @click="cerrarObservacion" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal" enctype="multipart/form-data">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Observación:</label>
+                    <div class="col-md-8 col-sm-7">
+                      <textarea class="form-control" type="text" v-model="observacion"></textarea>
+                      <span
+                        class="help-block text-danger"
+                        v-if="arrayErrors.observacion"
+                        v-text="arrayErrors.observacion[0]"
+                      ></span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" @click="cerrarObservacion">
+                  <i class="far fa-times-circle"></i> Cancelar
+                </button>
+                <button class="btn btn-primary" @click="reportarObservacion">
+                  <i class="far fa-check-circle"></i> Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 </template>
@@ -424,7 +482,9 @@ export default {
       estado: "1",
       sede: "",
       compuId: "",
-      tipoModal: ""
+      tipoModal: "",
+      observacion: "",
+      prestamoID: ""
     };
   },
   computed: {
@@ -548,7 +608,8 @@ export default {
       let me = this;
       switch (tipoModal) {
         case "crear": {
-          (me.nombre = ""),
+          me.getSedes(),
+            (me.nombre = ""),
             (me.descripcion = ""),
             (me.estado = ""),
             (me.sede = "");
@@ -557,7 +618,7 @@ export default {
           break;
         }
         case "actualizar": {
-          me.compuId = data["compuId"];
+          me.getSedes(), (me.compuId = data["compuId"]);
           me.nombre = data["nombreCompu"];
           me.descripcion = data["descripcion"];
           me.estado = data["estado_computador"];
@@ -579,72 +640,113 @@ export default {
     },
     recibirEquipo(computadorID, prestamoID) {
       let me = this;
-      Swal.fire({
-        title: "¿Computador recibido en buen estado?",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonColor: "green",
-        cancelButtonColor: "red",
-        confirmButtonText: '<i class="fas fa-check"></i> Si',
-        cancelButtonText: '<i class="fas fa-times"></i> No'
-      }).then(result => {
-        if (result.value) {
-          // /recibir Equipo y marcar prestamo finalizado
-          axios
-            .post("/finalizarPrestamo", {
-              computadorID: computadorID,
-              prestamoID: prestamoID
-            })
-            .then(function(response) {
-              me.getPrestamos(
-                me.pagActualP,
-                me.criterioP,
-                me.buscarP,
-                me.cantidadP
-              );
-              me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
-              Swal.fire({
-                toast: true,
-                position: "top",
-                type: "success",
-                title: "Equipo disponible!",
-                showConfirmButton: false,
-                timer: 1500
-              });
-            })
-            .catch(function(error) {
-              if (error.response.status == 422) {
-                //preguntamos si el error es 422
-                Swal.fire({
+      me.prestamoID = prestamoID;
+      const swalPrincipal = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success m-1",
+          cancelButton: "btn btn-danger m-1"
+        },
+        buttonsStyling: false
+      });
+
+      swalPrincipal
+        .fire({
+          title: "¿Computador recibido en buen estado?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonText: '<i class="fas fa-check"></i> Si',
+          cancelButtonText: '<i class="fas fa-times"></i> No'
+        })
+        .then(result => {
+          if (result.value) {
+            axios
+              .post("/finalizarPrestamo", {
+                computadorID: computadorID,
+                prestamoID: prestamoID
+              })
+              .then(function(response) {
+                me.getPrestamos(
+                  me.pagActualP,
+                  me.criterioP,
+                  me.buscarP,
+                  me.cantidadP
+                );
+                me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
+                swalPrincipal.fire({
                   toast: true,
                   position: "top",
-                  type: "error",
-                  title: "Se produjo un Error, Reintentar",
+                  type: "success",
+                  title: "Equipo disponible!",
                   showConfirmButton: false,
-                  timer: 2500
+                  timer: 1500
                 });
-              }
-              console.log(error.response.data.errors);
-            });
-        } else {
-          me.abrirModalReporte();
-        }
-      });
+              })
+              .catch(function(error) {
+                if (error.response.status == 422) {
+                  //preguntamos si el error es 422
+                  swalPrincipal.fire({
+                    toast: true,
+                    position: "top",
+                    type: "error",
+                    title: "Se produjo un Error, Reintentar",
+                    showConfirmButton: false,
+                    timer: 2500
+                  });
+                }
+                console.log(error.response.data.errors);
+              });
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            me.abrirModalReporte();
+          }
+        });
     },
     abrirModalReporte() {
-      Swal.fire({
-        toast: true,
-        position: "top",
-        type: "error",
-        title: "Modal Reporte abierto",
-        showConfirmButton: false,
-        timer: 2500
-      });
+      $("#modalObservacion").modal("show");
+    },
+    cerrarObservacion() {
+      let me = this;
+      $("#modalObservacion").modal("hide");
+      me.observacion = "";
+    },
+    reportarObservacion() {
+      let me = this;
+      axios
+        .post("/reportarObservacion", {
+          //ruta para actualizar los datos de web.php
+          prestamoID: me.prestamoID,
+          observacion: me.observacion
+        })
+        .then(function(response) {
+          me.getCompu(me.pagActual, me.criterio, me.buscar, me.cantidad);
+          me.getPrestamos(
+            me.pagActualP,
+            me.criterioP,
+            me.buscarP,
+            me.cantidadP
+          );
+          me.cerrarObservacion();
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Observación registrada con éxito, Computador no disponible",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          console.log(error);
+        });
     }
   },
   mounted() {
     this.getUserAuth();
-    this.getSedes();
     this.getCompu(this.pagActual, this.criterio, this.buscar, this.cantidad);
     this.getPrestamos(
       this.pagActualP,

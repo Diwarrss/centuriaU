@@ -12,7 +12,7 @@ class PrestamosController extends Controller
 {
     public function getPrestamos(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
         $criterio = $request->criterio;
@@ -20,13 +20,14 @@ class PrestamosController extends Controller
 
         if ($sedes_id) {
             $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
-                ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
                 ->select(
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
                     'computadores.descripcion',
+                    'prestamos.observacion',
                     'prestamos.estado_prestamo',
                     'prestamos.id as prestamoID',
                     'prestamos.sedes_id',
@@ -39,14 +40,14 @@ class PrestamosController extends Controller
                     'personas.apellido2',
                     'personas.tipo_documento',
                     'personas.numero_documento'
-                )->where('prestamos.sedes_id', $sedes_id)
+                )->where('prestamos.sedes_id', 1)
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 ->paginate($cantidad);
 
             return $prestamos;
         } else {
             $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
-                ->join('ingresos', 'ingresos.id', '=', 'prestamos.users_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
                 ->select(
@@ -71,7 +72,6 @@ class PrestamosController extends Controller
             return $prestamos;
         }
     }
-
 
     public function crearPrestamo(Request $request)
     {
@@ -124,6 +124,35 @@ class PrestamosController extends Controller
             $updatePrestamo = Prestamo::findOrFail($request->prestamoID);
             $updatePrestamo->estado_prestamo = '0';
             $updatePrestamo->save();
+
+            DB::commit(); //commit de la transaccion
+        } catch (Exception $e) {
+            DB::rollBack(); //si hay error no ejecute la transaccion
+        }
+    }
+
+    public function reportarObservacion(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        try {
+            //usaremos transacciones
+            DB::beginTransaction();
+
+            //para validar los formularios
+            $request->validate([
+                'observacion' => 'required|max:250'
+            ]);
+
+            $observacion = Prestamo::findOrFail($request->prestamoID);
+            $observacion->estado_prestamo = '0';
+            $observacion->observacion = $request->observacion;
+            $observacion->save(); //guardamos en la tabla prestamo
+
+            $updateCompu = Computadore::findOrFail($observacion->computadores_id);
+            $updateCompu->estado_computador = '0';
+            $updateCompu->observacion = $request->observacion;
+            $updateCompu->save();
 
             DB::commit(); //commit de la transaccion
         } catch (Exception $e) {

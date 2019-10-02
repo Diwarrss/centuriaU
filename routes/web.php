@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getPrestamos', 'PrestamosController@getPrestamos')->name('getPrestamos');
     Route::post('crearPrestamo', 'PrestamosController@crearPrestamo')->name('crearPrestamo');
     Route::post('finalizarPrestamo', 'PrestamosController@finalizarPrestamo')->name('finalizarPrestamo');
+    Route::post('reportarObservacion', 'PrestamosController@reportarObservacion')->name('reportarObservacion');
 
     //Controlador Sedes
     Route::get('getSedes', 'SedesController@getSedes')->name('getSedes');

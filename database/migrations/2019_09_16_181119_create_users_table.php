@@ -27,6 +27,29 @@ class CreateUsersTable extends Migration
             $table->foreign('sedes_id')->references('id')->on('sedes');
             $table->timestamps();
         });
+
+        $password = Hash::make('123456789');
+
+        //inserto a la tabla datos registros
+        DB::table('users')->insert(array(
+            'id' => '1', 'name' => 'SUPERADMIN', 'email' => 'dialvaro30@gmail.com', 'email_verified_at' => null, 'password' => $password,
+            'estado_user' => 1, 'roles_id' => 1, 'sedes_id' => null
+        ));
+
+        DB::table('users')->insert(array(
+            'id' => '2', 'name' => 'ADMIN SAN GIL', 'email' => 'dialvaro31@gmail.com', 'email_verified_at' => null, 'password' => $password,
+            'estado_user' => 1, 'roles_id' => 2, 'sedes_id' => 1
+        ));
+
+        DB::table('users')->insert(array(
+            'id' => '3', 'name' => 'ADMIN YOPAL', 'email' => 'dialvaro32@gmail.com', 'email_verified_at' => null, 'password' => $password,
+            'estado_user' => 1, 'roles_id' => 2, 'sedes_id' => 3
+        ));
+
+        DB::table('users')->insert(array(
+            'id' => '4', 'name' => 'ADMIN CHIQUI', 'email' => 'dialvaro33@gmail.com', 'email_verified_at' => null, 'password' => $password,
+            'estado_user' => 1, 'roles_id' => 2, 'sedes_id' => 2
+        ));
     }
 
     /**

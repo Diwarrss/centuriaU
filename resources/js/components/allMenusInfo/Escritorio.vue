@@ -25,9 +25,13 @@
               <div class="col-sm-6 col-lg-3">
                 <div class="card text-white bg-primary">
                   <div class="card-body">
-                    <button class="btn btn-transparent p-0 float-right" title="Ver información">
+                    <A
+                      class="btn btn-transparent p-0 float-right"
+                      title="Ver información"
+                      href="admin#/ingresos"
+                    >
                       <i class="fas fa-user-check fa-4x"></i>
-                    </button>
+                    </A>
                     <div class="text-value">{{totalIngresos}}</div>
                     <div>Total Ingresos</div>
                   </div>
@@ -36,9 +40,13 @@
               <div class="col-sm-6 col-lg-3">
                 <div class="card text-white bg-success">
                   <div class="card-body">
-                    <button class="btn btn-transparent p-0 float-right" title="Ver información">
+                    <A
+                      class="btn btn-transparent p-0 float-right"
+                      title="Ver información"
+                      href="admin#/computadores"
+                    >
                       <i class="fas fa-laptop fa-4x"></i>
-                    </button>
+                    </A>
                     <div class="text-value">{{totalComputadores}}</div>
                     <div>Total Computadores</div>
                   </div>

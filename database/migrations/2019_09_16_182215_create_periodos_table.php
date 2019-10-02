@@ -21,6 +21,10 @@ class CreatePeriodosTable extends Migration
             $table->foreign('universidad_id')->references('id')->on('universidades');
             $table->timestamps();
         });
+
+        DB::table('periodos')->insert(array(
+            'id' => '1', 'nombre' => '2019-2', 'estado_periodo' => 1, 'universidad_id' => 1
+        ));
     }
 
     /**

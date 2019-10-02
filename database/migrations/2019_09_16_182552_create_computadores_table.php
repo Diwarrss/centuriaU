@@ -17,6 +17,7 @@ class CreateComputadoresTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre', 20);
             $table->string('descripcion', 200)->nullable();
+            $table->string('observacion', 250)->nullable();
             $table->enum('estado_computador', [0, 1, 2])->default(1); //2 Ocupado, 1 activo, 0 Inactivo
             $table->unsignedBigInteger('sedes_id');
             $table->foreign('sedes_id')->references('id')->on('sedes');
