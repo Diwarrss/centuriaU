@@ -69,7 +69,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 col-12 col-sm-4">
+                      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                         <div class="form-group">
                           <div class="input-group">
                             <select

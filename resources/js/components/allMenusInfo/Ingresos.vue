@@ -238,7 +238,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3 col-12 col-sm-4">
+                      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                         <div class="form-group">
                           <div class="input-group">
                             <select
@@ -384,7 +384,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-2 col-12 col-sm-4 col-lg-2">
+              <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                 <div class="form-group">
                   <div class="input-group">
                     <select
@@ -413,12 +413,13 @@
                   <th>Fecha Ingreso</th>
                   <th>Documento</th>
                   <th>Nombres y Apellidos</th>
+                  <th>Sede</th>
                   <th>Computador</th>
                   <th>Préstamos</th>
                 </tr>
               </thead>
               <tbody v-if="objectIngresos.data ==''">
-                <td colspan="6">
+                <td colspan="7">
                   <div role="alert" class="alert alert-danger text-center">
                     <div class="form-group">
                       <strong>
@@ -434,6 +435,7 @@
                   <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
                   <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                   <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                  <td v-text="data.nombre_sede"></td>
                   <td>
                     <h4>
                       <span

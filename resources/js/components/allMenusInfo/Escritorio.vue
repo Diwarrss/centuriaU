@@ -25,13 +25,13 @@
               <div class="col-sm-6 col-lg-3">
                 <div class="card text-white bg-primary">
                   <div class="card-body">
-                    <A
+                    <router-link
                       class="btn btn-transparent p-0 float-right"
                       title="Ver información"
-                      href="admin#/ingresos"
+                      to="/ingresos"
                     >
                       <i class="fas fa-user-check fa-4x"></i>
-                    </A>
+                    </router-link>
                     <div class="text-value">{{totalIngresos}}</div>
                     <div>Total Ingresos</div>
                   </div>
@@ -40,15 +40,30 @@
               <div class="col-sm-6 col-lg-3">
                 <div class="card text-white bg-success">
                   <div class="card-body">
-                    <A
+                    <router-link
                       class="btn btn-transparent p-0 float-right"
                       title="Ver información"
-                      href="admin#/computadores"
+                      to="/computadores"
                     >
                       <i class="fas fa-laptop fa-4x"></i>
-                    </A>
+                    </router-link>
                     <div class="text-value">{{totalComputadores}}</div>
                     <div>Total Computadores</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-info">
+                  <div class="card-body">
+                    <router-link
+                      class="btn btn-transparent p-0 float-right"
+                      title="Ver información"
+                      to="/computadores"
+                    >
+                      <i class="fas fa-laptop-medical fa-4x"></i>
+                    </router-link>
+                    <div class="text-value">{{totalPrestamos}}</div>
+                    <div>Total de Préstamos</div>
                   </div>
                 </div>
               </div>
@@ -64,7 +79,8 @@ export default {
   data() {
     return {
       totalIngresos: "",
-      totalComputadores: ""
+      totalComputadores: "",
+      totalPrestamos: ""
     };
   },
   computed: {},
@@ -85,6 +101,16 @@ export default {
         .get("/countComputadores")
         .then(function(response) {
           me.totalComputadores = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      axios
+        .get("/countPrestamos")
+        .then(function(response) {
+          me.totalPrestamos = response.data;
           //console.log(response);
         })
         .catch(function(error) {

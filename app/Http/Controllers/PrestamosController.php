@@ -40,7 +40,7 @@ class PrestamosController extends Controller
                     'personas.apellido2',
                     'personas.tipo_documento',
                     'personas.numero_documento'
-                )->where('prestamos.sedes_id', 1)
+                )->where('prestamos.sedes_id', $sedes_id)
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 ->paginate($cantidad);
 
@@ -54,6 +54,7 @@ class PrestamosController extends Controller
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
                     'computadores.descripcion',
+                    'prestamos.observacion',
                     'prestamos.estado_prestamo',
                     'prestamos.id as prestamoID',
                     'ingresos.id as ingresosID',

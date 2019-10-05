@@ -75,6 +75,7 @@ class ComputadoresController extends Controller
             'nombre' => 'required|max:20',
             //'nombre' => 'required|max:150|unique:computadores',
             'descripcion' => 'max:200',
+            'observacion' => 'max:200',
             'estado' => 'required',
             'sede' => 'required'
         ]);
@@ -85,6 +86,7 @@ class ComputadoresController extends Controller
             $computador =  new Computadore();
             $computador->nombre = $request->nombre;
             $computador->descripcion = $request->descripcion;
+            $computador->observacion = $request->observacion;
             $computador->estado_computador = $request->estado;
             $computador->sedes_id = $request->sede;
             $computador->save();
@@ -109,12 +111,14 @@ class ComputadoresController extends Controller
                 'nombre' => 'required|max:150',
                 //'nombre' => 'required|max:150|unique:computadores,nombre,' . $computador->id,
                 'descripcion' => 'max:200',
+                'observacion' => 'max:200',
                 'estado' => 'required',
                 'sede' => 'required'
             ]);
 
             $computador->nombre = $request->nombre;
             $computador->descripcion = $request->descripcion;
+            $computador->observacion = $request->observacion;
             $computador->estado_computador = $request->estado;
             $computador->sedes_id = $request->sede;
             $computador->save();

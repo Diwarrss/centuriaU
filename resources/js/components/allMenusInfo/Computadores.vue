@@ -26,13 +26,14 @@
                 <div class="form-group">
                   <button
                     type="button"
-                    class="btn btn-success btn-lg mb-"
-                    data-backdrop="static"
-                    data-keyboard="false"
+                    class="btn btn-success btn-lg mb-2"
                     @click="abrirModal('crear')"
                   >
                     <i class="fas fa-plus-circle"></i> Nuevo Computador
                   </button>
+                  <router-link to="/ingresos" class="btn btn-primary btn-lg mb-2">
+                    <i class="fas fa-plus-circle"></i> Nuevo Préstamo
+                  </router-link>
                 </div>
               </div>
               <div class="col-sm-12 col-lg-12">
@@ -71,7 +72,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3 col-12 col-sm-4 col-lg-2">
+                      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                         <div class="form-group">
                           <div class="input-group">
                             <select
@@ -98,7 +99,7 @@
                         <tr>
                           <th>#</th>
                           <th>Computador</th>
-                          <th>Detalles</th>
+                          <th>Descripción</th>
                           <th>Estado</th>
                           <th>Sede</th>
                           <th>Creación</th>
@@ -196,7 +197,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3 col-12 col-sm-4 col-lg-2">
+                      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
                         <div class="form-group">
                           <div class="input-group">
                             <select
@@ -342,6 +343,17 @@
                         class="help-block text-danger"
                         v-if="arrayErrors.descripcion"
                         v-text="arrayErrors.descripcion[0]"
+                      ></span>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Observación:</label>
+                    <div class="col-md-8 col-sm-7">
+                      <textarea class="form-control" type="text" v-model="observacion"></textarea>
+                      <span
+                        class="help-block text-danger"
+                        v-if="arrayErrors.observacion"
+                        v-text="arrayErrors.observacion[0]"
                       ></span>
                     </div>
                   </div>
@@ -532,6 +544,7 @@ export default {
         .post("/saveCompu", {
           nombre: me.nombre,
           descripcion: me.descripcion,
+          observacion: me.observacion,
           estado: me.estado,
           sede: me.sede
         })
@@ -562,6 +575,7 @@ export default {
           //ruta para actualizar los datos de web.php
           nombre: me.nombre,
           descripcion: me.descripcion,
+          observacion: me.observacion,
           estado: me.estado,
           sede: me.sede,
           compuId: me.compuId
@@ -608,11 +622,11 @@ export default {
       let me = this;
       switch (tipoModal) {
         case "crear": {
-          me.getSedes(),
-            (me.nombre = ""),
-            (me.descripcion = ""),
-            (me.estado = ""),
-            (me.sede = "");
+          me.getSedes();
+          me.nombre = "";
+          me.descripcion = "";
+          me.estado = "";
+          me.sede = "";
           me.tipoModal = "crear";
           $("#modalComputador").modal("show");
           break;

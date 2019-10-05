@@ -10,7 +10,7 @@ class SedesController extends Controller
 {
     public function getSedes(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $sedes_id = Auth::user()->sedes_id;
 
         if ($sedes_id) {
