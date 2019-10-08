@@ -92,7 +92,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                    <table class="table table-responsive-lg table-hover table-bordered table-sm">
                       <thead>
                         <tr>
                           <th>#</th>
@@ -163,7 +163,7 @@
                     </strong>
                   </div>
                   <div class="card-body">
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                    <table class="table table-responsive-lg table-hover table-bordered table-sm">
                       <thead>
                         <tr>
                           <th>#</th>

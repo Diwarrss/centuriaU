@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Computadore;
 use App\Ingreso;
 use App\Prestamo;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,6 +62,24 @@ class EscritorioController extends Controller
             $compu = Prestamo::count();
 
             return $compu;
+        }
+    }
+
+    public function countUsers(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        //obtenemos el id de la sede del usuario q ingresa
+        $sedes_id = Auth::user()->sedes_id;
+
+        if ($sedes_id) {
+            $users = User::where('sedes_id', $sedes_id)
+                ->count();
+
+            return $users;
+        } else {
+            $users = User::count();
+
+            return $users;
         }
     }
 }

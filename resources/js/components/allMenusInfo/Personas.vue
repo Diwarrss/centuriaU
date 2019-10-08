@@ -28,19 +28,21 @@
               <div class="col-sm-12 col-lg-12">
                 <div class="card card-accent-primary">
                   <div class="card-header">
-                    <strong>
-                      <i class="fas fa-list-ul"></i>
-                      Listado de Personas (Total: {{objectPersonas.total}})
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="fas fa-list-ul"></i>
+                        Listado de Personas (Total: {{objectPersonas.total}})
+                      </strong>
+                    </h5>
                     <div class="card-header-actions">
                       <button class="btn btn-success mb-2">
                         <i class="far fa-file-excel"></i> Descargar Datos
                       </button>
                       <button class="btn btn-primary mb-2">
-                        <i class="fas fa-file-import"></i> Cargar Datos
+                        <i class="fas fa-file-import"></i> Importar Datos
                       </button>
                       <button class="btn btn-secondary mb-2">
-                        <i class="fas fa-file-download"></i> Formato
+                        <i class="fas fa-file-download"></i> Descargar Formato
                       </button>
                     </div>
                   </div>
@@ -91,7 +93,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                    <table class="table table-responsive-lg table-hover table-bordered table-sm">
                       <thead>
                         <tr>
                           <th>#</th>

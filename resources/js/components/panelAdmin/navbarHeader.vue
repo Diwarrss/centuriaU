@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header navbar" v-if="infoUserAuth.length && arrayUniversidad.length">
+  <header class="app-header navbar" v-if="infoUserAuth.length">
     <button
       class="navbar-toggler sidebar-toggler d-lg-none mr-auto"
       type="button"
@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/admin">
-      <img class="navbar-brand-full" :src="imagenAnterior" height="45" alt="Logotipo" />
+      <img class="navbar-brand-full" :src="imagenUniversidad" height="45" alt="Logotipo" />
       <!-- <img
         class="navbar-brand-minimized"
         src="adminCoreui/img/brand/sygnet.svg"
@@ -97,8 +97,7 @@ export default {
   props: ["csrf"],
   data() {
     return {
-      arrayUniversidad: [],
-      imagenAnterior: ""
+      imagenUniversidad: ""
     };
   },
   computed: {
@@ -115,8 +114,7 @@ export default {
       axios
         .get("/getUniversidad")
         .then(function(response) {
-          me.arrayUniversidad = response.data;
-          me.imagenAnterior = response.data[0].url_imagen;
+          me.imagenUniversidad = response.data[0].url_imagen;
           //console.log(response);
         })
         .catch(function(error) {

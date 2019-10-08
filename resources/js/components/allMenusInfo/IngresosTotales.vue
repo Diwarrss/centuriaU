@@ -2,10 +2,12 @@
   <div>
     <div class="card card-accent-danger">
       <div class="card-header">
-        <strong>
-          <i class="far fa-list-alt"></i>
-          Ingresos Totales ({{objectIngresos.total}})
-        </strong>
+        <h5>
+          <strong>
+            <i class="far fa-list-alt"></i>
+            Ingresos Totales ({{objectIngresos.total}})
+          </strong>
+        </h5>
       </div>
       <div class="card-body">
         <div class="col-md-4">
@@ -28,7 +30,7 @@
             </div>
           </div>
         </div>
-        <table class="table table-responsive-md table-hover table-sm">
+        <table class="table table-responsive-lg table-hover table-sm">
           <thead>
             <tr>
               <th>#</th>

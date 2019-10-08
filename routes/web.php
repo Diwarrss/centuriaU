@@ -46,6 +46,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getUsers', 'UsersController@getUsers')->name('getUsers');
     Route::post('saveUser', 'UsersController@saveUser')->name('saveUser');
     Route::post('updateUser', 'UsersController@updateUser')->name('updateUser');
+    Route::get('getPerfil', 'UsersController@getPerfil')->name('getPerfil');
+    Route::post('updatePerfil', 'UsersController@updatePerfil')->name('updatePerfil');
+    Route::post('updateAvatar', 'UsersController@updateAvatar')->name('updateAvatar');
+    Route::post('updatePass', 'UsersController@updatePass')->name('updatePass');
 
     //Controlador de Ingresos
     Route::post('crearIngreso', 'IngresosController@crearIngreso')->name('crearIngreso');
@@ -84,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('countIngresos', 'EscritorioController@countIngresos')->name('countIngresos');
     Route::get('countComputadores', 'EscritorioController@countComputadores')->name('countComputadores');
     Route::get('countPrestamos', 'EscritorioController@countPrestamos')->name('countPrestamos');
+    Route::get('countUsers', 'EscritorioController@countUsers')->name('countUsers');
 
     //Controlador de Roles
     Route::get('getRoles', 'RolesController@getRoles')->name('getRoles');

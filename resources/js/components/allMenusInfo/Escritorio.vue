@@ -67,6 +67,21 @@
                   </div>
                 </div>
               </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-danger">
+                  <div class="card-body">
+                    <router-link
+                      class="btn btn-transparent p-0 float-right"
+                      title="Ver información"
+                      to="/usuarios"
+                    >
+                      <i class="fas fa-user-cog fa-4x"></i>
+                    </router-link>
+                    <div class="text-value">{{totalUsers}}</div>
+                    <div>Total de Usuarios del Sistema</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -80,7 +95,8 @@ export default {
     return {
       totalIngresos: "",
       totalComputadores: "",
-      totalPrestamos: ""
+      totalPrestamos: "",
+      totalUsers: ""
     };
   },
   computed: {},
@@ -111,6 +127,16 @@ export default {
         .get("/countPrestamos")
         .then(function(response) {
           me.totalPrestamos = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      axios
+        .get("/countUsers")
+        .then(function(response) {
+          me.totalUsers = response.data;
           //console.log(response);
         })
         .catch(function(error) {

@@ -22,13 +22,15 @@
         <div>
           <div class="animated fadeIn">
             <div class="row" v-for="(data, index) in arrayUniversidad" :key="index">
-              <div class="col-sm-6 col-md-6 col-lg-6 col-xl-5">
+              <div class="col-sm-12 col-md-6 col-lg-6 col-xl-5">
                 <div class="card card-accent-info" v-if="habilitarEditar == 0">
                   <div class="card-header">
-                    <strong>
-                      <i class="fas fa-info-circle"></i>
-                      Mi Información
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="fas fa-info-circle"></i>
+                        Mi Información
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="form-group row">
@@ -110,10 +112,12 @@
                 </div>
                 <div class="card card-accent-info" v-else>
                   <div class="card-header">
-                    <strong>
-                      <i class="fas fa-info-circle"></i>
-                      Mi Información
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="fas fa-info-circle"></i>
+                        Mi Información
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="form-group row">
@@ -180,10 +184,12 @@
                 </div>
                 <div class="card card-accent-info">
                   <div class="card-header">
-                    <strong>
-                      <i class="far fa-images"></i>
-                      Mi Logotipo
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="far fa-images"></i>
+                        Mi Logotipo
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="form-group">
@@ -221,19 +227,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-md-6 col-lg-6 col-xl-7">
+              <div class="col-sm-12 col-md-6 col-lg-6 col-xl-7">
                 <div class="card card-accent-info">
                   <div class="card-header">
-                    <strong>
-                      <i class="far fa-clock"></i> Periodos
-                      <button
-                        v-if="infoUserAuth[0].roles_id == 1"
-                        class="btn btn-primary ml-2"
-                        @click="abrirModal('crear')"
-                      >
-                        <i class="fas fa-plus-circle"></i> Nuevo
-                      </button>
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="far fa-clock"></i> Periodos
+                        <button
+                          v-if="infoUserAuth[0].roles_id == 1"
+                          class="btn btn-primary ml-2"
+                          @click="abrirModal('crear')"
+                        >
+                          <i class="fas fa-plus-circle"></i> Nuevo
+                        </button>
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -568,6 +576,7 @@ export default {
           telefonos: me.telefonos
         }) //le envio el parametro completo
         .then(function(response) {
+          me.arrayErrors = [];
           me.getUniversidad();
           me.habilitarEditar = 0;
           //si es exitoso mostramos el resultado enviado desde el server
@@ -591,6 +600,7 @@ export default {
       let me = this;
       me.getUniversidad();
       me.habilitarEditar = 0;
+      me.arrayErrors = [];
     },
     getPeriodosAll(page, criterio, buscar, cantidad) {
       let me = this;

@@ -43,11 +43,9 @@ class UniversidadesController extends Controller
         } catch (Exception $e) {
             DB::rollBack(); //si hay error no ejecute la transaccion
         }
-
-
-
         return $request->all();
     }
+
     public function updateImagen(Request $request)
     {
         if (!$request->ajax()) return redirect('/');

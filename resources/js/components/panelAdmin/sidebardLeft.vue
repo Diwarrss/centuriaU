@@ -71,6 +71,6 @@ export default {
 <style scoped>
 /* colocar estilo al router-link-active */
 .router-link-exact-active {
-  background: black;
+  background: #085992;
 }
 </style>

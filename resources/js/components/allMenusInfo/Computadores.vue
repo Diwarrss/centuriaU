@@ -39,10 +39,12 @@
               <div class="col-sm-12 col-lg-12">
                 <div class="card card-accent-primary">
                   <div class="card-header">
-                    <strong>
-                      <i class="fas fa-laptop"></i>
-                      Listado de Computadores (Total: {{objectCompu.total}})
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="fas fa-laptop"></i>
+                        Listado de Computadores (Total: {{objectCompu.total}})
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -94,7 +96,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                    <table class="table table-responsive-lg table-hover table-bordered table-sm">
                       <thead>
                         <tr>
                           <th>#</th>
@@ -163,10 +165,12 @@
               <div class="col-sm-12 col-lg-12">
                 <div class="card card-accent-success">
                   <div class="card-header">
-                    <strong>
-                      <i class="fas fa-laptop"></i>
-                      Listado de Préstamos (Total: {{objectPrestamos.total}})
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="fas fa-laptop"></i>
+                        Listado de Préstamos (Total: {{objectPrestamos.total}})
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -219,7 +223,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-md table-hover table-bordered table-sm">
+                    <table class="table table-responsive-lg table-hover table-bordered table-sm">
                       <thead>
                         <tr>
                           <th>#</th>

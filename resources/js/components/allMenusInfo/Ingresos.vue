@@ -35,9 +35,11 @@
               <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4">
                 <div class="card card-accent-primary">
                   <div class="card-header">
-                    <strong>
-                      <i class="icon-magnifier icons"></i> Buscar Persona
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="icon-magnifier icons"></i> Buscar Persona
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="input-group">
@@ -203,10 +205,12 @@
               <div class="col-sm-12 col-md-12 col-lg-6 col-xl-8">
                 <div class="card card-accent-danger">
                   <div class="card-header">
-                    <strong>
-                      <i class="far fa-list-alt"></i>
-                      Ingresos Actuales ({{objectIngresosA.total}})
-                    </strong>
+                    <h5>
+                      <strong>
+                        <i class="far fa-list-alt"></i>
+                        Ingresos Actuales ({{objectIngresosA.total}})
+                      </strong>
+                    </h5>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -260,7 +264,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-md table-hover table-sm">
+                    <table class="table table-responsive-lg table-hover table-sm">
                       <thead>
                         <tr>
                           <th>Fecha Ingreso</th>
@@ -349,10 +353,12 @@
       <div class="col-md-12 col-lg-12">
         <div class="card card-accent-success">
           <div class="card-header">
-            <strong>
-              <i class="far fa-list-alt"></i>
-              Ingresos Totales ({{objectIngresos.total}})
-            </strong>
+            <h5>
+              <strong>
+                <i class="far fa-list-alt"></i>
+                Ingresos Totales ({{objectIngresos.total}})
+              </strong>
+            </h5>
           </div>
           <div class="card-body">
             <div class="row">
@@ -406,7 +412,7 @@
                 </div>
               </div>
             </div>
-            <table class="table table-responsive-md table-hover table-sm">
+            <table class="table table-responsive-lg table-hover table-sm">
               <thead>
                 <tr>
                   <th>#</th>

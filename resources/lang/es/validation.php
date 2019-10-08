@@ -92,7 +92,7 @@ return [
     ],
     'not_in'               => 'El campo :attribute seleccionado es inválido.',
     'not_regex'            => 'El formato del campo :attribute es inválido.',
-	'numeric'              => 'El campo :attribute debe ser un número.',
+    'numeric'              => 'El campo :attribute debe ser un número.',
     'present'              => 'El campo :attribute debe estar presente.',
     'regex'                => 'El formato del campo :attribute es inválido.',
     'required'             => 'El campo :attribute es obligatorio.',
@@ -145,6 +145,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => 'Contraseña',
+        'passwordV' => 'Confirmación',
+        'nombre1' => 'primer nombre',
+        'nombre2' => 'segundo nombre',
+        'apellido1' => 'primer apellido',
+        'apellido2' => 'segundo apellido',
+    ],
 
 ];
