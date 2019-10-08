@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('estado_user', [1, 0])->default(1); //1 Activo, 0 Inactivo
+            $table->string('url_imagen', 200)->nullable();
             $table->rememberToken();
             $table->unsignedBigInteger('roles_id')->default(1);
             $table->foreign('roles_id')->references('id')->on('roles');

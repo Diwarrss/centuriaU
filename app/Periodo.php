@@ -8,6 +8,7 @@ class Periodo extends Model
 {
     protected $fillable = [
         'nombre',
+        'descripcion',
         'estado_periodo',
         'universidad_id'
     ];

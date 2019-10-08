@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador Periodos
     Route::get('getPeriodo', 'PeriodosController@getPeriodo')->name('getPeriodo');
+    Route::get('getPeriodosAll', 'PeriodosController@getPeriodosAll')->name('getPeriodosAll');
+    Route::post('savePeriodo', 'PeriodosController@savePeriodo')->name('savePeriodo');
+    Route::put('updatePeriodo', 'PeriodosController@updatePeriodo')->name('updatePeriodo');
 
     //Controlador Personas
     Route::get('getPersona', 'PersonasController@getPersona')->name('getPersona');
@@ -84,4 +87,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador de Roles
     Route::get('getRoles', 'RolesController@getRoles')->name('getRoles');
+
+    //Controlador Universidad
+    Route::get('getUniversidad', 'UniversidadesController@getUniversidad')->name('getUniversidad');
+    Route::post('updateUniversidad', 'UniversidadesController@updateUniversidad')->name('updateUniversidad');
+    Route::post('updateImagen', 'UniversidadesController@updateImagen')->name('updateImagen');
 });

@@ -16,7 +16,7 @@ class CreateUniversidadesTable extends Migration
         Schema::create('universidades', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre', 255);
-            $table->string('siglas', 150);
+            $table->string('siglas', 15);
             $table->string('direccion', 200);
             $table->string('telefonos', 200)->nullable();
             $table->string('url_imagen', 200)->nullable();

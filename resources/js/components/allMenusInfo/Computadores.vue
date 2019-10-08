@@ -568,7 +568,7 @@ export default {
           //console.log(error);
         });
     },
-    updateCompu(compuId) {
+    updateCompu() {
       let me = this;
       axios
         .put("/updateCompu", {

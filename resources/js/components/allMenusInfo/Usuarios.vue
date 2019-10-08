@@ -449,6 +449,7 @@ export default {
           sede: me.sede
         })
         .then(function(response) {
+          me.getUsers(me.pagActual, me.criterio, me.buscar, me.cantidad);
           me.cerrarModal();
           Swal.fire({
             position: "top",
@@ -481,7 +482,7 @@ export default {
           sede: me.sede
         })
         .then(function(response) {
-          me.getUsers();
+          me.getUsers(me.pagActual, me.criterio, me.buscar, me.cantidad);
           me.cerrarModal();
           Swal.fire({
             position: "top",

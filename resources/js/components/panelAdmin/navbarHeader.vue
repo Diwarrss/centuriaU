@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header navbar" v-if="infoUserAuth.length">
+  <header class="app-header navbar" v-if="infoUserAuth.length && arrayUniversidad.length">
     <button
       class="navbar-toggler sidebar-toggler d-lg-none mr-auto"
       type="button"
@@ -8,13 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/admin">
-      <img
-        class="navbar-brand-full"
-        src="adminCoreui/img/brand/logoCenturia.png"
-        width="40"
-        height="45"
-        alt="Logotipo"
-      />
+      <img class="navbar-brand-full" :src="imagenAnterior" height="45" alt="Logotipo" />
       <!-- <img
         class="navbar-brand-minimized"
         src="adminCoreui/img/brand/sygnet.svg"
@@ -57,12 +51,8 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <a class="d-md-down-none">{{infoUserAuth[0].name}}</a>
-          <img
-            class="img-avatar"
-            src="adminCoreui/img/avatars/avatar.png"
-            alt="admin@bootstrapmaster.com"
-          />
+          <a class="d-sm-down-none">{{infoUserAuth[0].name}}</a>
+          <img class="img-avatar" :src="infoUserAuth[0].url_imagen" />
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header text-center">
@@ -105,6 +95,12 @@
 import { mapState, mapActions } from "vuex";
 export default {
   props: ["csrf"],
+  data() {
+    return {
+      arrayUniversidad: [],
+      imagenAnterior: ""
+    };
+  },
   computed: {
     ...mapState(["infoUserAuth"])
   },
@@ -113,11 +109,26 @@ export default {
     logout() {
       event.preventDefault();
       document.getElementById("logout-form").submit();
+    },
+    getUniversidad() {
+      let me = this;
+      axios
+        .get("/getUniversidad")
+        .then(function(response) {
+          me.arrayUniversidad = response.data;
+          me.imagenAnterior = response.data[0].url_imagen;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          console.log(error);
+        });
     }
   },
   mounted() {
     //optener el Usuario autenticado
     this.getUserAuth();
+    this.getUniversidad();
   }
 };
 </script>
