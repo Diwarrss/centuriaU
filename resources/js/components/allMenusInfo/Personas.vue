@@ -38,10 +38,10 @@
                       <button class="btn btn-success mb-2" @click="descargarDatos">
                         <i class="far fa-file-excel"></i> Descargar Datos
                       </button>
-                      <button class="btn btn-primary mb-2">
+                      <button class="btn btn-primary mb-2" @click="abrirImportar">
                         <i class="fas fa-file-import"></i> Importar Datos
                       </button>
-                      <button class="btn btn-secondary mb-2">
+                      <button class="btn btn-secondary mb-2" @click="descargarFormato">
                         <i class="fas fa-file-download"></i> Descargar Formato
                       </button>
                     </div>
@@ -341,6 +341,60 @@
         </div>
       </div>
     </section>
+    <!-- Modal modal Reporte daño Computador-->
+    <section>
+      <div
+        class="modal"
+        id="modalImportar"
+        role="dialog"
+        aria-labelledby="myModalLabel2"
+        data-backdrop="static"
+        data-keyboard="false"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-primary" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <i class="fas fa-file-import"></i> Importar Datos
+              </h4>
+              <button class="close" type="button" @click="cerrarImportar" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group">
+                  <div class="custom-file">
+                    <input
+                      type="file"
+                      class="custom-file-input"
+                      name="imagen"
+                      id="imagen"
+                      @change="obtenerArchivo"
+                    />
+                    <label class="custom-file-label" for="file" v-if="!archivoExcel">Elegir Archivo</label>
+                    <label class="custom-file-label" for="file" v-else>{{archivoExcel.name}}</label>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.archivo"
+                      v-text="arrayErrors.archivo[0]"
+                    ></span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" @click="cerrarImportar">
+                <i class="far fa-times-circle"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" @click="importarDatos">
+                <i class="far fa-check-circle"></i> Importar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 <script>
@@ -365,7 +419,8 @@ export default {
       tipo_persona: "",
       programa: "",
       sede: "",
-      idPersona: ""
+      idPersona: "",
+      archivoExcel: ""
     };
   },
   computed: {
@@ -430,17 +485,17 @@ export default {
       let me = this;
       $("#modalEditarPersona").modal("hide");
       //limpiar las variables
-      (me.arrayErrors = []),
-        (me.tipo_documento = ""),
-        (me.numero_documento = ""),
-        (me.nombre1 = ""),
-        (me.nombre2 = ""),
-        (me.apellido1 = ""),
-        (me.apellido2 = ""),
-        (me.estado_persona = ""),
-        (me.tipo_persona = ""),
-        (me.programa = ""),
-        (me.sede = "");
+      me.arrayErrors = [];
+      me.tipo_documento = "";
+      me.numero_documento = "";
+      me.nombre1 = "";
+      me.nombre2 = "";
+      me.apellido1 = "";
+      me.apellido2 = "";
+      me.estado_persona = "";
+      me.tipo_persona = "";
+      me.programa = "";
+      me.sede = "";
     },
     updatePersona() {
       let me = this;
@@ -499,6 +554,83 @@ export default {
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "Personas.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Descarga éxitosa!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+    },
+    abrirImportar() {
+      $("#modalImportar").modal("show");
+    },
+    cerrarImportar() {
+      let me = this;
+      $("#modalImportar").modal("hide");
+      me.arrayErrors = [];
+      me.archivoExcel = "";
+    },
+    obtenerArchivo(e) {
+      let me = this;
+
+      let file = event.target.files[0];
+      me.archivoExcel = file; //guardamos el archivo en esta variable
+      console.log(me.archivoExcel);
+    },
+    importarDatos() {
+      let me = this;
+
+      let formData = new FormData();
+      formData.append("archivo", me.archivoExcel);
+
+      //le enviamos formdata q lleva toda la data
+      axios
+        .post("/importPersonas", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }) //le envio el parametro completo
+        .then(function(response) {
+          me.getPersonas(me.pagActual, me.buscar, me.cantidad);
+          //si es exitoso mostramos el resultado enviado desde el server
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Datos cargados con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.log("cargado con exito");
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors; //guardamos la respuesta del server de errores en el array arrayErrors
+          }
+          me.cerrarImportar();
+          Swal.fire({
+            position: "top",
+            type: "error",
+            title: "Error al cargar Datos",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        });
+    },
+    descargarFormato() {
+      axios({
+        url: "/descargarFormato",
+        method: "GET",
+        responseType: "blob" // important
+      }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "Formato_Personas.xlsx");
         document.body.appendChild(link);
         link.click();
         Swal.fire({

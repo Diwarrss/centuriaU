@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FormatoExport;
 use App\Exports\PersonasExport;
+use App\Imports\PersonasImport;
 use App\Persona;
-use Faker\Provider\ro_MD\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Storage;
 
 class PersonasController extends Controller
 {
@@ -248,5 +250,30 @@ class PersonasController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         return Excel::download(new PersonasExport, 'Personas.xlsx');
+    }
+
+    //realizar un import de Datos excel
+    public function importPersonas(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $request->validate([
+            'archivo' => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        $path = $request->file('archivo')->getRealPath();
+
+        Excel::import(new PersonasImport, $path);
+    }
+
+    public function descargarFormato(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        //usamos response para descargar el archivo cargado en el servidor
+        return response()->download(public_path('/storage/Formato_Personas.xlsx'));
+
+        //este es para usar un archivo creado desde laravel-excel
+        /* return Excel::download(new FormatoExport, 'Formato_Personas.xlsx'); */
     }
 }

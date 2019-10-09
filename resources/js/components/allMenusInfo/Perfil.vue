@@ -207,7 +207,12 @@
                           id="imagen"
                           @change="obtenerImagen"
                         />
-                        <label class="custom-file-label" for="file">Elegir Imagen</label>
+                        <label
+                          class="custom-file-label"
+                          for="file"
+                          v-if="!imagenEnviar"
+                        >Elegir Imagen</label>
+                        <label class="custom-file-label" for="file" v-else>{{imagenEnviar.name}}</label>
                         <span
                           class="help-block text-danger"
                           v-if="arrayErrors.imagen"

@@ -653,7 +653,7 @@ export default {
     buscarPersonaID() {
       let me = this;
       axios
-        .get("https://apicenturia.local/api/getUsuarios", {
+        .get("http://api.unisangil.edu.co/api/getUsuarios", {
           params: {
             id: me.documento
           }
