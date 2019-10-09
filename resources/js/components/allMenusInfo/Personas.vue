@@ -35,7 +35,7 @@
                       </strong>
                     </h5>
                     <div class="card-header-actions">
-                      <button class="btn btn-success mb-2">
+                      <button class="btn btn-success mb-2" @click="descargarDatos">
                         <i class="far fa-file-excel"></i> Descargar Datos
                       </button>
                       <button class="btn btn-primary mb-2">
@@ -478,6 +478,37 @@ export default {
           }
           //console.log(error);
         });
+    },
+    //generar reporte completo de excel
+    descargarDatos() {
+      /* window.open("/exportPersonas"); //se envia a la url especifica y descarga por el controlador
+      Swal.fire({
+        position: "top",
+        type: "success",
+        title: "Descarga éxitosa!",
+        showConfirmButton: false,
+        timer: 1500
+      }); */
+      /* FORMA CON AXIOS DESCARGAR ARCHIVOS */
+      axios({
+        url: "/exportPersonas",
+        method: "GET",
+        responseType: "blob" // important
+      }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "Personas.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Descarga éxitosa!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
     }
   },
   mounted() {

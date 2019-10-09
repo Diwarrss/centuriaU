@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PersonasExport;
 use App\Persona;
 use Faker\Provider\ro_MD\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PersonasController extends Controller
 {
@@ -238,5 +240,13 @@ class PersonasController extends Controller
 
             return $personas;
         }
+    }
+
+    //realizar export de excel
+    public function exportPersonas(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        return Excel::download(new PersonasExport, 'Personas.xlsx');
     }
 }

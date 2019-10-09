@@ -6,9 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="Gridsoft">
-    <meta name="keyword" content="Gridsoft">
-    <title>Gridsoft Admin</title>
+    <meta name="description" content="Centuria">
+    <meta name="keyword" content="Centuria">
+    <title>Centuria Admin</title>
     <!-- Todos los JS del Coreui-->
     <link href="{{asset('/css/allCoreui.css') }}" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics-->
@@ -42,12 +42,12 @@
         {{-- Footer del Admin --}}
         <footer class="app-footer">
             <div>
-                <a href="https://www.gridsoft.co/">GridSoft</a>
-                <span>&copy; 2019 creativeLabs.</span>
+                <a href="http://www.unisangil.edu.co" target="_blanck">Departamento Sistemas y Tics</a>
+                <span>2019 Copyright &copy; </span>
             </div>
             <div class="ml-auto">
-                <span>Powered by</span>
-                <a href="https://www.gridsoft.co/">GridSoft</a>
+                <span>Desarrollado por:</span>
+                <a href="https://diego.gridsoft.co" target="_blanck">Ing. Diego Vargas</a>
             </div>
         </footer>
     <!-- CoreUI and necessary plugins-->

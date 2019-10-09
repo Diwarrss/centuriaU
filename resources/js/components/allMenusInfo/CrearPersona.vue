@@ -145,7 +145,8 @@
                   <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
-                      , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
+                      , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información',
+                      'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia', 'Particular']"
                       placeholder="Seleccionar..."
                       v-model="programa"
                     >
@@ -247,17 +248,17 @@ export default {
       let me = this;
       $("#modalCrearPersona").modal("hide");
       //limpiar las variables
-      (me.arrayErrors = []),
-        (me.tipo_documento = ""),
-        (me.numero_documento = ""),
-        (me.nombre1 = ""),
-        (me.nombre2 = ""),
-        (me.apellido1 = ""),
-        (me.apellido2 = ""),
-        (me.estado_persona = "Activo"),
-        (me.tipo_persona = ""),
-        (me.programa = ""),
-        (me.sede = "");
+      me.arrayErrors = [];
+      me.tipo_documento = "";
+      me.numero_documento = "";
+      me.nombre1 = "";
+      me.nombre2 = "";
+      me.apellido1 = "";
+      me.apellido2 = "";
+      me.estado_persona = "Activo";
+      me.tipo_persona = "";
+      me.programa = "";
+      me.sede = "";
     }
   }
 };
