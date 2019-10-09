@@ -35,7 +35,7 @@
                       </strong>
                     </h5>
                     <div class="card-header-actions">
-                      <button class="btn btn-success mb-2" @click="descargarDatos">
+                      <button class="btn btn-success mb-2" id="descargar" @click="descargarDatos">
                         <i class="far fa-file-excel"></i> Descargar Datos
                       </button>
                       <button class="btn btn-primary mb-2" @click="abrirImportar">
@@ -48,6 +48,23 @@
                   </div>
                   <div class="card-body">
                     <div class="row">
+                      <div class="col-md-12" v-if="erroresImportar.length > 0">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                          <h4 class="alert-heading">Alertas!</h4>
+                          <li
+                            v-for="(data, index) in erroresImportar"
+                            :key="index"
+                          >{{data.errorInfo[2]}}</li>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="alert"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                      </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <div class="input-group">
@@ -357,9 +374,6 @@
               <h4 class="modal-title">
                 <i class="fas fa-file-import"></i> Importar Datos
               </h4>
-              <button class="close" type="button" @click="cerrarImportar" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
             </div>
             <div class="modal-body">
               <form class="form-horizontal" enctype="multipart/form-data">
@@ -384,10 +398,15 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" @click="cerrarImportar">
+              <button
+                class="btn btn-secondary"
+                id="cancelarImportar"
+                type="button"
+                @click="cerrarImportar"
+              >
                 <i class="far fa-times-circle"></i> Cancelar
               </button>
-              <button class="btn btn-primary" @click="importarDatos">
+              <button class="btn btn-primary" id="importarDatos" @click="importarDatos">
                 <i class="far fa-check-circle"></i> Importar
               </button>
             </div>
@@ -420,7 +439,8 @@ export default {
       programa: "",
       sede: "",
       idPersona: "",
-      archivoExcel: ""
+      archivoExcel: "",
+      erroresImportar: []
     };
   },
   computed: {
@@ -536,6 +556,7 @@ export default {
     },
     //generar reporte completo de excel
     descargarDatos() {
+      document.getElementById("descargar").disabled = true;
       /* window.open("/exportPersonas"); //se envia a la url especifica y descarga por el controlador
       Swal.fire({
         position: "top",
@@ -550,10 +571,17 @@ export default {
         method: "GET",
         responseType: "blob" // important
       }).then(response => {
+        //capturamos la fecha
+        var currentDate = new Date();
+        var date = currentDate.getDate();
+        var month = currentDate.getMonth();
+        var year = currentDate.getFullYear();
+        var fechaActual = date + "/" + (month + 1) + "/" + year;
+
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "Personas.xlsx");
+        link.setAttribute("download", fechaActual + "_Personas.xlsx");
         document.body.appendChild(link);
         link.click();
         Swal.fire({
@@ -563,6 +591,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         });
+        document.getElementById("descargar").disabled = false;
       });
     },
     abrirImportar() {
@@ -579,9 +608,13 @@ export default {
 
       let file = event.target.files[0];
       me.archivoExcel = file; //guardamos el archivo en esta variable
-      console.log(me.archivoExcel);
+      //console.log(me.archivoExcel);
     },
     importarDatos() {
+      //habilitar o deshabilitar botones
+      document.getElementById("cancelarImportar").disabled = true;
+      document.getElementById("importarDatos").disabled = true;
+
       let me = this;
 
       let formData = new FormData();
@@ -595,6 +628,8 @@ export default {
           }
         }) //le envio el parametro completo
         .then(function(response) {
+          document.getElementById("cancelarImportar").disabled = false;
+          document.getElementById("importarDatos").disabled = false;
           me.getPersonas(me.pagActual, me.buscar, me.cantidad);
           //si es exitoso mostramos el resultado enviado desde el server
           Swal.fire({
@@ -604,21 +639,29 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-          //console.log("cargado con exito");
+          me.cerrarImportar();
+          me.erroresImportar = response.data.errores;
+          //console.log(me.erroresImportar);
         })
         .catch(function(error) {
           if (error.response.status == 422) {
             //preguntamos si el error es 422
             me.arrayErrors = error.response.data.errors; //guardamos la respuesta del server de errores en el array arrayErrors
+            document.getElementById("cancelarImportar").disabled = false;
+            document.getElementById("importarDatos").disabled = false;
+          } else {
+            me.cerrarImportar();
+            //habilitar o deshabilitar botones
+            document.getElementById("cancelarImportar").disabled = false;
+            document.getElementById("importarDatos").disabled = false;
+            Swal.fire({
+              position: "top",
+              type: "error",
+              title: "Error al cargar Datos",
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
-          me.cerrarImportar();
-          Swal.fire({
-            position: "top",
-            type: "error",
-            title: "Error al cargar Datos",
-            showConfirmButton: false,
-            timer: 1500
-          });
         });
     },
     descargarFormato() {

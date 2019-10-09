@@ -263,7 +263,15 @@ class PersonasController extends Controller
 
         $path = $request->file('archivo')->getRealPath();
 
-        Excel::import(new PersonasImport, $path);
+        $import = new PersonasImport();
+        $import->import($path);
+
+        if ($import->errors()) {
+            return ['errores' => $import->errors('errorInfo')]; //retornamos los errores si los hay o alertas
+        }
+
+        //$import = Excel::import(new PersonasImport, $path);
+        //Excel::import(new PersonasImport, $path);
     }
 
     public function descargarFormato(Request $request)
