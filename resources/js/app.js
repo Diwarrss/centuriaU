@@ -27,6 +27,12 @@ import vSelect from "vue-select";
 Vue.component("v-select", vSelect);
 import "vue-select/dist/vue-select.css";
 
+//para el vue datepicker
+import Datetime from "vue-datetime";
+Vue.use(Datetime);
+// You need a specific loader for CSS files
+import "vue-datetime/dist/vue-datetime.css";
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -65,6 +71,10 @@ Vue.component(
     require("./components/allMenusInfo/apexCharts/chartIngresos.vue").default
 );
 
+Vue.component(
+    "chartingresosmes",
+    require("./components/allMenusInfo/apexCharts/chartIngresosMes.vue").default
+);
 //crear personas mmodal etc
 /* Vue.component(
     "ingresostotales",

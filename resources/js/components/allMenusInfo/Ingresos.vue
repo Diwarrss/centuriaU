@@ -264,7 +264,7 @@
                         </div>
                       </div>
                     </div>
-                    <table class="table table-responsive-lg table-hover table-sm">
+                    <table class="table table-responsive-md table-hover table-sm">
                       <thead>
                         <tr>
                           <th>Fecha Ingreso</th>
@@ -419,6 +419,7 @@
                   <th>Fecha Ingreso</th>
                   <th>Documento</th>
                   <th>Nombres y Apellidos</th>
+                  <th>Programa</th>
                   <th>Sede</th>
                   <th>Computador</th>
                   <th>Préstamos</th>
@@ -441,6 +442,7 @@
                   <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
                   <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                   <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                  <td v-text="data.programa"></td>
                   <td v-text="data.nombre_sede"></td>
                   <td>
                     <h4>
@@ -793,11 +795,25 @@ export default {
                 }
               })
               .catch(function(error) {
+                Swal.fire({
+                  position: "top",
+                  type: "error",
+                  title: "Error conexión del Servidor",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
                 console.log(error);
               });
           }
         })
         .catch(function(error) {
+          Swal.fire({
+            position: "top",
+            type: "error",
+            title: "Error conexión del Servidor",
+            showConfirmButton: false,
+            timer: 1500
+          });
           console.log(error);
         });
     },

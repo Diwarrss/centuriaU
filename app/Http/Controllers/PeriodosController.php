@@ -89,8 +89,8 @@ class PeriodosController extends Controller
                         $encontrar = Periodo::where([
                             ['estado_periodo', '=', $value]
                         ])->count();
-                        if ($encontrar == 1) {
-                            $fail('Ya hay periodo Activado');
+                        if ($encontrar >= 1) {
+                            $fail('Ya hay un periodo Activado');
                         }
                     }
                 ],

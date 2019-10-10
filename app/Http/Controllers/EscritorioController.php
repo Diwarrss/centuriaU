@@ -87,16 +87,17 @@ class EscritorioController extends Controller
 
     public function getIngresoPrograma(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $sedes_id = Auth::user()->sedes_id;
         $fechahoy = Carbon::now()->format('Y-m-d');
 
         if ($sedes_id) {
             $ingresosP = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
-                ->select('personas.programa as x', DB::raw('SUM(ingresos.id) as y'))
+                ->select('personas.programa as x', DB::raw('count(ingresos.id) as y'))
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
+                ->groupBy('personas.programa')
                 ->get();
 
             return $ingresosP;
@@ -108,6 +109,38 @@ class EscritorioController extends Controller
                 ->get();
 
             return $ingresosP;
+        }
+    }
+
+    //ingresos totales por mes y año actual
+    public function getIngresosMes(Request $request)
+    {
+        //if (!$request->ajax()) return redirect('/');
+        DB::statement("SET lc_time_names = 'es_ES'"); //para que sea en español las salidas sql
+        $sedes_id = Auth::user()->sedes_id;
+        $year = Carbon::now()->format('Y');
+
+        if ($sedes_id) {
+            $ingresosM = Ingreso::select(
+                DB::raw('DATE_FORMAT(created_at, "%M") as x'),
+                DB::raw('count(id) as y')
+            )->whereYear('created_at', $year)
+                ->where('sedes_id', $sedes_id)
+                ->orderBy('created_at', 'asc')
+                ->groupBy('x')
+                ->get();
+
+            return $ingresosM;
+        } else {
+            $ingresosM = Ingreso::select(
+                DB::raw('DATE_FORMAT(created_at, "%M") as x'),
+                DB::raw('count(id) as y')
+            )->whereYear('created_at', $year)
+                ->orderBy('created_at', 'asc')
+                ->groupBy('x')
+                ->get();
+
+            return $ingresosM;
         }
     }
 }

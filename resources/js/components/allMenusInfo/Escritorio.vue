@@ -30,10 +30,16 @@
                       title="Ver información"
                       to="/ingresos"
                     >
-                      <i class="fas fa-user-check fa-4x"></i>
+                      <i class="fas fa-user-check fa-5x"></i>
                     </router-link>
-                    <div class="text-value">{{totalIngresos}}</div>
-                    <div>Total Ingresos</div>
+                    <div class="text-value">
+                      <h3>
+                        <strong>{{totalIngresos}}</strong>
+                      </h3>
+                    </div>
+                    <div>
+                      <h5>Total Ingresos</h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -45,10 +51,16 @@
                       title="Ver información"
                       to="/computadores"
                     >
-                      <i class="fas fa-laptop fa-4x"></i>
+                      <i class="fas fa-laptop fa-5x"></i>
                     </router-link>
-                    <div class="text-value">{{totalComputadores}}</div>
-                    <div>Total Computadores</div>
+                    <div class="text-value">
+                      <h3>
+                        <strong>{{totalComputadores}}</strong>
+                      </h3>
+                    </div>
+                    <div>
+                      <h5>Total Computadores</h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -60,10 +72,16 @@
                       title="Ver información"
                       to="/computadores"
                     >
-                      <i class="fas fa-laptop-medical fa-4x"></i>
+                      <i class="fas fa-laptop-medical fa-5x"></i>
                     </router-link>
-                    <div class="text-value">{{totalPrestamos}}</div>
-                    <div>Total de Préstamos</div>
+                    <div class="text-value">
+                      <h3>
+                        <strong>{{totalPrestamos}}</strong>
+                      </h3>
+                    </div>
+                    <div>
+                      <h5>Total de Préstamos</h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -75,10 +93,16 @@
                       title="Ver información"
                       to="/usuarios"
                     >
-                      <i class="fas fa-user-cog fa-4x"></i>
+                      <i class="fas fa-user-cog fa-5x"></i>
                     </router-link>
-                    <div class="text-value">{{totalUsers}}</div>
-                    <div>Total de Usuarios del Sistema</div>
+                    <div class="text-value">
+                      <h3>
+                        <strong>{{totalUsers}}</strong>
+                      </h3>
+                    </div>
+                    <div>
+                      <h5>Total de Usuarios del Sistema</h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -89,12 +113,29 @@
                     <h5>
                       <strong>
                         <i class="fas fa-chart-bar"></i>
-                        Ingresos vs Programa
+                        Ingresos vs Programa ACTUALES
                       </strong>
                     </h5>
                   </div>
                   <div class="card-body">
                     <chartingresos></chartingresos>
+                  </div>
+                </div>
+              </div>
+              <!-- para llamar el componente del grafico -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                      <strong>
+                        <i class="fas fa-chart-bar"></i>
+                        Ingresos por Mes ({{new Date().getFullYear()}})
+                        <!-- obtener año actual -->
+                      </strong>
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <chartingresosmes></chartingresosmes>
                   </div>
                 </div>
               </div>

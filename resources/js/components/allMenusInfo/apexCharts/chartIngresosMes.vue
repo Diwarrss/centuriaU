@@ -22,11 +22,11 @@ export default {
     };
   },
   methods: {
-    getDatos() {
+    getIngresosMes() {
       let me = this;
 
       axios
-        .get("/getIngresoPrograma")
+        .get("/getIngresosMes")
         .then(function(response) {
           //optenemos los datos de respuesta en variable
           let datos = response.data;
@@ -46,7 +46,7 @@ export default {
     }
   },
   mounted() {
-    this.getDatos();
+    this.getIngresosMes();
   }
 };
 </script>
