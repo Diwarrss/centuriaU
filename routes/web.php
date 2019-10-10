@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('countComputadores', 'EscritorioController@countComputadores')->name('countComputadores');
     Route::get('countPrestamos', 'EscritorioController@countPrestamos')->name('countPrestamos');
     Route::get('countUsers', 'EscritorioController@countUsers')->name('countUsers');
+    Route::get('getIngresoPrograma', 'EscritorioController@getIngresoPrograma')->name('getIngresoPrograma');
 
     //Controlador de Roles
     Route::get('getRoles', 'RolesController@getRoles')->name('getRoles');

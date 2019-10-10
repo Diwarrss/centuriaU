@@ -82,6 +82,22 @@
                   </div>
                 </div>
               </div>
+              <!-- para llamar el componente del grafico -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>
+                      <strong>
+                        <i class="fas fa-chart-bar"></i>
+                        Ingresos vs Programa
+                      </strong>
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <chartingresos></chartingresos>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
