@@ -60,6 +60,22 @@
                             class="close"
                             data-dismiss="alert"
                             aria-label="Close"
+                            @click="limpiarErrores"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="col-md-12" v-if="errores500">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <h4 class="alert-heading">Errores!</h4>
+                          <li>{{errores500}}</li>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="alert"
+                            aria-label="Close"
+                            @click="limpiarErrores"
                           >
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -440,7 +456,8 @@ export default {
       sede: "",
       idPersona: "",
       archivoExcel: "",
-      erroresImportar: []
+      erroresImportar: [],
+      errores500: ""
     };
   },
   computed: {
@@ -650,6 +667,8 @@ export default {
             document.getElementById("cancelarImportar").disabled = false;
             document.getElementById("importarDatos").disabled = false;
           } else {
+            //capturamos el error 500 servidor
+            me.errores500 = error.response.data.message;
             me.cerrarImportar();
             //habilitar o deshabilitar botones
             document.getElementById("cancelarImportar").disabled = false;
@@ -684,6 +703,10 @@ export default {
           timer: 1500
         });
       });
+    },
+    limpiarErrores() {
+      this.erroresImportar = [];
+      this.errores500 = "";
     }
   },
   mounted() {
