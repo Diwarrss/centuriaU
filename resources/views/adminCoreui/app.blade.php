@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="Gridsoft">
     <meta name="keyword" content="Gridsoft">
-    <title>Gridsoft Admin</title>
+    <!--Colocar icono del software en la barra del nombre de la pagina-->
+    <link rel="icon" type="image/png" href="adminCoreui/img/brand/logoCenturia.png" />
+    <title>Centuria Admin</title>
     <!-- Todos los JS del Coreui-->
     <link href="{{asset('/css/allCoreui.css') }}" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics-->

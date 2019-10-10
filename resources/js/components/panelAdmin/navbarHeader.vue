@@ -35,7 +35,7 @@
           <i class="fas fa-users-cog"></i> Usuarios
         </router-link>
       </li>
-      <li class="nav-item px-3">
+      <li class="nav-item px-3" v-if="infoUserAuth[0].roles_id == 1">
         <router-link class="nav-link" to="/universidad">
           <i class="fas fa-university"></i> Universidad
         </router-link>

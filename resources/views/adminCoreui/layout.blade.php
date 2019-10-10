@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="Centuria">
     <meta name="keyword" content="Centuria">
+    <!--Colocar icono del software en la barra del nombre de la pagina-->
+    <link rel="icon" type="image/png" href="adminCoreui/img/brand/logoCenturia.png" />
     <title>Centuria Admin</title>
     <!-- Todos los JS del Coreui-->
     <link href="{{asset('/css/allCoreui.css') }}" rel="stylesheet">
@@ -32,7 +34,18 @@
         <navbarheader csrf="{{ csrf_token() }}"></navbarheader>
         <div class="app-body">
             {{-- Menu Lado Izquierdo --}}
-                <sidebardleft></sidebardleft>
+            {{-- programado para mostrar dependiendo del rol --}}
+                @auth
+                    @if (Auth::user()->roles_id == 1)
+                        <sidebardsuperadmin></sidebardsuperadmin>
+                    @elseif (Auth::user()->roles_id == 2)
+                        <sidebardadmin></sidebardadmin>
+                    @elseif (Auth::user()->roles_id == 3)
+                        <sidebardingreso></sidebardingreso>
+                    @else
+                        <sidebardconsulta></sidebardconsulta>
+                    @endif
+                @endauth
             {{-- CUERPO PRINCIPAL LLAMANDO CON VUE ROUTER--}}
                 <router-view></router-view>
             {{-- MENU LADO DERECHO Componente--}}

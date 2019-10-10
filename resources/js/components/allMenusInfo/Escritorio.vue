@@ -108,36 +108,11 @@
               </div>
               <!-- para llamar el componente del grafico -->
               <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>
-                      <strong>
-                        <i class="fas fa-chart-bar"></i>
-                        Ingresos vs Programa ACTUALES
-                      </strong>
-                    </h5>
-                  </div>
-                  <div class="card-body">
-                    <chartingresos></chartingresos>
-                  </div>
-                </div>
+                <chartingresos></chartingresos>
               </div>
               <!-- para llamar el componente del grafico -->
               <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>
-                      <strong>
-                        <i class="fas fa-chart-bar"></i>
-                        Ingresos por Mes ({{new Date().getFullYear()}})
-                        <!-- obtener año actual -->
-                      </strong>
-                    </h5>
-                  </div>
-                  <div class="card-body">
-                    <chartingresosmes></chartingresosmes>
-                  </div>
-                </div>
+                <chartingresosmes></chartingresosmes>
               </div>
             </div>
           </div>

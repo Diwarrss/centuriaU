@@ -90,12 +90,13 @@ class EscritorioController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $sedes_id = Auth::user()->sedes_id;
-        $fechahoy = Carbon::now()->format('Y-m-d');
+        $fechaRecibida = $request->fecha;
+        //$fechahoy = $fechaRecibida->format('Y-m-d');
 
         if ($sedes_id) {
             $ingresosP = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->select('personas.programa as x', DB::raw('count(ingresos.id) as y'))
-                ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+                ->where('ingresos.created_at', 'like', '%' . $fechaRecibida . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
                 ->groupBy('personas.programa')
                 ->get();
@@ -104,7 +105,7 @@ class EscritorioController extends Controller
         } else {
             $ingresosP = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->select('personas.programa as x', DB::raw('count(ingresos.id) as y'))
-                ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
+                ->where('ingresos.created_at', 'like', '%' . $fechaRecibida . '%')
                 ->groupBy('personas.programa')
                 ->get();
 
@@ -115,7 +116,7 @@ class EscritorioController extends Controller
     //ingresos totales por mes y año actual
     public function getIngresosMes(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         DB::statement("SET lc_time_names = 'es_ES'"); //para que sea en español las salidas sql
         $sedes_id = Auth::user()->sedes_id;
         $year = Carbon::now()->format('Y');

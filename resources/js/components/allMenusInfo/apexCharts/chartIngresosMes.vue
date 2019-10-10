@@ -1,6 +1,19 @@
 <template>
-  <div v-if="series.length > 0">
-    <apexchart width="100%" height="auto" :options="options" :series="series"></apexchart>
+  <div class="card">
+    <div class="card-header">
+      <h5>
+        <strong>
+          <i class="fas fa-chart-bar"></i>
+          Ingresos por Mes ({{new Date().getFullYear()}})
+          <!-- obtener año actual -->
+        </strong>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div v-if="series.length > 0">
+        <apexchart width="100%" height="auto" :options="options" :series="series"></apexchart>
+      </div>
+    </div>
   </div>
 </template>
 <script>

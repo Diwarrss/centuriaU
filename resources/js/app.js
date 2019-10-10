@@ -45,17 +45,27 @@ import "vue-datetime/dist/vue-datetime.css";
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component(
-    "example-component",
-    require("./components/ExampleComponent.vue").default
-);
-Vue.component(
     "navbarheader",
     require("./components/panelAdmin/navbarHeader.vue").default
 );
+//menus para roles
 Vue.component(
-    "sidebardleft",
-    require("./components/panelAdmin/sidebardLeft.vue").default
+    "sidebardsuperadmin",
+    require("./components/panelAdmin/menus/sidebardSuperadmin.vue").default
 );
+Vue.component(
+    "sidebardadmin",
+    require("./components/panelAdmin/menus/sidebardAdmin.vue").default
+);
+Vue.component(
+    "sidebardingreso",
+    require("./components/panelAdmin/menus/sidebardIngreso.vue").default
+);
+Vue.component(
+    "sidebardconsulta",
+    require("./components/panelAdmin/menus/sidebardConsulta.vue").default
+);
+
 Vue.component(
     "sidebardright",
     require("./components/panelAdmin/sidebardRight.vue").default
@@ -97,6 +107,8 @@ const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
 const Personas = require("./components/allMenusInfo/Personas.vue").default;
 const Computadores = require("./components/allMenusInfo/Computadores.vue")
     .default;
+const Reportes = require("./components/allMenusInfo/Reportes.vue")
+    .default;
 const Usuarios = require("./components/allMenusInfo/Usuarios.vue").default;
 const Universidad = require("./components/allMenusInfo/Universidad.vue")
     .default;
@@ -130,6 +142,10 @@ const routes = [{
     {
         path: "/computadores",
         component: Computadores
+    },
+    {
+        path: "/reportes",
+        component: Reportes
     },
     {
         path: "/usuarios",

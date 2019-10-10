@@ -11,7 +11,7 @@
           <router-link class="btn" to="/">
             <i class="icon-graph"></i> Escritorio
           </router-link>
-          <router-link class="btn" to="/universidad">
+          <router-link class="btn" to="/universidad" v-if="infoUserAuth[0].roles_id == 1">
             <i class="fas fa-university"></i> Universidad
           </router-link>
         </div>
