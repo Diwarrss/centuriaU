@@ -27,7 +27,7 @@ class CreateUniversidadesTable extends Migration
         DB::table('universidades')->insert(array(
             'id' => '1', 'nombre' => 'Fundación Universitaria de San Gil - UNISANGIL',
             'siglas' => 'UNISANGIL', 'direccion' => 'Km 2 vía San Gil - Charalá', 'telefonos' => '(7) 7245757 - 7246565',
-            'url_imagen' => 'ninguna', 'created_at' => $now
+            'url_imagen' => 'storage/1570649175.png', 'created_at' => $now
         ));
     }
 

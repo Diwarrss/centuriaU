@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <main class="main" v-if="infoUserAuth.length">
     <!-- Breadcrumb-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item active">
@@ -426,7 +426,7 @@
                 </tr>
               </thead>
               <tbody v-if="objectIngresos.data ==''">
-                <td colspan="7">
+                <td colspan="8">
                   <div role="alert" class="alert alert-danger text-center">
                     <div class="form-group">
                       <strong>

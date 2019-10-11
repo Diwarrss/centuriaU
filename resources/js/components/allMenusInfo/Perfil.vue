@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <main class="main" v-if="infoUserAuth.length">
     <!-- Breadcrumb-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item active">
