@@ -30,6 +30,15 @@ class PeriodosController extends Controller
         return $periodos;
     }
 
+    public function getPeriodos(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $periodos = Periodo::all('id', 'nombre');
+
+        return $periodos;
+    }
+
     public function savePeriodo(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
