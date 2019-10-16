@@ -447,6 +447,17 @@ export default {
       let me = this;
       me.periodo = null;
     },
+    limpiarDatos() {
+      let me = this;
+
+      me.arrayErrors = "";
+      me.fechaInicial = "";
+      me.fechaFinal = "";
+      me.programa = "";
+      me.tipo_persona = "";
+      me.sede = "";
+      me.periodo = "";
+    },
     descargarReporte() {
       let me = this;
       if (me.periodo) {
@@ -462,27 +473,30 @@ export default {
             me.sede,
           method: "GET",
           responseType: "blob" // important
-        }).then(response => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "Avanzado.xlsx");
-          document.body.appendChild(link);
-          link.click();
-          Swal.fire({
-            position: "top",
-            type: "success",
-            title: "Descarga éxitosa!",
-            showConfirmButton: false,
-            timer: 1500
-          }).catch(function(error) {
+        })
+          .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "Avanzado.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            Swal.fire({
+              position: "top",
+              type: "success",
+              title: "Descarga éxitosa!",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            me.limpiarDatos();
+          })
+          .catch(error => {
             if (error.response.status == 422) {
               //preguntamos si el error es 422
               me.arrayErrors = error.response.data.errors;
             }
             //console.log(error);
           });
-        });
       } else {
         let fechaInicial = moment(String(me.fechaInicial)).format("YYYY-MM-DD");
         let fechaFinal = moment(String(me.fechaFinal)).format("YYYY-MM-DD");
@@ -515,8 +529,9 @@ export default {
               showConfirmButton: false,
               timer: 1500
             });
+            me.limpiarDatos();
           })
-          .catch(function(error) {
+          .catch(error => {
             if (error.response.status == 422) {
               //preguntamos si el error es 422
               me.arrayErrors = error.response.data.errors;

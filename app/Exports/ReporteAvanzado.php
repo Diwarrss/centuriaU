@@ -37,23 +37,143 @@ class ReporteAvanzado implements FromQuery
     public function query()
     {
         if ($this->periodo) {
-            $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
-                ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
-                ->where('ingresos.periodos_id', $this->periodo)
-                ->where('personas.tipo_persona', $this->tipo_persona)
-                ->where('personas.programa', $this->programa)
-                ->where('ingresos.sedes_id', $this->sede);
+            if ($this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('personas.programa', $this->programa)
+                    ->where('ingresos.sedes_id', $this->sede);
 
-            return $reporte;
+                return $reporte;
+            } elseif ($this->tipo_persona && $this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('personas.programa', $this->programa);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && !$this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.programa', $this->programa)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && !$this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && !$this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && !$this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.tipo_persona', $this->tipo_persona);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && $this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('personas.programa', $this->programa);
+
+                return $reporte;
+            }
         } else {
-            $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
-                ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
-                ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
-                ->where('personas.tipo_persona', $this->tipo_persona)
-                ->where('personas.programa', $this->programa)
-                ->where('ingresos.sedes_id', $this->sede);
+            if ($this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('personas.programa', $this->programa)
+                    ->where('ingresos.sedes_id', $this->sede);
 
-            return $reporte;
+                return $reporte;
+            } elseif ($this->tipo_persona && $this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('personas.programa', $this->programa);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && !$this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.tipo_persona', $this->tipo_persona)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.programa', $this->programa)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && !$this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->where('ingresos.periodos_id', $this->periodo)
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && !$this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal]);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && $this->programa && $this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('ingresos.sedes_id', $this->sede);
+
+                return $reporte;
+            } elseif ($this->tipo_persona && !$this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.tipo_persona', $this->tipo_persona);
+
+                return $reporte;
+            } elseif (!$this->tipo_persona && $this->programa && !$this->sede) {
+                $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                    ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
+                    ->whereBetween('ingresos.created_at', [$this->fechaInicial, $this->fechaFinal])
+                    ->where('personas.programa', $this->programa);
+
+                return $reporte;
+            }
         }
     }
 }
