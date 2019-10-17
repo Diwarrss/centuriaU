@@ -186,7 +186,12 @@
                       </div>
                       <div class="form-group row" v-if="(fechaInicial && fechaFinal) || periodo">
                         <div class="col-sm-10">
-                          <button type="submit" class="btn btn-success" @click="descargarReporte">
+                          <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="descargar"
+                            @click="descargarReporte"
+                          >
                             <i class="fas fa-file-download"></i> Descargar
                           </button>
                         </div>
@@ -195,7 +200,19 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12" v-else-if="mostrarReportes == 2">Reportes graficos</div>
+              <div class="col-md-12" v-else-if="mostrarReportes == 2">
+                <div class="card card-accent-success">
+                  <div class="card-header">
+                    <h5>
+                      <strong>
+                        <i class="far fa-chart-bar"></i>
+                        Visualizar y Parametrizar Gráficos
+                      </strong>
+                    </h5>
+                  </div>
+                  <div class="card-body"></div>
+                </div>
+              </div>
               <div class="col-md-12" v-else>
                 <div role="alert" class="alert alert-success text-center">
                   <div class="form-group">
@@ -460,10 +477,20 @@ export default {
     },
     descargarReporte() {
       let me = this;
+
+      document.getElementById("descargar").disabled = true;
+      //capturamos la fecha
+      var currentDate = new Date();
+      var date = currentDate.getDate();
+      var month = currentDate.getMonth();
+      var year = currentDate.getFullYear();
+      var fechaActual = date + "/" + (month + 1) + "/" + year;
+
       if (me.periodo) {
         axios({
           url:
-            "/exportAvanzado?periodo=" +
+            "/exportAvanzado?" +
+            "periodo=" +
             me.periodo +
             "&tipo_persona=" +
             me.tipo_persona +
@@ -478,7 +505,10 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "Avanzado.xlsx");
+            link.setAttribute(
+              "download",
+              fechaActual + "_ReporteIngresos.xlsx"
+            );
             document.body.appendChild(link);
             link.click();
             Swal.fire({
@@ -489,11 +519,20 @@ export default {
               timer: 1500
             });
             me.limpiarDatos();
+            document.getElementById("descargar").disabled = false;
           })
           .catch(error => {
             if (error.response.status == 422) {
               //preguntamos si el error es 422
               me.arrayErrors = error.response.data.errors;
+            } else {
+              Swal.fire({
+                position: "top",
+                type: "error",
+                title: "Error al generar, Reintentar!",
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
             //console.log(error);
           });
@@ -502,7 +541,8 @@ export default {
         let fechaFinal = moment(String(me.fechaFinal)).format("YYYY-MM-DD");
         axios({
           url:
-            "/exportAvanzado?fechaInicial=" +
+            "/exportAvanzado?" +
+            "fechaInicial=" +
             fechaInicial +
             "&fechaFinal=" +
             fechaFinal +
@@ -519,7 +559,10 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "Avanzado.xlsx");
+            link.setAttribute(
+              "download",
+              fechaActual + "_ReporteIngresos.xlsx"
+            );
             document.body.appendChild(link);
             link.click();
             Swal.fire({
@@ -530,11 +573,20 @@ export default {
               timer: 1500
             });
             me.limpiarDatos();
+            document.getElementById("descargar").disabled = false;
           })
           .catch(error => {
             if (error.response.status == 422) {
               //preguntamos si el error es 422
               me.arrayErrors = error.response.data.errors;
+            } else {
+              Swal.fire({
+                position: "top",
+                type: "error",
+                title: "Error al generar, Reintentar!",
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
             //console.log(error);
           });
