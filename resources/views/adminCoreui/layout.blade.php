@@ -49,7 +49,7 @@
             {{-- CUERPO PRINCIPAL LLAMANDO CON VUE ROUTER--}}
                 <router-view></router-view>
             {{-- MENU LADO DERECHO Componente--}}
-                <sidebardright></sidebardright>
+                {{-- <sidebardright></sidebardright> --}}
         </div>
       </div>
         {{-- Footer del Admin --}}

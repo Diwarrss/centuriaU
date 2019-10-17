@@ -74,6 +74,7 @@
         </div>
       </li>
     </ul>
+    <!--  mostrar botn lado izquierdo menu
     <button
       class="navbar-toggler aside-menu-toggler d-md-down-none"
       type="button"
@@ -87,7 +88,7 @@
       data-toggle="aside-menu-show"
     >
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button>-->
   </header>
 </template>
 <script>

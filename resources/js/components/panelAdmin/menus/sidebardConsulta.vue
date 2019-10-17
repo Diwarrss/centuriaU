@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" v-if="infoUserAuth.length">
+  <div class="sidebar">
     <div class="sidebar-nav">
       <ul class="nav">
         <!-- CONSULTA -->
