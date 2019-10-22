@@ -61,10 +61,10 @@
           <router-link class="dropdown-item" to="/perfil">
             <i class="fa fa-user"></i> Perfil
           </router-link>
-          <router-link class="dropdown-item" to="/universidad">
+          <!-- <router-link class="dropdown-item" to="/universidad">
             <i class="fas fa-university"></i> Universidad
           </router-link>
-          <div class="dropdown-divider"></div>
+          <div class="dropdown-divider"></div>-->
           <a class="dropdown-item" href="/logout" @click="logout()">
             <i class="fas fa-sign-out-alt text-danger"></i> Cerrar Sesión
           </a>
