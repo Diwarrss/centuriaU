@@ -502,7 +502,7 @@ export default {
           me.arrayUniversidad = response.data;
           me.imagenAnterior = response.data[0].url_imagen;
           me.idU = response.data[0].id;
-          //console.log(response);
+          //console.log(me.arrayUniversidad);
         })
         .catch(function(error) {
           // handle error

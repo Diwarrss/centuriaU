@@ -22,7 +22,8 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-12 col-lg-12">
+              <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+              <div class="col-sm-12 col-lg-12" v-else>
                 <crearpersona></crearpersona>
               </div>
               <div class="col-sm-12 col-lg-12">
@@ -34,7 +35,8 @@
                         Listado de Personas (Total: {{objectPersonas.total}})
                       </strong>
                     </h5>
-                    <div class="card-header-actions">
+                    <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+                    <div class="card-header-actions" v-else>
                       <button class="btn btn-success mb-2" id="descargar" @click="descargarDatos">
                         <i class="far fa-file-excel"></i> Descargar Datos
                       </button>
@@ -165,7 +167,8 @@
                           <td v-text="data.tipo_persona"></td>
                           <td v-text="data.programa"></td>
                           <td v-text="data.sede"></td>
-                          <td>
+                          <td v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></td>
+                          <td v-else>
                             <button class="btn btn-secondary" @click="abrirEditar(data)">
                               <i class="far fa-edit"></i> Editar
                             </button>

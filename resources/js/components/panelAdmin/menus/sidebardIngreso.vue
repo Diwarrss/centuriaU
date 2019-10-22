@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-nav">
       <ul class="nav">
-        <!-- INGRESO O REGISTROS -->
+        <!-- Ingreso -->
         <li class="nav-item">
           <router-link class="nav-link" to="/">
             <i class="nav-icon icon-speedometer"></i> Escritorio
@@ -27,7 +27,7 @@
             <i class="nav-icon icon-screen-desktop"></i> Computadores
           </router-link>
         </li>
-        <li class="nav-item nav-dropdown">
+        <!-- <li class="nav-item nav-dropdown">
           <a class="nav-link nav-dropdown-toggle" href="#">
             <i class="nav-icon icon-chart"></i> Reportes
           </a>
@@ -38,6 +38,11 @@
               </router-link>
             </li>
           </ul>
+        </li>-->
+        <li class="nav-item">
+          <router-link class="nav-link" to="/reportes">
+            <i class="nav-icon icon-chart"></i> Reportes
+          </router-link>
         </li>
         <li class="nav-title text-center text-primary">
           <i class="nav-icon icon-equalizer"></i> Configuración

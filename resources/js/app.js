@@ -6,6 +6,11 @@ window.Vue = require("vue");
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+//importamos nuestras rutas
+import routes from './routes';
+//importamos nuestro store de vuex
+import store from './store';
+
 //importando VUEX
 import Vuex from "vuex";
 Vue.use(Vuex);
@@ -78,107 +83,10 @@ Vue.component(
 //LLAMAMOS EL COMPONENTE DE VUE PAGINATION
 Vue.component("pagination", require("laravel-vue-pagination"));
 
-//----*********** Aqui agregaremos todo configurado con Vue-Router*********
-// 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter
-// and then call `Vue.use(VueRouter)`.
-
-// 1. Define route components.
-// These can be imported from other files
-const Error404 = require("./components/Error404.vue").default;
-//para el Admin
-const Escritorio = require("./components/allMenusInfo/Escritorio.vue").default;
-const Ingresos = require("./components/allMenusInfo/Ingresos.vue").default;
-const Personas = require("./components/allMenusInfo/Personas.vue").default;
-const Computadores = require("./components/allMenusInfo/Computadores.vue")
-    .default;
-const Reportes = require("./components/allMenusInfo/Reportes.vue")
-    .default;
-const Usuarios = require("./components/allMenusInfo/Usuarios.vue").default;
-const Universidad = require("./components/allMenusInfo/Universidad.vue")
-    .default;
-const Perfil = require("./components/allMenusInfo/Perfil.vue").default;
-
-// 2. Define some routes
-const routes = [{
-        path: "*",
-        component: Error404
-    },
-    {
-        path: "/",
-        component: Escritorio
-    },
-    {
-        path: "/ingresos",
-        component: Ingresos
-    },
-    {
-        path: "/personas",
-        component: Personas
-    },
-    {
-        path: "/computadores",
-        component: Computadores
-    },
-    {
-        path: "/reportes",
-        component: Reportes
-    },
-    {
-        path: "/usuarios",
-        component: Usuarios
-    },
-    {
-        path: "/universidad",
-        component: Universidad
-    },
-    {
-        path: "/perfil",
-        component: Perfil
-    }
-];
-
-// 3. Create the router instance and pass the `routes` option
-const router = new VueRouter({
-    //mode: 'history', //quitando el hash # que viene por defecto con vue-router
-    routes, // short for `routes: routes`
-    base: "/admin"
-});
-
-//para Vuex funcione
-const store = new Vuex.Store({
-    state: {
-        infoUserAuth: [],
-        infoPeriodo: []
-    },
-    mutations: {
-        //capturamos el dato enviado desde actions getUserAuth
-        llenarInfo(state, getUserAccion) {
-            state.infoUserAuth = getUserAccion;
-        },
-        llenarPeriodo(state, getPeriodoAccion) {
-            state.infoPeriodo = getPeriodoAccion;
-        }
-    },
-    actions: {
-        getUserAuth: async function ({
-            commit
-        }) {
-            const data = await fetch("/getUserAuth");
-            const dataUser = await data.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
-            commit("llenarInfo", dataUser);
-        },
-        getPeriodo: async function ({
-            commit
-        }) {
-            const datos = await fetch("/getPeriodo");
-            const dataPeriodo = await datos.json(); //no es necesario pasarlo a json laravel ya lo envia en este formato
-            commit("llenarPeriodo", dataPeriodo);
-        }
-    }
-});
-
 const app = new Vue({
     el: "#app",
-    router,
-    store
+    //le pasamos las rutas asi
+    router: new VueRouter(routes),
+    //le pasamos el Store importado
+    store: new Vuex.Store(store)
 });

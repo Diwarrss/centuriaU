@@ -23,7 +23,8 @@
           <div class="animated fadeIn">
             <div class="row">
               <div class="col-md-12">
-                <div class="form-group">
+                <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+                <div class="form-group" v-else>
                   <button
                     type="button"
                     class="btn btn-success btn-lg mb-2"
@@ -139,7 +140,8 @@
                           <td v-text="data.nombreSede"></td>
                           <td>{{data.created_at | moment('DD/MM/YYYY h:mm a')}}</td>
                           <td v-text="data.observacion"></td>
-                          <td>
+                          <td v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></td>
+                          <td v-else>
                             <button
                               class="btn btn-secondary"
                               @click="abrirModal('actualizar',data)"
@@ -269,7 +271,9 @@
                             <span class="badge badge-success">Finalizado</span>
                           </td>
                           <td>
-                            <div v-if="infoUserAuth[0].sedes_id == null"></div>
+                            <div
+                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"
+                            ></div>
                             <div v-else-if="data.estado_prestamo == 1">
                               <button
                                 class="btn btn-secondary"

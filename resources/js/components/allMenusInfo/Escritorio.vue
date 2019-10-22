@@ -22,7 +22,9 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-sm-6 col-lg-3">
+              <div
+                v-bind:class="{ 'col-sm-6 col-lg-4': infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4, 'col-sm-6 col-lg-3': infoUserAuth[0].roles_id == 1 || infoUserAuth[0].roles_id == 2 }"
+              >
                 <div class="card text-white bg-primary">
                   <div class="card-body">
                     <router-link
@@ -43,7 +45,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div
+                class="col-sm-6 col-lg-3"
+                v-bind:class="{ 'col-sm-6 col-lg-4': infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4, 'col-sm-6 col-lg-3': infoUserAuth[0].roles_id == 1 || infoUserAuth[0].roles_id == 2 }"
+              >
                 <div class="card text-white bg-success">
                   <div class="card-body">
                     <router-link
@@ -64,7 +69,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div
+                v-bind:class="{ 'col-sm-6 col-lg-4': infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4, 'col-sm-6 col-lg-3': infoUserAuth[0].roles_id == 1 || infoUserAuth[0].roles_id == 2 }"
+              >
                 <div class="card text-white bg-info">
                   <div class="card-body">
                     <router-link
@@ -85,7 +92,11 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+              <div
+                v-else
+                v-bind:class="{ 'col-sm-6 col-lg-4': infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4, 'col-sm-6 col-lg-3': infoUserAuth[0].roles_id == 1 || infoUserAuth[0].roles_id == 2 }"
+              >
                 <div class="card text-white bg-danger">
                   <div class="card-body">
                     <router-link
@@ -107,11 +118,11 @@
                 </div>
               </div>
               <!-- para llamar el componente del grafico -->
-              <div class="col-md-6">
+              <div class="col-md-6 col-sm-12">
                 <chartingresos></chartingresos>
               </div>
               <!-- para llamar el componente del grafico -->
-              <div class="col-md-6">
+              <div class="col-md-6 col-sm-12">
                 <chartingresosmes></chartingresosmes>
               </div>
             </div>
