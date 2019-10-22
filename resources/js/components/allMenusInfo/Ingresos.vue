@@ -181,9 +181,7 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <div
-                        v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"
-                      ></div>
+                      <div v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 4"></div>
                       <div v-else>
                         <button class="btn btn-success btn-lg" type="submit" @click="crearIngreso">
                           <i class="fas fa-user-check"></i> Registrar Ingreso
@@ -200,7 +198,7 @@
                       </h4>
                     </div>
                   </div>
-                  <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+                  <div v-if="infoUserAuth[0].roles_id == 4"></div>
                   <div v-else>
                     <crearpersona class="text-center"></crearpersona>
                   </div>
@@ -309,7 +307,7 @@
                           </td>
                           <td>
                             <div
-                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"
+                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 4"
                             ></div>
                             <div v-else-if="!data.estado_prestamo">
                               <button
@@ -464,9 +462,7 @@
                     </h4>
                   </td>
                   <td>
-                    <div
-                      v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"
-                    ></div>
+                    <div v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 4"></div>
                     <div v-else-if="!data.estado_prestamo">
                       <button
                         type="button"

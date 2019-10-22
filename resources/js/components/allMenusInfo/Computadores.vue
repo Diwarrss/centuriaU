@@ -23,7 +23,7 @@
           <div class="animated fadeIn">
             <div class="row">
               <div class="col-md-12">
-                <div v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></div>
+                <div v-if="infoUserAuth[0].roles_id == 4"></div>
                 <div class="form-group" v-else>
                   <button
                     type="button"
@@ -140,7 +140,7 @@
                           <td v-text="data.nombreSede"></td>
                           <td>{{data.created_at | moment('DD/MM/YYYY h:mm a')}}</td>
                           <td v-text="data.observacion"></td>
-                          <td v-if="infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"></td>
+                          <td v-if="infoUserAuth[0].roles_id == 4"></td>
                           <td v-else>
                             <button
                               class="btn btn-secondary"
@@ -272,7 +272,7 @@
                           </td>
                           <td>
                             <div
-                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 3 || infoUserAuth[0].roles_id == 4"
+                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 4"
                             ></div>
                             <div v-else-if="data.estado_prestamo == 1">
                               <button
