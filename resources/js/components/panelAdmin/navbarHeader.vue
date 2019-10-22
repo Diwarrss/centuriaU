@@ -30,7 +30,7 @@
           <i class="nav-icon icon-speedometer"></i> Escritorio
         </router-link>
       </li>
-      <li class="nav-item px-3">
+      <!-- <li class="nav-item px-3">
         <router-link class="nav-link" to="/usuarios">
           <i class="fas fa-users-cog"></i> Usuarios
         </router-link>
@@ -39,7 +39,7 @@
         <router-link class="nav-link" to="/universidad">
           <i class="fas fa-university"></i> Universidad
         </router-link>
-      </li>
+      </li>-->
     </ul>
     <ul class="nav navbar-nav ml-auto">
       <li class="nav-item dropdown">
