@@ -41,7 +41,7 @@
         </router-link>
       </li>-->
     </ul>
-    <ul class="nav navbar-nav ml-auto">
+    <ul class="nav navbar-nav ml-auto mr-3">
       <li class="nav-item dropdown">
         <a
           class="nav-link"

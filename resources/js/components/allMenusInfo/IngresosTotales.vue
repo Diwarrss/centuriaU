@@ -228,7 +228,7 @@ export default {
                   timer: 2500
                 });
               }
-              console.log(error.response.data.errors);
+              //console.log(error.response.data.errors);
             });
         }
       });
@@ -244,7 +244,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     }
   },

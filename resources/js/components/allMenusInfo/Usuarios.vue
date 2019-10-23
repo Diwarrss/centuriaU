@@ -530,7 +530,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     },
     getRoles() {
@@ -543,7 +543,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     }
   },

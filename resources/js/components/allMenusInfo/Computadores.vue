@@ -610,7 +610,7 @@ export default {
             //preguntamos si el error es 422
             me.arrayErrors = error.response.data.errors;
           }
-          console.log(error);
+          //console.log(error);
         });
     },
     getSedes() {
@@ -623,7 +623,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     },
     abrirModal(tipoModal, data) {
@@ -715,7 +715,7 @@ export default {
                     timer: 2500
                   });
                 }
-                console.log(error.response.data.errors);
+                //console.log(error.response.data.errors);
               });
           } else if (
             /* Read more about handling dismissals below */
@@ -763,7 +763,7 @@ export default {
             //preguntamos si el error es 422
             me.arrayErrors = error.response.data.errors;
           }
-          console.log(error);
+          //console.log(error);
         });
     }
   },

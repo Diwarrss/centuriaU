@@ -158,7 +158,7 @@ export default {
           //console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
 
       axios
@@ -168,7 +168,7 @@ export default {
           //console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
 
       axios
@@ -178,7 +178,7 @@ export default {
           //console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
 
       axios
@@ -188,7 +188,7 @@ export default {
           //console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
     }
   },

@@ -739,7 +739,7 @@ export default {
                     }
                   })
                   .catch(function(error) {
-                    console.log(error);
+                    //console.log(error);
                   });
               })
               .catch(function(error) {
@@ -750,7 +750,7 @@ export default {
                   showConfirmButton: false,
                   timer: 1500
                 }); */
-                console.log(error);
+                //console.log(error);
               });
           } else {
             axios
@@ -807,7 +807,7 @@ export default {
                   showConfirmButton: false,
                   timer: 1500
                 });
-                console.log(error);
+                //console.log(error);
               });
           }
         })
@@ -819,7 +819,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-          console.log(error);
+          //console.log(error);
         });
     },
     getIngresos(page, criterio, buscar, cantidadT) {
@@ -868,7 +868,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-          console.log(error);
+          //console.log(error);
         });
     },
 
@@ -985,7 +985,7 @@ export default {
                     timer: 2500
                   });
                 }
-                console.log(error.response.data.errors);
+                //console.log(error.response.data.errors);
               });
           } else if (
             /* Read more about handling dismissals below */
@@ -1028,7 +1028,7 @@ export default {
             //preguntamos si el error es 422
             me.arrayErrors = error.response.data.errors;
           }
-          console.log(error);
+          //console.log(error);
         });
     },
     getComputadorlibre() {
@@ -1042,7 +1042,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     },
     focus() {

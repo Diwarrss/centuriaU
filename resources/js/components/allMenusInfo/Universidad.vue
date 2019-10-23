@@ -506,7 +506,7 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          console.log(error);
+          //console.log(error);
         });
     },
     obtenerImagen(e) {
@@ -624,7 +624,7 @@ export default {
           me.pagActual = response.data.current_page;
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
     },
     cerrarModal() {
@@ -709,7 +709,7 @@ export default {
             //preguntamos si el error es 422
             me.arrayErrors = error.response.data.errors;
           }
-          console.log(error);
+          //console.log(error);
         });
     }
   },
