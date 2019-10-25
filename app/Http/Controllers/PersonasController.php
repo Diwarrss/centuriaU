@@ -202,58 +202,39 @@ class PersonasController extends Controller
     {
         //ojo se parametrizo por periodo activo global
         if (!$request->ajax()) return redirect('/');
-        $id = $request->id;
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
-        if ($id) {
-            $personasid = Persona::select(
-                'id',
-                'tipo_documento',
-                'numero_documento',
-                'nombre1',
-                'nombre2',
-                'apellido1',
-                'apellido2',
-                'estado_persona',
-                'tipo_persona',
-                'programa',
-                'sede',
-                'cargo',
-                'periodos_id'
-            )->where('id', $id)->get();
 
-            return $personasid;
-        } else {
-            //cuando hay otros parametros y hacemos or where para solo mostrar esos datos
-            $personas = Persona::select(
-                'id',
-                'tipo_documento',
-                'numero_documento',
-                'nombre1',
-                'nombre2',
-                'apellido1',
-                'apellido2',
-                'estado_persona',
-                'tipo_persona',
-                'programa',
-                'sede',
-                'cargo',
-                'periodos_id'
-            )->orWhere('id', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('tipo_documento', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('numero_documento', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('nombre1', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('nombre2', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('apellido1', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('apellido2', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('estado_persona', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('tipo_persona', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('programa', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('cargo', 'LIKE', '%' . $buscar . '%')
-                ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
+        //cuando hay otros parametros y hacemos or where para solo mostrar esos datos
+        $personas = Persona::select(
+            'personas.id',
+            'personas.tipo_documento',
+            'personas.numero_documento',
+            'personas.nombre1',
+            'personas.nombre2',
+            'personas.apellido1',
+            'personas.apellido2',
+            'personas.estado_persona',
+            'personas.tipo_persona',
+            'personas.programa',
+            'personas.sede',
+            'personas.cargo',
+            'periodos.nombre'
+        )->join('periodos', 'periodos.id', '=', 'personas.periodos_id')
+            ->orWhere('personas.tipo_documento', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.nombre2', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.apellido2', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.estado_persona', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.tipo_persona', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.programa', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.cargo', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('periodos.nombre', 'LIKE', '%' . $buscar . '%')
+            ->orWhere('personas.sede', 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
 
-            return $personas;
-        }
+        return $personas;
     }
 
     //realizar export de excel

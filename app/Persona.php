@@ -16,6 +16,8 @@ class Persona extends Model
         'estado_persona',
         'tipo_persona',
         'programa',
-        'sede'
+        'sede',
+        'cargo',
+        'periodos_id'
     ];
 }
