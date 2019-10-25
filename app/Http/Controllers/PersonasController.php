@@ -13,14 +13,20 @@ use Storage;
 
 class PersonasController extends Controller
 {
+    //consultar la persona en mi BD
     public function getPersona(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-        $numDocumento = $request->id;
+        $numDocumento = $request->documento;
 
-        $personabyID = Persona::where('numero_documento', $numDocumento)->get();
+        //para validar los formularios
+        $request->validate([
+            'documento' => 'required'
+        ]);
 
-        return $personabyID;
+        $infoPersona = Persona::where('numero_documento', $numDocumento)->get();
+
+        return ['Persona' => $infoPersona];
     }
 
     public function crearPersona(Request $request)
@@ -120,7 +126,7 @@ class PersonasController extends Controller
         if (!$request->ajax()) return redirect('/');
         $request->validate([
             'tipo_documento' => 'required|max:6',
-            'numero_documento' => 'required|unique:personas|max:20',
+            'numero_documento' => 'required|max:20',
             'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
             'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
             'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
@@ -169,7 +175,7 @@ class PersonasController extends Controller
 
             $request->validate([
                 'tipo_documento' => 'required|max:6',
-                'numero_documento' => 'required|max:20|string|unique:personas,numero_documento,' . $persona->id,
+                'numero_documento' => 'required|max:20',
                 'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
                 'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
                 'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',

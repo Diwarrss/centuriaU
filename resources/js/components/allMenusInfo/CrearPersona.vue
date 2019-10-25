@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-group">
-      <button type="button" class="btn btn-success btn-lg mb-2" @click="abrirModalPersona">
+      <button type="button" class="btn btn-success btn-lg" @click="abrirModalPersona">
         <i class="fas fa-plus-circle"></i> Crear Persona
       </button>
     </div>
@@ -38,7 +38,7 @@
               </div>
               <!-- si hay periodo permite crear personas -->
               <div v-else>
-                <form class="form-horizontal" enctype="multipart/form-data">
+                <form class="form-horizontal text-right" enctype="multipart/form-data">
                   <div class="form-group row">
                     <label
                       class="col-md-4 col-sm-5 col-form-label font-weight-bold"

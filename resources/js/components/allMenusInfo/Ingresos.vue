@@ -46,8 +46,8 @@
                       <input
                         class="form-control"
                         type="text"
-                        placeholder="ID o Documento"
-                        id="buscarId"
+                        placeholder="Número de Documento"
+                        id="buscarDocumento"
                         v-model="documento"
                         @keyup.enter="buscarPersona"
                       />
@@ -57,11 +57,20 @@
                         </button>
                       </span>
                     </div>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.documento"
+                      v-text="arrayErrors.documento[0]"
+                    ></span>
                   </div>
+                </div>
+                <div v-if="infoUserAuth[0].roles_id == 4"></div>
+                <div v-else>
+                  <crearpersona></crearpersona>
                 </div>
               </div>
               <div class="col-sm-12 col-md-8 col-lg-8 col-xl-9">
-                <div v-if="!infoPersona.length">
+                <div v-if="!infoPersona.Administrativo || !infoPersona.Estudiante">
                   <div class="alert alert-warning text-center" role="alert">
                     <div class="form-group">
                       <h4>
@@ -69,11 +78,17 @@
                       </h4>
                     </div>
                   </div>
-                  <div v-if="infoUserAuth[0].roles_id == 4"></div>
-                  <div v-else>
-                    <crearpersona></crearpersona>
+                </div>
+                <div v-else-if="!infoPersona.Persona">
+                  <div class="alert alert-warning text-center" role="alert">
+                    <div class="form-group">
+                      <h4>
+                        <strong>¡Sin Información!</strong>
+                      </h4>
+                    </div>
                   </div>
                 </div>
+                <div v-else class="col-sm-12 col-md-8 col-lg-8 col-xl-9">{{infoPersona}}</div>
               </div>
             </div>
           </div>
@@ -88,6 +103,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      arrayErrors: [],
       documento: "",
       infoPersona: []
     };
@@ -98,20 +114,23 @@ export default {
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
     focus() {
-      $("#buscarId").focus();
+      $("#buscarDocumento").focus();
     },
     buscarPersona() {
       let me = this;
       axios
         .get("http://apicenturia.local/api/getUsuarios", {
           params: {
-            id: me.documento
+            documento: me.documento
           }
         })
         .then(function(response) {
           me.infoPersona = response.data;
           //si no hay datos de unisangil al buscar
-          if (me.infoPersona == "") {
+          if (
+            me.infoPersona.Administrativo == "" &&
+            me.infoPersona.Estudiante == ""
+          ) {
             /* Swal.fire({
               position: "top-end",
               type: "warning",
@@ -123,7 +142,7 @@ export default {
             axios
               .get("/getPersona", {
                 params: {
-                  id: me.documento
+                  documento: me.documento
                 }
               })
               .then(res => {
@@ -131,7 +150,7 @@ export default {
                 console.log(res);
 
                 //si no hay datos en mi BD no hay ninguna persona con ese documento
-                if (me.infoPersona == "") {
+                if (me.infoPersona.Persona == "") {
                   Swal.fire({
                     position: "top-end",
                     type: "error",
@@ -152,6 +171,10 @@ export default {
                 }
               })
               .catch(err => {
+                if (err.response.status == 422) {
+                  //preguntamos si el error es 422
+                  me.arrayErrors = err.response.data.errors;
+                }
                 console.error(err);
               });
           }
@@ -168,7 +191,11 @@ export default {
           console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
         });
     }
   },
