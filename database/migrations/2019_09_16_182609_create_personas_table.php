@@ -25,6 +25,9 @@ class CreatePersonasTable extends Migration
             $table->string('tipo_persona', 100); //egresado, administrativo, estudiante, docente, particular o visitante,
             $table->string('programa', 255);
             $table->string('sede', 100);
+            $table->string('cargo', 255)->nullable()->comment('Ejemplo = dba, director centuria'); //dba, director centuria
+            $table->unsignedBigInteger('periodos_id')->comment('Se asigna el periodo actual vigente');
+            $table->foreign('periodos_id')->references('id')->on('periodos');
             $table->timestamps();
         });
     }

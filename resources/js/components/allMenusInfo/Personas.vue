@@ -464,10 +464,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["infoUserAuth"])
+    ...mapState(["infoUserAuth", "infoPeriodo"])
   },
   methods: {
-    ...mapActions(["getUserAuth"]),
+    ...mapActions(["getUserAuth", "getPeriodo"]),
     //metodo para obtener las personas y el array completo
     getPersonas(page, buscar, cantidad) {
       let me = this;

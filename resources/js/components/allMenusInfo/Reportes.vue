@@ -22,7 +22,7 @@
         <div>
           <div class="animated fadeIn">
             <div class="row">
-              <div class="col-md-12 col-lg-12">
+              <div class="col-md-4 col-lg-4">
                 <div class="card card-accent-primary">
                   <div class="card-header">
                     <h5>
@@ -35,7 +35,7 @@
                   </div>
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-md-6" @click="showReportData" style="cursor: pointer">
+                      <div class="col-md-12" @click="showReportData" style="cursor: pointer">
                         <div class="card text-white bg-primary">
                           <div class="card-body">
                             <button
@@ -52,7 +52,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6" @click="showReportCharts" style="cursor: pointer">
+                      <!-- <div class="col-md-6" @click="showReportCharts" style="cursor: pointer">
                         <div class="card text-white bg-danger">
                           <div class="card-body">
                             <button
@@ -68,13 +68,13 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div>-->
                     </div>
                   </div>
                 </div>
               </div>
               <!-- seccion para mostrar los reportes -->
-              <div class="col-md-12" v-if="mostrarReportes == 1">
+              <div class="col-md-8 col-lg-8" v-if="mostrarReportes == 1">
                 <div class="card card-accent-success">
                   <div class="card-header">
                     <h5>
@@ -200,7 +200,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12" v-else-if="mostrarReportes == 2">
+              <!-- <div class="col-md-12" v-else-if="mostrarReportes == 2">
                 <div class="card card-accent-success">
                   <div class="card-header">
                     <h5>
@@ -212,8 +212,8 @@
                   </div>
                   <div class="card-body"></div>
                 </div>
-              </div>
-              <div class="col-md-12" v-else>
+              </div>-->
+              <div class="col-md-8" v-else>
                 <div role="alert" class="alert alert-success text-center">
                   <div class="form-group">
                     <h4>
@@ -407,19 +407,6 @@ export default {
       let me = this;
 
       me.mostrarReportes = 1;
-      //limpiar data
-      me.arrayErrors = "";
-      me.fechaInicial = "";
-      me.fechaFinal = "";
-      me.programa = "";
-      me.tipo_persona = "";
-      me.sede = "";
-      me.periodo = "";
-    },
-    showReportCharts() {
-      let me = this;
-
-      me.mostrarReportes = 2;
       //limpiar data
       me.arrayErrors = "";
       me.fechaInicial = "";

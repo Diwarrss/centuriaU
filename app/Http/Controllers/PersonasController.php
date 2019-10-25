@@ -82,6 +82,7 @@ class PersonasController extends Controller
                 $persona->tipo_persona = $tipo_persona;
                 $persona->programa = $request->programa;
                 $persona->sede = $request->sede;
+                $persona->periodos_id = $request->id_periodo;
                 $persona->save(); //guardamos en la tabla personas
 
                 DB::commit(); //commit de la transaccion
@@ -104,6 +105,7 @@ class PersonasController extends Controller
                 $persona->tipo_persona = $tipo_persona;
                 $persona->programa = $request->programa;
                 $persona->sede = $request->sede;
+                $persona->periodos_id = $request->id_periodo;
                 $persona->save(); //guardamos en la tabla users con el metodo save en la BD
 
                 DB::commit(); //
@@ -126,7 +128,9 @@ class PersonasController extends Controller
             'estado_persona' => 'required|max:50',
             'tipo_persona' => 'required|max:100',
             'programa' => 'required|max:255',
-            'sede' => 'required|max:100'
+            'sede' => 'required|max:100',
+            'cargo' => 'max:255',
+            'id_periodo' => 'required'
         ]);
         try {
             //usaremos transacciones
@@ -143,6 +147,8 @@ class PersonasController extends Controller
             $persona->tipo_persona = $request->tipo_persona;
             $persona->programa = $request->programa;
             $persona->sede = $request->sede;
+            $persona->cargo = $request->cargo;
+            $persona->periodos_id = $request->id_periodo;
             $persona->save(); //guardamos en la tabla personas
 
             DB::commit(); //commit de la transaccion
@@ -194,6 +200,7 @@ class PersonasController extends Controller
 
     public function getPersonas(Request $request)
     {
+        //ojo se parametrizo por periodo activo global
         if (!$request->ajax()) return redirect('/');
         $id = $request->id;
         $buscar = $request->buscar;
@@ -210,7 +217,9 @@ class PersonasController extends Controller
                 'estado_persona',
                 'tipo_persona',
                 'programa',
-                'sede'
+                'sede',
+                'cargo',
+                'periodos_id'
             )->where('id', $id)->get();
 
             return $personasid;
@@ -227,7 +236,9 @@ class PersonasController extends Controller
                 'estado_persona',
                 'tipo_persona',
                 'programa',
-                'sede'
+                'sede',
+                'cargo',
+                'periodos_id'
             )->orWhere('id', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('tipo_documento', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('numero_documento', 'LIKE', '%' . $buscar . '%')
@@ -238,6 +249,7 @@ class PersonasController extends Controller
                 ->orWhere('estado_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('tipo_persona', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('programa', 'LIKE', '%' . $buscar . '%')
+                ->orWhere('cargo', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('sede', 'LIKE', '%' . $buscar . '%')->paginate($cantidad);
 
             return $personas;
