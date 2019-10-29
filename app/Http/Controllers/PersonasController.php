@@ -29,7 +29,7 @@ class PersonasController extends Controller
         return ['Persona' => $infoPersona];
     }
 
-    public function crearPersona(Request $request)
+    /* public function crearPersona(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
         //para validar los formularios
@@ -119,11 +119,13 @@ class PersonasController extends Controller
                 DB::rollBack(); //si hay error no ejecute la transaccion
             }
         }
-    }
+    } */
 
     public function savePersona(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
+        //capturamos los datos recibidos desde el Json
+
         $request->validate([
             'tipo_documento' => 'required|max:6',
             'numero_documento' => 'required|max:20',
@@ -155,6 +157,7 @@ class PersonasController extends Controller
             $persona->sede = $request->sede;
             $persona->cargo = $request->cargo;
             $persona->periodos_id = $request->id_periodo;
+            $persona->registroComo = '1';
             $persona->save(); //guardamos en la tabla personas
 
             DB::commit(); //commit de la transaccion
@@ -196,6 +199,7 @@ class PersonasController extends Controller
             $persona->tipo_persona = $request->tipo_persona;
             $persona->programa = $request->programa;
             $persona->sede = $request->sede;
+            $persona->cargo = $request->cargo;
             $persona->save(); //guardamos en la tabla personas
 
             DB::commit(); //commit de la transaccion
@@ -225,7 +229,8 @@ class PersonasController extends Controller
             'personas.programa',
             'personas.sede',
             'personas.cargo',
-            'periodos.nombre'
+            'periodos.nombre',
+            'personas.registroComo'
         )->join('periodos', 'periodos.id', '=', 'personas.periodos_id')
             ->orWhere('personas.tipo_documento', 'LIKE', '%' . $buscar . '%')
             ->orWhere('personas.numero_documento', 'LIKE', '%' . $buscar . '%')

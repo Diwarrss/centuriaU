@@ -137,6 +137,7 @@
                           <th>Estado</th>
                           <th>Tipo</th>
                           <th>Programa</th>
+                          <th>Cargo</th>
                           <th>Sede</th>
                           <th>Acción</th>
                         </tr>
@@ -158,7 +159,9 @@
                           <td>{{++index}}</td>
                           <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
                           <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
-                          <td v-if="data.estado_persona == 'Activo'">
+                          <td
+                            v-if="data.estado_persona == 'Activo' || data.estado_persona == 'ACTIVO'"
+                          >
                             <span class="badge badge-success" v-text="data.estado_persona"></span>
                           </td>
                           <td v-else>
@@ -166,8 +169,12 @@
                           </td>
                           <td v-text="data.tipo_persona"></td>
                           <td v-text="data.programa"></td>
+                          <td v-text="data.cargo"></td>
                           <td v-text="data.sede"></td>
-                          <td v-if="infoUserAuth[0].roles_id == 4"></td>
+                          <td v-if="infoUserAuth[0].roles_id == 4 || data.registroComo == 2 ">
+                            <span class="badge badge-info">Ninguna</span>
+                          </td>
+                          <!-- <td v-else-if="infoUserAuth[0].roles_id == 4 && data.registroComo == 2"></td> -->
                           <td v-else>
                             <button class="btn btn-secondary" @click="abrirEditar(data)">
                               <i class="far fa-edit"></i> Editar
@@ -203,7 +210,7 @@
         data-backdrop="static"
         data-keyboard="false"
       >
-        <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-dialog modal-primary modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">
@@ -315,7 +322,7 @@
                   <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
                   <div class="col-md-8 col-sm-7">
                     <v-select
-                      :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
+                      :options="['Administrativo','Docente', 'Egresado','Estudiante', 'Particular']"
                       placeholder="Seleccionar..."
                       v-model="tipo_persona"
                     >
@@ -332,8 +339,9 @@
                   <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Programa:</label>
                   <div class="col-md-8 col-sm-7">
                     <v-select
-                      :options="['Administración de Empresas', 'Contaduría Pública', 'Administración de Empresas Turísticas y Hoteleras', 'Derecho', 'Enfermería', 'Ingeniería Agrícola', 'Ingeniería Ambiental'
-                      , 'Ingeniería Electrónica', 'Ingeniería de Sistemas', 'Ingeniería de Mantenimiento', 'Ingeniería Financiera (UNAB)', 'Psicología (UNAB)', 'Tecnología en Sistemas de Información', 'Tecnología en Gestión de Empresas de Economía Solidaria', 'Licenciatura en educación para la primera infancia']"
+                      :options="programas"
+                      :reduce="data => data.prog_nombre"
+                      label="prog_nombre"
                       placeholder="Seleccionar..."
                       v-model="programa"
                     >
@@ -344,6 +352,12 @@
                       v-if="arrayErrors.programa"
                       v-text="arrayErrors.programa[0]"
                     ></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Cargo Laboral:</label>
+                  <div class="col-md-8 col-sm-7">
+                    <input class="form-control" type="text" v-model="cargo" />
                   </div>
                 </div>
                 <div class="form-group row">
@@ -457,10 +471,12 @@ export default {
       tipo_persona: "",
       programa: "",
       sede: "",
+      cargo: "",
       idPersona: "",
       archivoExcel: "",
       erroresImportar: [],
-      errores500: ""
+      errores500: "",
+      programas: []
     };
   },
   computed: {
@@ -468,6 +484,28 @@ export default {
   },
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
+    //obtener programas de Unisangil API
+    getProgramas() {
+      let me = this;
+      axios
+        .get("http://apicenturia.local/api/getProgramas")
+        .then(res => {
+          me.programas = res.data;
+          //agregamos al array el campo particular
+          me.programas.push({ prog_nombre: "PARTICULAR" });
+          //console.log(res);
+        })
+        .catch(err => {
+          Swal.fire({
+            position: "top",
+            type: "error",
+            title: "Error conexión del Servidor API",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.error(err);
+        });
+    },
     //metodo para obtener las personas y el array completo
     getPersonas(page, buscar, cantidad) {
       let me = this;
@@ -514,11 +552,13 @@ export default {
       me.estado_persona = data["estado_persona"];
       me.tipo_persona = data["tipo_persona"];
       me.programa = data["programa"];
+      me.cargo = data["cargo"];
       me.sede = data["sede"];
 
       me.abrirModal();
     },
     abrirModal() {
+      this.getProgramas();
       $("#modalEditarPersona").modal("show");
     },
     cerrarModal() {
@@ -535,6 +575,7 @@ export default {
       me.estado_persona = "";
       me.tipo_persona = "";
       me.programa = "";
+      me.cargo = "";
       me.sede = "";
     },
     updatePersona() {
@@ -552,6 +593,7 @@ export default {
           estado_persona: me.estado_persona,
           tipo_persona: me.tipo_persona,
           programa: me.programa,
+          cargo: me.cargo,
           sede: me.sede
         })
         .then(function(response) {

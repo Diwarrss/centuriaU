@@ -149,7 +149,7 @@
                     <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
                     <div class="col-md-8 col-sm-7">
                       <v-select
-                        :options="['Estudiante', 'Docente', 'Egresado', 'Particular']"
+                        :options="['Administrativo','Docente', 'Egresado','Estudiante', 'Particular']"
                         placeholder="Seleccionar..."
                         v-model="tipo_persona"
                       >
@@ -181,12 +181,13 @@
                       ></span>
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group row" v-if="tipo_persona == 'Administrativo'">
                     <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Cargo Laboral:</label>
                     <div class="col-md-8 col-sm-7">
                       <input class="form-control" type="text" v-model="cargo" />
                     </div>
                   </div>
+                  <div v-else></div>
                   <div class="form-group row">
                     <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Sede:</label>
                     <div class="col-md-8 col-sm-7">
