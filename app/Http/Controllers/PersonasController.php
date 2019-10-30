@@ -24,7 +24,7 @@ class PersonasController extends Controller
             'documento' => 'required'
         ]);
 
-        $infoPersona = Persona::where('numero_documento', $numDocumento)->get();
+        $infoPersona = Persona::where([['numero_documento', $numDocumento], ['periodos_id', $request->id_periodo]])->get();
 
         return ['Persona' => $infoPersona];
     }
@@ -123,23 +123,56 @@ class PersonasController extends Controller
 
     public function savePersona(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
-        //capturamos los datos recibidos desde el Json
+        if (!$request->ajax()) return redirect('/');
 
-        $request->validate([
-            'tipo_documento' => 'required|max:6',
-            'numero_documento' => 'required|max:20',
-            'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-            'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-            'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-            'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-            'estado_persona' => 'required|max:50',
-            'tipo_persona' => 'required|max:100',
-            'programa' => 'required|max:255',
-            'sede' => 'required|max:100',
-            'cargo' => 'max:255',
-            'id_periodo' => 'required'
-        ]);
+        $tipo_persona = $request->tipo_persona;
+
+        //logica para la validacion dependiento del tipo de persona
+        if ($tipo_persona == 'Administrativo') {
+            $request->validate([
+                'tipo_documento' => 'required|max:6',
+                'numero_documento' => 'required|max:20',
+                'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'estado_persona' => 'required|max:50',
+                'tipo_persona' => 'required|max:100',
+                //'programa' => 'required|max:255',
+                'sede' => 'required|max:100',
+                'cargo' => 'required|max:255',
+                'id_periodo' => 'required'
+            ]);
+        } else if ($tipo_persona == 'Particular') {
+            $request->validate([
+                'tipo_documento' => 'required|max:6',
+                'numero_documento' => 'required|max:20',
+                'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'estado_persona' => 'required|max:50',
+                'tipo_persona' => 'required|max:100',
+                //'programa' => 'required|max:255',
+                'sede' => 'required|max:100',
+                //'cargo' => 'required|max:255',
+                'id_periodo' => 'required'
+            ]);
+        } else {
+            $request->validate([
+                'tipo_documento' => 'required|max:6',
+                'numero_documento' => 'required|max:20',
+                'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                'estado' => 'required|max:50',
+                'tipo_persona' => 'required|max:100',
+                'programa' => 'required|max:255',
+                'sede' => 'required|max:100',
+                'id_periodo' => 'required'
+            ]);
+        }
         try {
             //usaremos transacciones
             DB::beginTransaction();
@@ -170,24 +203,59 @@ class PersonasController extends Controller
     {
         if (!$request->ajax()) return redirect('/');
 
+        $tipo_persona = $request->tipo_persona;
         try {
             //usaremos transacciones
             DB::beginTransaction();
             //buscar primero el Persona a modificar
             $persona = Persona::findOrFail($request->id);
 
-            $request->validate([
-                'tipo_documento' => 'required|max:6',
-                'numero_documento' => 'required|max:20',
-                'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-                'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-                'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
-                'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-                'estado_persona' => 'required|max:50',
-                'tipo_persona' => 'required|max:100',
-                'programa' => 'required|max:255',
-                'sede' => 'required|max:100'
-            ]);
+            //logica para la validacion dependiento del tipo de persona
+            if ($tipo_persona == 'Administrativo') {
+                $request->validate([
+                    'tipo_documento' => 'required|max:6',
+                    'numero_documento' => 'required|max:20',
+                    'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'estado_persona' => 'required|max:50',
+                    'tipo_persona' => 'required|max:100',
+                    //'programa' => 'required|max:255',
+                    'sede' => 'required|max:100',
+                    'cargo' => 'required|max:255'
+                ]);
+            } else if ($tipo_persona == 'Particular') {
+                //quitamos el programa y el cargo x que es particular
+                $request->programa = '';
+                $request->cargo = '';
+                $request->validate([
+                    'tipo_documento' => 'required|max:6',
+                    'numero_documento' => 'required|max:20',
+                    'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'estado_persona' => 'required|max:50',
+                    'tipo_persona' => 'required|max:100',
+                    //'programa' => 'required|max:255',
+                    'sede' => 'required|max:100',
+                    //'cargo' => 'required|max:255'
+                ]);
+            } else {
+                $request->validate([
+                    'tipo_documento' => 'required|max:6',
+                    'numero_documento' => 'required|max:20',
+                    'nombre1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+                    'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
+                    'estado_persona' => 'required|max:50',
+                    'tipo_persona' => 'required|max:100',
+                    'programa' => 'required|max:255',
+                    'sede' => 'required|max:100'
+                ]);
+            }
 
             $persona->tipo_documento = $request->tipo_documento;
             $persona->numero_documento = $request->numero_documento;

@@ -38,10 +38,10 @@
               </div>
               <!-- si hay periodo permite crear personas -->
               <div v-else>
-                <form class="form-horizontal text-right" enctype="multipart/form-data">
+                <form class="form-horizontal" enctype="multipart/form-data">
                   <div class="form-group row">
                     <label
-                      class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
                       for="text-input"
                     >Tipo Documento:</label>
                     <div class="col-md-8 col-sm-7">
@@ -60,7 +60,9 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Documento:</label>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Documento:</label>
                     <div class="col-md-8 col-sm-7">
                       <input class="form-control" type="text" v-model="numero_documento" />
                       <span
@@ -71,7 +73,9 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Nombres:</label>
+                    <label
+                      class="col-md-4 col-sm-4 col-form-label font-weight-bold text-right"
+                    >Nombres:</label>
                     <div class="col-md-4 col-sm-4">
                       <input
                         class="form-control"
@@ -100,7 +104,9 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Apellidos:</label>
+                    <label
+                      class="col-md-4 col-sm-4 col-form-label font-weight-bold text-right"
+                    >Apellidos:</label>
                     <div class="col-md-4 col-sm-4">
                       <input
                         class="form-control"
@@ -130,23 +136,28 @@
                   </div>
                   <div class="form-group row">
                     <label
-                      class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
                       for="text-input"
                     >Estado:</label>
                     <div class="col-md-8 col-sm-7">
-                      <select class="form-control" v-model="estado">
-                        <option value="Activo" selected>Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                      </select>
+                      <v-select
+                        :options="['Activo', 'Inactivo']"
+                        placeholder="Seleccionar..."
+                        v-model="estado"
+                      >
+                        <div slot="no-options">No hay Resultados!</div>
+                      </v-select>
                       <span
                         class="help-block text-danger"
-                        v-if="arrayErrors.estado_persona"
-                        v-text="arrayErrors.estado_persona[0]"
+                        v-if="arrayErrors.estado"
+                        v-text="arrayErrors.estado[0]"
                       ></span>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Tipo Persona:</label>
                     <div class="col-md-8 col-sm-7">
                       <v-select
                         :options="['Administrativo','Docente', 'Egresado','Estudiante', 'Particular']"
@@ -162,8 +173,11 @@
                       ></span>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Programa:</label>
+                  <div v-if="tipo_persona == 'Administrativo'"></div>
+                  <div class="form-group row" v-else>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Programa:</label>
                     <div class="col-md-8 col-sm-7">
                       <v-select
                         :options="programas"
@@ -182,14 +196,23 @@
                     </div>
                   </div>
                   <div class="form-group row" v-if="tipo_persona == 'Administrativo'">
-                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Cargo Laboral:</label>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Cargo Laboral:</label>
                     <div class="col-md-8 col-sm-7">
                       <input class="form-control" type="text" v-model="cargo" />
+                      <span
+                        class="help-block text-danger"
+                        v-if="arrayErrors.cargo"
+                        v-text="arrayErrors.cargo[0]"
+                      ></span>
                     </div>
                   </div>
                   <div v-else></div>
                   <div class="form-group row">
-                    <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Sede:</label>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Sede:</label>
                     <div class="col-md-8 col-sm-7">
                       <v-select
                         :options="sedes"
@@ -274,7 +297,7 @@ export default {
         .then(res => {
           me.programas = res.data;
           //agregamos al array el campo particular
-          me.programas.push({ prog_nombre: "PARTICULAR" });
+          //me.programas.push({ prog_nombre: "PARTICULAR" });
           //console.log(res);
         })
         .catch(err => {
@@ -302,7 +325,7 @@ export default {
           nombre2: me.nombre2,
           apellido1: me.apellido1,
           apellido2: me.apellido2,
-          estado_persona: me.estado,
+          estado: me.estado,
           tipo_persona: me.tipo_persona,
           programa: me.programa,
           sede: me.sede,
@@ -339,7 +362,7 @@ export default {
       me.nombre2 = "";
       me.apellido1 = "";
       me.apellido2 = "";
-      me.estado_persona = "Activo";
+      me.estado = "Activo";
       me.tipo_persona = "";
       me.programa = "";
       me.sede = "";

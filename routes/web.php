@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Controlador de Ingresos
     Route::post('crearIngreso', 'IngresosController@crearIngreso')->name('crearIngreso');
+    Route::post('crearIngresoBD', 'IngresosController@crearIngresoBD')->name('crearIngresoBD');
     Route::get('getIngresosActuales', 'IngresosController@getIngresosActuales')->name('getIngresosActuales');
     Route::get('getIngresos', 'IngresosController@getIngresos')->name('getIngresos');
 

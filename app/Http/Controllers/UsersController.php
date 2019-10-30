@@ -12,7 +12,7 @@ class UsersController extends Controller
 {
     public function getUserAuth(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $userAuth = User::select('id', 'estado_user', 'name', 'url_imagen', 'roles_id', 'sedes_id')->where('id', Auth::user()->id)->get();
 

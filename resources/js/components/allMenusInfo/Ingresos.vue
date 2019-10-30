@@ -336,7 +336,8 @@ export default {
             axios
               .get("/getPersona", {
                 params: {
-                  documento: me.documento
+                  documento: me.documento,
+                  id_periodo: me.infoPeriodo[0].id
                 }
               })
               .then(res => {
@@ -351,7 +352,7 @@ export default {
                     toast: true,
                     position: "top-end",
                     type: "error",
-                    title: "Sin Información de la Persona",
+                    title: "No hay Resultados!",
                     showConfirmButton: false,
                     timer: 3000
                   });
@@ -534,8 +535,8 @@ export default {
           let data = infoPersona.Persona;
           //Se realiza el envio por POST para realizar el ingreso
           axios
-            .post("/crearIngreso", {
-              arrayPersona,
+            .post("/crearIngresoBD", {
+              data,
               id_periodo: me.infoPeriodo[0].id
             })
             .then(res => {

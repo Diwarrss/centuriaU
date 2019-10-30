@@ -144,7 +144,7 @@
                       </thead>
                       <!-- verificamos si el objeto es vacio -->
                       <tbody v-if="objectPersonas.data ==''">
-                        <td colspan="8">
+                        <td colspan="9">
                           <div role="alert" class="alert alert-danger text-center">
                             <div class="form-group">
                               <strong>
@@ -224,7 +224,7 @@
               <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="form-group row">
                   <label
-                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
                     for="text-input"
                   >Tipo Documento:</label>
                   <div class="col-md-8 col-sm-7">
@@ -243,7 +243,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Documento:</label>
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                  >Documento:</label>
                   <div class="col-md-8 col-sm-7">
                     <input class="form-control" type="text" v-model="numero_documento" />
                     <span
@@ -254,7 +256,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Nombres:</label>
+                  <label
+                    class="col-md-4 col-sm-4 col-form-label font-weight-bold text-right"
+                  >Nombres:</label>
                   <div class="col-md-4 col-sm-4">
                     <input class="form-control" type="text" v-model="nombre1" placeholder="Primero" />
                     <span
@@ -273,7 +277,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-sm-4 col-form-label font-weight-bold">Apellidos:</label>
+                  <label
+                    class="col-md-4 col-sm-4 col-form-label font-weight-bold text-right"
+                  >Apellidos:</label>
                   <div class="col-md-4 col-sm-4">
                     <input
                       class="form-control"
@@ -303,14 +309,17 @@
                 </div>
                 <div class="form-group row">
                   <label
-                    class="col-md-4 col-sm-5 col-form-label font-weight-bold"
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
                     for="text-input"
                   >Estado:</label>
                   <div class="col-md-8 col-sm-7">
-                    <select class="form-control" v-model="estado_persona">
-                      <option value="Activo" selected>Activo</option>
-                      <option value="Inactivo">Inactivo</option>
-                    </select>
+                    <v-select
+                      :options="['Activo', 'Inactivo']"
+                      placeholder="Seleccionar..."
+                      v-model="estado_persona"
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
                     <span
                       class="help-block text-danger"
                       v-if="arrayErrors.estado_persona"
@@ -319,7 +328,9 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Tipo Persona:</label>
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                  >Tipo Persona:</label>
                   <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['Administrativo','Docente', 'Egresado','Estudiante', 'Particular']"
@@ -335,8 +346,12 @@
                     ></span>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Programa:</label>
+                <div v-if="tipo_persona == 'Administrativo'"></div>
+                <div v-else-if="tipo_persona == 'Particular'"></div>
+                <div class="form-group row" v-else>
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                  >Programa:</label>
                   <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="programas"
@@ -354,14 +369,23 @@
                     ></span>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Cargo Laboral:</label>
+                <div class="form-group row" v-if="tipo_persona == 'Administrativo'">
+                  <label
+                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                  >Cargo Laboral:</label>
                   <div class="col-md-8 col-sm-7">
                     <input class="form-control" type="text" v-model="cargo" />
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.cargo"
+                      v-text="arrayErrors.cargo[0]"
+                    ></span>
                   </div>
                 </div>
+                <div v-else-if="tipo_persona == 'Particular'"></div>
+                <div v-else></div>
                 <div class="form-group row">
-                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Sede:</label>
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right">Sede:</label>
                   <div class="col-md-8 col-sm-7">
                     <v-select
                       :options="['San Gil', 'Yopal', 'Chiquinquirá']"
@@ -492,7 +516,7 @@ export default {
         .then(res => {
           me.programas = res.data;
           //agregamos al array el campo particular
-          me.programas.push({ prog_nombre: "PARTICULAR" });
+          //me.programas.push({ prog_nombre: "PARTICULAR" });
           //console.log(res);
         })
         .catch(err => {
