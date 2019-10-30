@@ -633,6 +633,7 @@ export default {
           me.getSedes();
           me.nombre = "";
           me.descripcion = "";
+          me.descripcion = "";
           me.estado = "";
           me.sede = "";
           me.tipoModal = "crear";
@@ -643,6 +644,7 @@ export default {
           me.getSedes(), (me.compuId = data["compuId"]);
           me.nombre = data["nombreCompu"];
           me.descripcion = data["descripcion"];
+          me.observacion = data["observacion"];
           me.estado = data["estado_computador"];
           me.sede = data["sedes_id"];
           me.tipoModal = "actualizar";

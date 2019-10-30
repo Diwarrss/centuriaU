@@ -255,7 +255,7 @@ class IngresosController extends Controller
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
-                    'computadores.nombre as nombrePC'
+                    'computadores.nombre as nombrePC', DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"), DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
@@ -264,6 +264,7 @@ class IngresosController extends Controller
                 ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
                 ->orderBy('ingresos.created_at', 'desc')
+                ->groupBy('ingresos.created_at')
                 ->paginate($cantidad);
 
             return $ingresosActuales;
@@ -281,15 +282,17 @@ class IngresosController extends Controller
                     'personas.nombre2',
                     'personas.apellido1',
                     'personas.apellido2',
+                    'personas.tipo_persona',
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
-                    'computadores.nombre as nombrePC'
+                    'computadores.nombre as nombrePC', DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"), DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 ->orderBy('ingresos.created_at', 'desc')
+                ->groupBy('ingresos.created_at')
                 ->paginate($cantidad);
 
             return $ingresosActuales;

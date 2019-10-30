@@ -257,11 +257,262 @@
                   </div>
                 </div>
               </div>
+              <!-- Div de ingresos actuales -->
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="card card-accent-danger">
+                  <div class="card-header">
+                    <h5>
+                      <strong>
+                        <i class="far fa-list-alt"></i>
+                        Ingresos Actuales ({{objectIngresosA.total}})
+                      </strong>
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select class="form-control" v-model="criterioA">
+                              <option value="numero_documento">ID o Documento</option>
+                              <option value="nombre1">Nombre</option>
+                              <option value="apellido1">Apellido</option>
+                            </select>
+                            <!-- keydown para ejecutar cuando vayan escribiendo -->
+                            <input
+                              type="text"
+                              placeholder="Escriba aquí"
+                              v-model="buscarA"
+                              class="form-control"
+                              @keyup.enter="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
+                            />
+                            <span class="input-group-append">
+                              <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
+                              >
+                                <i class="fas fa-search"></i> Buscar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <select
+                              class="form-control"
+                              v-model="cantidadA"
+                              v-on:change="getIngresosActuales(1,criterioA,buscarA,cantidadA)"
+                            >
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                            </select>
+                            <span class="input-group-append">
+                              <button type="button" class="btn btn-secondary" disabled>
+                                <i class="fas fa-list"></i> Listar
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-responsive-md table-hover table-sm">
+                      <thead>
+                        <tr>
+                          <th>Fecha Ingreso</th>
+                          <th>Documento</th>
+                          <th>Nombres y Apellidos</th>
+                          <th>Tipo Personas</th>
+                          <th>Programas</th>
+                          <th>Computador</th>
+                          <th>Préstamos</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="objectIngresosA.data == ''">
+                        <td colspan="7">
+                          <div role="alert" class="alert alert-danger text-center">
+                            <div class="form-group">
+                              <strong>
+                                <h5>¡Sin información!</h5>
+                              </strong>
+                            </div>
+                          </div>
+                        </td>
+                      </tbody>
+                      <tbody v-for="data in objectIngresosA.data" :key="data.ingresosID">
+                        <tr>
+                          <td>{{data.created_at | moment("DD/MM/YYYY h:mm:ss a")}}</td>
+                          <td>{{data.tipo_documento}} {{data.numero_documento}}</td>
+                          <td>{{data.nombre1}} {{data.nombre2}} {{data.apellido1}} {{data.apellido2}}</td>
+                          <td v-text="data.tipo_persona"></td>
+                          <td v-text="data.programas"></td>
+                          <td>
+                            <h4>
+                              <span
+                                v-if="data.estado_prestamo == 1"
+                                class="badge badge-warning"
+                              >{{data.nombrePC}}</span>
+                              <span
+                                v-if="data.estado_prestamo == 0"
+                                class="badge badge-success"
+                              >{{data.nombrePC}}</span>
+                            </h4>
+                          </td>
+                          <td>
+                            <div
+                              v-if="infoUserAuth[0].sedes_id == null || infoUserAuth[0].roles_id == 4"
+                            ></div>
+                            <div v-else-if="!data.estado_prestamo">
+                              <button
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#modalPrestamo"
+                                class="btn btn-primary"
+                                @click="modalPrestarEquipo(data.ingresosID)"
+                              >
+                                <i class="fas fa-laptop"></i> Prestar
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 1">
+                              <button
+                                class="btn btn-secondary"
+                                @click="recibirEquipo(data.computadorID, data.prestamoID)"
+                              >
+                                <i class="far fa-check-circle"></i> Recibido
+                              </button>
+                            </div>
+                            <div v-else-if="data.estado_prestamo == 0">
+                              <button class="btn btn-success" disabled>
+                                <i class="far fa-check-circle"></i> Ya Recibido
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <!-- Implementa el vue pagination para poder cambiar pagina -->
+                    <pagination
+                      :data="objectIngresosA"
+                      @pagination-change-page="getIngresosActuales"
+                      align="center"
+                      :limit="1"
+                    ></pagination>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal modal Crear prestamo-->
+    <section>
+      <div
+        class="modal"
+        id="modalPrestamo"
+        role="dialog"
+        aria-labelledby="myModalLabel1"
+        data-backdrop="static"
+        data-keyboard="false"
+      >
+        <div class="modal-dialog modal-primary" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <i class="fas fa-laptop-code"></i> Crear Prestamó
+              </h4>
+              <button class="close" type="button" @click="cerrarModalPrestamo" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group row">
+                  <label class="col-md-4 col-form-label text-right" for="text-input">Computador:</label>
+                  <div class="col-md-8">
+                    <v-select
+                      :options="arrayCompuLibres"
+                      :reduce="computa => computa.id"
+                      label="nombre"
+                      placeholder="Seleccionar..."
+                      v-model="computadores_id"
+                    >
+                      <div slot="no-options">No hay Resultados!</div>
+                    </v-select>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.computadores_id"
+                      v-text="arrayErrors.computadores_id[0]"
+                    ></span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" @click="cerrarModalPrestamo">
+                <i class="far fa-times-circle"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" @click="crearPrestamo">
+                <i class="far fa-check-circle"></i> Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Modal modal Reporte daño Computador-->
+    <section>
+      <div
+        class="modal"
+        id="modalObservacion"
+        role="dialog"
+        aria-labelledby="myModalLabel2"
+        data-backdrop="static"
+        data-keyboard="false"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-warning" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">
+                <i class="fas fa-exclamation-triangle"></i> Observación Préstamo
+              </h4>
+              <button class="close" type="button" @click="cerrarObservacion" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group row">
+                  <label class="col-md-4 col-sm-5 col-form-label font-weight-bold">Observación:</label>
+                  <div class="col-md-8 col-sm-7">
+                    <textarea class="form-control" type="text" v-model="observacion"></textarea>
+                    <span
+                      class="help-block text-danger"
+                      v-if="arrayErrors.observacion"
+                      v-text="arrayErrors.observacion[0]"
+                    ></span>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" @click="cerrarObservacion">
+                <i class="far fa-times-circle"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" @click="reportarObservacion">
+                <i class="far fa-check-circle"></i> Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 <script>
@@ -274,7 +525,17 @@ export default {
       documento: "",
       infoPersona: [],
       programaDocente: "",
-      programas: []
+      programas: [],
+      //ingresos actuales
+      objectIngresosA: {},
+      criterioA: "numero_documento",
+      buscarA: "",
+      cantidadA: 5,
+      pagActualA: "",
+      //prestamo de Equipos
+      arrayCompuLibres: [],
+      computadores_id: "",
+      observacion: ""
     };
   },
   computed: {
@@ -510,6 +771,7 @@ export default {
               id_periodo: me.infoPeriodo[0].id
             })
             .then(res => {
+              me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
               Swal.fire({
                 position: "top",
                 type: "success",
@@ -540,6 +802,7 @@ export default {
               id_periodo: me.infoPeriodo[0].id
             })
             .then(res => {
+              me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
               Swal.fire({
                 position: "top",
                 type: "success",
@@ -567,6 +830,178 @@ export default {
     limpiarBusqueda() {
       this.infoPersona = [];
       this.focus();
+    },
+    getIngresosActuales(page, criterioA, buscarA, cantidadA) {
+      let me = this;
+      axios
+        .get("getIngresosActuales", {
+          params: {
+            page: page,
+            criterio: me.criterioA,
+            buscar: me.buscarA,
+            cantidad: me.cantidadA
+          }
+        })
+        .then(response => {
+          me.objectIngresosA = response.data;
+          me.pagActualA = response.data.current_page; //capturamos el id de la pagina actual mostrando
+        });
+    },
+
+    //todo lo relacionado con prestamos
+    modalPrestarEquipo(ingresosID) {
+      let me = this;
+      me.getComputadorlibre();
+      //capturo el id del ingreso
+      me.ingresosID = ingresosID;
+    },
+    crearPrestamo() {
+      let me = this;
+      axios
+        .post("/crearPrestamo", {
+          ingresosID: me.ingresosID,
+          estado_prestamo: 1,
+          users_id: me.infoUserAuth[0].id,
+          sedes_id: me.infoUserAuth[0].sedes_id,
+          computadores_id: me.computadores_id
+        })
+        .then(function(response) {
+          me.cerrarModalPrestamo();
+          me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Prestamó creado con éxito",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          //console.log(response);
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
+        });
+    },
+    cerrarModalPrestamo() {
+      let me = this;
+      me.arrayErrors = [];
+      //cerrar modal prestamo
+      $("#modalPrestamo").modal("hide");
+      //limpio las variables del prestamo
+      me.ingresosID = "";
+      me.computadores_id = "";
+    },
+
+    recibirEquipo(computadorID, prestamoID) {
+      let me = this;
+      me.prestamoID = prestamoID;
+      const swalPrincipal = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success m-1",
+          cancelButton: "btn btn-danger m-1"
+        },
+        buttonsStyling: false
+      });
+
+      swalPrincipal
+        .fire({
+          title: "¿Computador recibido en buen estado?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonText: '<i class="fas fa-check"></i> Si',
+          cancelButtonText: '<i class="fas fa-times"></i> No'
+        })
+        .then(result => {
+          if (result.value) {
+            axios
+              .post("/finalizarPrestamo", {
+                computadorID: computadorID,
+                prestamoID: prestamoID
+              })
+              .then(function(response) {
+                me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+                swalPrincipal.fire({
+                  toast: true,
+                  position: "top",
+                  type: "success",
+                  title: "Equipo disponible!",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              })
+              .catch(function(error) {
+                if (error.response.status == 422) {
+                  //preguntamos si el error es 422
+                  swalPrincipal.fire({
+                    toast: true,
+                    position: "top",
+                    type: "error",
+                    title: "Se produjo un Error, Reintentar",
+                    showConfirmButton: false,
+                    timer: 2500
+                  });
+                }
+                //console.log(error.response.data.errors);
+              });
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            me.abrirModalReporte();
+          }
+        });
+    },
+    abrirModalReporte() {
+      $("#modalObservacion").modal("show");
+    },
+    cerrarObservacion() {
+      let me = this;
+      $("#modalObservacion").modal("hide");
+      me.observacion = "";
+    },
+    reportarObservacion() {
+      let me = this;
+      axios
+        .post("/reportarObservacion", {
+          //ruta para actualizar los datos de web.php
+          prestamoID: me.prestamoID,
+          observacion: me.observacion
+        })
+        .then(function(response) {
+          me.getIngresosActuales(me.pagActualA, me.criterioA, me.buscarA);
+          me.cerrarObservacion();
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Observación registrada con éxito, Computador no disponible",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(function(error) {
+          if (error.response.status == 422) {
+            //preguntamos si el error es 422
+            me.arrayErrors = error.response.data.errors;
+          }
+          //console.log(error);
+        });
+    },
+    getComputadorlibre() {
+      let me = this;
+      axios
+        .get("/getComputadorlibre")
+        .then(function(response) {
+          // handle success
+          me.arrayCompuLibres = response.data;
+          //console.log(response);
+        })
+        .catch(function(error) {
+          // handle error
+          //console.log(error);
+        });
     }
   },
   mounted() {
@@ -574,6 +1009,12 @@ export default {
     //optener el Usuario autenticado
     this.getUserAuth();
     this.focus();
+    this.getIngresosActuales(
+      this.pagActualA,
+      this.criterioA,
+      this.buscarA,
+      this.cantidadA
+    );
   }
 };
 </script>
