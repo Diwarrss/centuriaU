@@ -90571,7 +90571,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_allMenusInfo_Personas__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/allMenusInfo/Personas */ "./resources/js/components/allMenusInfo/Personas.vue");
 /* harmony import */ var _components_allMenusInfo_Computadores__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/allMenusInfo/Computadores */ "./resources/js/components/allMenusInfo/Computadores.vue");
 /* harmony import */ var _components_allMenusInfo_Reportes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/allMenusInfo/Reportes */ "./resources/js/components/allMenusInfo/Reportes.vue");
-/* harmony import */ var _components_allMenusInfo_TotalIngresos__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/allMenusInfo/TotalIngresos */ "./resources/js/components/allMenusInfo/TotalIngresos.vue");
+/* harmony import */ var _components_allMenusInfo_TotalIngresos__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/allMenusInfo/TotalIngresos */ "./resources/js/components/allMenusInfo/TotalIngresos.vue");
 /* harmony import */ var _components_allMenusInfo_Usuarios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/allMenusInfo/Usuarios */ "./resources/js/components/allMenusInfo/Usuarios.vue");
 /* harmony import */ var _components_allMenusInfo_Universidad__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/allMenusInfo/Universidad */ "./resources/js/components/allMenusInfo/Universidad.vue");
 /* harmony import */ var _components_allMenusInfo_Perfil__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/allMenusInfo/Perfil */ "./resources/js/components/allMenusInfo/Perfil.vue");
@@ -90625,7 +90625,7 @@ const Perfil = require("./components/allMenusInfo/Perfil.vue").default; */
     component: _components_allMenusInfo_Reportes__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
     path: "/totalIngresos",
-    component: _components_allMenusInfo_TotalIngresos__WEBPACK_IMPORTED_MODULE_10__["default"]
+    component: _components_allMenusInfo_TotalIngresos__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
     path: "/usuarios",
     component: _components_allMenusInfo_Usuarios__WEBPACK_IMPORTED_MODULE_7__["default"]

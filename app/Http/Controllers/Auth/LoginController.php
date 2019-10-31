@@ -71,7 +71,20 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        //aqui verificamos y condicionamos si el usuario esta activo o no 0=INACTIVO 1=ACTIVO
+        if ($user->estado_user == 0) {
+            $this->guard()->logout();
+
+            $request->session()->invalidate();
+
+            return back()
+                ->withErrors(['email' => trans('auth.failed')]) //mejoramos con el metodo withs
+                ->withErrors(['password' => trans('auth.failed')]) //mejoramos con el metodo withs
+                ->withInput(request(['email'])); //devolvemos lo q el ususario a escrito en el input usuario
+            $this->loggedOut($request) ?: redirect('/');
+        } else {
+            return redirect('/');
+        }
     }
 
     /**

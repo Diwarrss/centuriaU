@@ -190,33 +190,65 @@ class UsersController extends Controller
     public function updateUser(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-        try {
-            //usaremos transacciones
-            DB::beginTransaction();
+        //si viene contraseña
+        if ($request->verificacion) {
+            try {
+                //usaremos transacciones
+                DB::beginTransaction();
 
-            $user = User::findOrFail($request->id);
+                $user = User::findOrFail($request->id);
 
-            $request->validate([
-                'nombre' => 'required|max:120',
-                'email' => 'email|required|max:200|unique:users,email,' . $user->id,
-                'password' => 'max:200',
-                'verificacion' => 'max:200',
-                'estado' => 'required',
-                'rol' => 'required',
-                'sede' => 'required',
-            ]);
+                $request->validate([
+                    'nombre' => 'required|max:120',
+                    'email' => 'email|required|max:200|unique:users,email,' . $user->id,
+                    'password' => 'max:200',
+                    'verificacion' => 'max:200',
+                    'estado' => 'required',
+                    'rol' => 'required',
+                    'sede' => 'required',
+                ]);
 
-            $user->name = $request->nombre;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->estado_user = $request->estado;
-            $user->roles_id = $request->rol;
-            $user->sedes_id = $request->sede;
-            $user->save();
+                $user->name = $request->nombre;
+                $user->email = $request->email;
+                $user->password = Hash::make($request->password);
+                $user->estado_user = $request->estado;
+                $user->roles_id = $request->rol;
+                $user->sedes_id = $request->sede;
+                $user->save();
 
-            DB::commit(); //commit de la transaccion
-        } catch (Exception $e) {
-            DB::rollBack(); //si hay error no ejecute la transaccion
+                DB::commit(); //commit de la transaccion
+            } catch (Exception $e) {
+                DB::rollBack(); //si hay error no ejecute la transaccion
+            }
+        } else {
+            try {
+                //usaremos transacciones
+                DB::beginTransaction();
+
+                $user = User::findOrFail($request->id);
+
+                $request->validate([
+                    'nombre' => 'required|max:120',
+                    'email' => 'email|required|max:200|unique:users,email,' . $user->id,
+                    //'password' => 'max:200',
+                    //'verificacion' => 'max:200',
+                    'estado' => 'required',
+                    'rol' => 'required',
+                    'sede' => 'required',
+                ]);
+
+                $user->name = $request->nombre;
+                $user->email = $request->email;
+                //$user->password = Hash::make($request->password);
+                $user->estado_user = $request->estado;
+                $user->roles_id = $request->rol;
+                $user->sedes_id = $request->sede;
+                $user->save();
+
+                DB::commit(); //commit de la transaccion
+            } catch (Exception $e) {
+                DB::rollBack(); //si hay error no ejecute la transaccion
+            }
         }
     }
 }
