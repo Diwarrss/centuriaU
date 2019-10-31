@@ -74,7 +74,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('importPersonas', 'PersonasController@importPersonas')->name('importPersonas');
     Route::get('descargarFormato', 'PersonasController@descargarFormato')->name('descargarFormato');
 
-
     //Controlador Computadores
     Route::get('getComputadorlibre', 'ComputadoresController@getComputadorlibre')->name('getComputadorlibre');
     Route::get('getCompu', 'ComputadoresController@getCompu')->name('getCompu');
