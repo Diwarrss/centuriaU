@@ -14,7 +14,7 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" to="/ingresos">
-            <i class="nav-icon icon-user-following"></i> Ingresos
+            <i class="nav-icon icon-user-following"></i> Crear Ingreso
           </router-link>
         </li>
         <li class="nav-item">
@@ -42,6 +42,11 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/reportes">
             <i class="nav-icon icon-chart"></i> Reportes
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/totalIngresos">
+            <i class="nav-icon icon-list"></i> Total Ingresos
           </router-link>
         </li>
         <li class="nav-title text-center text-primary">

@@ -27,12 +27,12 @@
                 <div class="form-group" v-else>
                   <button
                     type="button"
-                    class="btn btn-success btn-lg mb-2"
+                    class="btn btn-success btn-lg mb-1"
                     @click="abrirModal('crear')"
                   >
                     <i class="fas fa-plus-circle"></i> Nuevo Computador
                   </button>
-                  <router-link to="/ingresos" class="btn btn-primary btn-lg mb-2">
+                  <router-link to="/ingresos" class="btn btn-primary btn-lg mb-1">
                     <i class="fas fa-plus-circle"></i> Nuevo Préstamo
                   </router-link>
                 </div>

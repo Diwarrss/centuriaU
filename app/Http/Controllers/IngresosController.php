@@ -318,7 +318,7 @@ class IngresosController extends Controller
 
     public function getIngresos(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
@@ -340,12 +340,16 @@ class IngresosController extends Controller
                     'personas.nombre2',
                     'personas.apellido1',
                     'personas.apellido2',
+                    'personas.tipo_persona',
+                    'personas.cargo',
                     'personas.programa',
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    'sedes.nombre as nombre_sede'
+                    'sedes.nombre as nombre_sede'/* ,
+                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
                 ->where('ingresos.sedes_id', $sedes_id)
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
@@ -353,6 +357,7 @@ class IngresosController extends Controller
             ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
                 ->orderBy('ingresos.id', 'asc')
+                /* ->groupBy('ingresos.created_at') */
                 ->paginate($cantidad);
 
             return $ingresos;
@@ -371,18 +376,23 @@ class IngresosController extends Controller
                     'personas.nombre2',
                     'personas.apellido1',
                     'personas.apellido2',
+                    'personas.tipo_persona',
+                    'personas.cargo',
                     'personas.programa',
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    'sedes.nombre as nombre_sede'
+                    'sedes.nombre as nombre_sede'/* ,
+                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 /* ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
                 ->orderBy('ingresos.id', 'asc')
+                /* ->groupBy('ingresos.created_at') */
                 ->paginate($cantidad);
 
             return $ingresos;

@@ -30,7 +30,7 @@
                     <router-link
                       class="btn btn-transparent p-0 float-right"
                       title="Ver información"
-                      to="/ingresos"
+                      to="/totalIngresos"
                     >
                       <i class="fas fa-user-check fa-5x"></i>
                     </router-link>

@@ -22,6 +22,7 @@ import Ingresos from './components/allMenusInfo/Ingresos';
 import Personas from './components/allMenusInfo/Personas';
 import Computadores from './components/allMenusInfo/Computadores';
 import Reportes from './components/allMenusInfo/Reportes';
+import TotalIngresos from './components/allMenusInfo/TotalIngresos';
 import Usuarios from './components/allMenusInfo/Usuarios';
 import Universidad from './components/allMenusInfo/Universidad';
 import Perfil from './components/allMenusInfo/Perfil';
@@ -54,6 +55,10 @@ export default {
         {
             path: "/reportes",
             component: Reportes
+        },
+        {
+            path: "/totalIngresos",
+            component: TotalIngresos
         },
         {
             path: "/usuarios",

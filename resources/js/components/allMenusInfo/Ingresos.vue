@@ -3,7 +3,7 @@
     <!-- Breadcrumb-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item active">
-        <i class="nav-icon icon-user-following"></i> Ingresos
+        <i class="nav-icon icon-user-following"></i> Crear Ingreso
       </li>
       <!-- Breadcrumb Menu-->
       <li class="breadcrumb-menu d-md-down-none">
@@ -321,7 +321,7 @@
                           <th>Fecha Ingreso</th>
                           <th>Documento</th>
                           <th>Nombres y Apellidos</th>
-                          <th>Tipo Personas</th>
+                          <th>Tipo Persona</th>
                           <th>Programas</th>
                           <th>Computador</th>
                           <th>Préstamos</th>
