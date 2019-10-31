@@ -49,6 +49,9 @@ class IngresosController extends Controller
 
         $documentoPersona = $jsonDatos['data'][0]['pege_documentoidentidad'];
 
+        //array para llenar los datos cuando es mayor la data de Unisangil a mi BD
+        $arrayNuevos = [];
+
         if ($jsonDatos) {
             //realizamos una consulta en BD para verificar si ya existe
             $getPersona = Persona::where([['numero_documento', $documentoPersona], ['periodos_id', $request->id_periodo]])->get();
@@ -77,86 +80,96 @@ class IngresosController extends Controller
                         } catch (Exception $e) {
                             DB::rollBack();
                         }
-                        //recorremos para actualizar los datos de la persona en bd local
-                        /* foreach ($jsonDatos['data'] as $valueD) {
-                            if ($valueD['pege_documentoidentidad'] == $value['numero_documento']) {
-                                $persona = Persona::findOrFail($value['id']);
-                                $persona->tipo_documento = $valueD['tidg_abreviatura'];
-                                $persona->numero_documento = $valueD['pege_documentoidentidad'];
-                                $persona->nombre1 = $valueD['peng_primernombre'];
-                                $persona->nombre2 = $valueD['peng_segundonombre'];
-                                $persona->apellido1 = $valueD['peng_primerapellido'];
-                                $persona->apellido2 = $valueD['peng_segundoapellido'];
-                                $persona->estado_persona = $valueD['estado'];
-                                $persona->tipo_persona = $valueD['tipo_persona'];
-                                $persona->cargo = $valueD['cargo'];
-                                $persona->programa = $valueD['programa'];
-                                $persona->sede = $valueD['ciudad'];
-                                $persona->registroComo = '2';
-                                $persona->save();
-
-                                print_r('sig' . $valueD['pege_documentoidentidad']);
-                            }
-                        } */
                     }
-                    //realizaremos las transacciones respectivas
-                    /* try { */
-                    //usaremos transacciones
-                    /* DB::beginTransaction(); */
-                    //recorremos el jsonPersonaLocal y actualizamos por id encontrado
-                    /* foreach ($jsonPersonaLocal as $a => $valueLocal) {
+                } //si son diferentes
+                else {
+                    //si la data recibida de UNISANGIL es mayor que mi bd crear las personas con cargo DOCENTE y crear ingresos de las encontradas
+                    if (count($jsonDatos['data']) > count($jsonPersonaLocal)) {
+                        //print_r($jsonDatos['data']);
+                        //recorremos creando los ingresos deacuerdo al id de cada persona
+                        foreach ($jsonPersonaLocal as $a => $value) {
+                            //print_r($value['id']);
+                            try {
+                                //usaremos transacciones
+                                DB::beginTransaction();
+                                //realizamos un ingreso por cada id obtenido
+                                $ingreso = new Ingreso();
+                                $ingreso->personas_id = $value['id'];
+                                $ingreso->periodos_id = $request->id_periodo;
+                                $ingreso->users_id = Auth::user()->id;
+                                $ingreso->sedes_id = Auth::user()->sedes_id;
+                                $ingreso->save();
 
-                            //dd($valueLocal);
-                            //realizamos validacion dependiendo de tipo_persona
-                            $persona = Persona::findOrFail($valueLocal['id']);
-
-                            //recorremos el array de los datos recibidos de la BD UNISANGIL
-                            foreach ($jsonDatos['data'] as $b => $valueD) {
-
-                                //dd($valueD);
-                                //buscar primero el User a modificar o actualizar que sea Estudiante
-                                $persona->tipo_documento = $valueD['tidg_abreviatura'];
-                                $persona->numero_documento = $valueD['pege_documentoidentidad'];
-                                $persona->nombre1 = $valueD['peng_primernombre'];
-                                $persona->nombre2 = $valueD['peng_segundonombre'];
-                                $persona->apellido1 = $valueD['peng_primerapellido'];
-                                $persona->apellido2 = $valueD['peng_segundoapellido'];
-                                $persona->estado_persona = $valueD['estado'];
-                                $persona->tipo_persona = $valueD['tipo_persona'];
-                                $persona->cargo = $valueD['cargo'];
-                                $persona->programa = $valueD['programa'];
-                                $persona->sede = $valueD['ciudad'];
-                                $persona->registroComo = '2';
-                                $persona->save();
-                                //si no es estudiante realizamos la siguiente sentecia igual q la anterior con parametros diferentes
-                            }
-                            //creamos el Ingreso al crear la persona
-                            $ingreso = new Ingreso();
-                            $ingreso->personas_id = $valueLocal['id'];
-                            $ingreso->periodos_id = $request->id_periodo;
-                            $ingreso->users_id = Auth::user()->id;
-                            $ingreso->sedes_id = Auth::user()->sedes_id;
-                            $ingreso->save();
-                        } */
-                    /* DB::commit(); */ //
-                    /* } catch (Exception $e) { */
-                    /* DB::rollBack(); */ //si hay error no ejecute la transaccion
-                    /* } */
-
-                    /* //Primero actualizar los datos
-                    foreach ($jsonPersonaLocal as $a => $valueP) {
-                        foreach ($jsonDatos['data'] as $b => $valueD) {
-
-                            if ($valueD['tidg_abreviatura'] == $valueP['tipo_documento'] && $valueD['pege_documentoidentidad'] == $valueP['numero_documento'] && $valueD['peng_primerapellido'] == $valueP['apellido1'] && $valueD['peng_segundoapellido'] == $valueP['apellido2'] && $valueD['peng_primernombre'] == $valueP['nombre1'] && $valueD['peng_segundonombre'] == $valueP['nombre2'] && $valueD['estado'] == $valueP['estado_persona'] && $valueD['cargo'] == $valueP['cargo'] && $valueD['ciudad'] == $valueP['sede'] && $valueD['programa'] == $valueP['programa']) {
-                                # code...
-                            } else {
-                                # code...
+                                DB::commit(); //
+                            } catch (Exception $e) {
+                                DB::rollBack();
                             }
                         }
-                    } */
-                } else {
 
-                    dd('No coinciden los valores');
+                        //recorremos el objeto en busqueda de los datos que se llamen docente
+                        foreach ($jsonDatos['data'] as $a => $value1) {
+                            if ($value1['cargo'] == 'DOCENTE') {
+                                //llenamos el array creado con cada resultado de la iteraccion
+                                array_push($arrayNuevos, $value1);
+                            }
+                        }
+
+                        //print_r(json_encode($arrayNuevos));
+                        //la idea es recorrer el objeto que se obtiene anteriormente
+                        foreach ($arrayNuevos as $b => $value) {
+                            try {
+                                //usaremos transacciones
+                                DB::beginTransaction();
+                                $persona =  new Persona();
+                                $persona->tipo_documento = $value['tidg_abreviatura'];
+                                $persona->numero_documento = $value['pege_documentoidentidad'];
+                                $persona->nombre1 = $value['peng_primernombre'];
+                                $persona->nombre2 = $value['peng_segundonombre'];
+                                $persona->apellido1 = $value['peng_primerapellido'];
+                                $persona->apellido2 = $value['peng_segundoapellido'];
+                                $persona->estado_persona = $value['estado'];
+                                $persona->tipo_persona = $value['tipo_persona'];
+                                $persona->cargo = $value['cargo'];
+                                $persona->programa = $value['programa'];
+                                $persona->sede = $value['ciudad'];
+                                $persona->periodos_id = $request->id_periodo;
+                                $persona->registroComo = '2';
+                                $persona->save();
+
+                                //creamos el Ingreso al crear la persona
+                                $ingreso = new Ingreso();
+                                $ingreso->personas_id = $persona->id;
+                                $ingreso->periodos_id = $request->id_periodo;
+                                $ingreso->users_id = Auth::user()->id;
+                                $ingreso->sedes_id = Auth::user()->sedes_id;
+                                $ingreso->save();
+                                DB::commit(); //
+                            } catch (Exception $e) {
+                                DB::rollBack();
+                            }
+                        }
+                    } else {
+                        //recorremos creando los ingresos deacuerdo al id de cada persona
+                        foreach ($jsonPersonaLocal as $ab => $value) {
+                            //print_r($value['id']);
+                            try {
+                                //usaremos transacciones
+                                DB::beginTransaction();
+                                //realizamos un ingreso por cada id obtenido
+                                $ingreso = new Ingreso();
+                                $ingreso->personas_id = $value['id'];
+                                $ingreso->periodos_id = $request->id_periodo;
+                                $ingreso->users_id = Auth::user()->id;
+                                $ingreso->sedes_id = Auth::user()->sedes_id;
+                                $ingreso->save();
+
+                                DB::commit(); //
+                            } catch (Exception $e) {
+                                DB::rollBack();
+                            }
+                        }
+                        //print_r('Valores de datos UNISANGIL menores que mi BD, Registro creado');
+                    }
                 }
             }
             //si no estan en la BD Local crea personas y los ingresa
@@ -255,7 +268,9 @@ class IngresosController extends Controller
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
-                    'computadores.nombre as nombrePC', DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"), DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
+                    'computadores.nombre as nombrePC',
+                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
@@ -286,7 +301,9 @@ class IngresosController extends Controller
                     'prestamos.id as prestamoID',
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
-                    'computadores.nombre as nombrePC', DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"), DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
+                    'computadores.nombre as nombrePC',
+                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')

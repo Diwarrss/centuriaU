@@ -98,6 +98,7 @@
                         </thead>
                         <!-- creamos lo vfor en tr para no duplicar los index en la tabla y q sean unicos -->
                         <tbody>
+                          <!-- mostrar info de Persona de mi BD -->
                           <tr v-for="(data, index) in infoPersona.Persona" :key="index">
                             <td v-text="data.tipo_documento"></td>
                             <td v-text="data.numero_documento"></td>
@@ -113,19 +114,11 @@
                             <td v-text="data.programa"></td>
                             <td v-text="data.cargo"></td>
                             <td v-text="data.sede"></td>
-                            <td>
-                              <!-- <button
-                                @click="eliminarPersona(index)"
-                                type="button"
-                                class="btn btn-danger"
-                                title="Eliminar"
-                              >
-                                <i class="fas fa-window-close"></i>
-                              </button>-->
-                            </td>
+                            <td></td>
                           </tr>
                         </tbody>
                         <tbody>
+                          <!-- mostrar info de Administrativo Unisangil -->
                           <tr v-for="(data,index) in infoPersona.Administrativo" :key="index">
                             <td v-text="data.tidg_abreviatura"></td>
                             <td v-text="data.pege_documentoidentidad"></td>
@@ -154,7 +147,7 @@
                             <td v-else-if="data.programa != ''">{{data.programa}}</td>
                             <td v-text="data.cargo"></td>
                             <td v-text="data.ciudad"></td>
-                            <td>
+                            <td v-if="infoPersona.Administrativo.length > 1">
                               <button
                                 @click="eliminarPersona(index)"
                                 type="button"
@@ -164,9 +157,11 @@
                                 <i class="fas fa-window-close"></i>
                               </button>
                             </td>
+                            <td v-else></td>
                           </tr>
                         </tbody>
                         <tbody>
+                          <!-- mostrar info de Estudiante Unisangil -->
                           <tr v-for="(data,index) in infoPersona.Estudiante" :key="index">
                             <td v-text="data.tidg_abreviatura"></td>
                             <td v-text="data.pege_documentoidentidad"></td>
@@ -708,6 +703,7 @@ export default {
           peng_segundoapellido: dataDocente[0].peng_segundoapellido,
           peng_segundonombre: dataDocente[0].peng_segundonombre,
           tidg_abreviatura: dataDocente[0].tidg_abreviatura,
+          tipo_persona: "Docente",
           tidg_id: dataDocente[0].tidg_id,
           programa: programa
         });
@@ -742,8 +738,8 @@ export default {
         //vamos a crear un solo array por todos los que recibimos excluyendo si el Tipo Persona es Docente y no tiene programa
         if (!infoPersona.Persona) {
           //capturamos los arrays y los unimos en unos solo
-          const data = infoPersona.Administrativo.concat(
-            infoPersona.Estudiante
+          const data = infoPersona.Estudiante.concat(
+            infoPersona.Administrativo
           );
           //variable para caprutar el index del array
           let keyData;
@@ -786,7 +782,7 @@ export default {
               Swal.fire({
                 position: "top",
                 type: "error",
-                title: "Error al realizar Ingreso!",
+                title: "Error al realizar Ingreso! SIN DATOS!",
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -817,7 +813,7 @@ export default {
               Swal.fire({
                 position: "top",
                 type: "error",
-                title: "Error al realizar Ingreso!",
+                title: "Error al realizar Ingreso! SIN DATOS!",
                 showConfirmButton: false,
                 timer: 1500
               });
