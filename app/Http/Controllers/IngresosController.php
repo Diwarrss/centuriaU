@@ -318,7 +318,7 @@ class IngresosController extends Controller
 
     public function getIngresos(Request $request)
     {
-        //if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
 
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
