@@ -6,6 +6,7 @@ use App\Periodo;
 use App\Universidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PeriodosController extends Controller
 {
@@ -52,12 +53,15 @@ class PeriodosController extends Controller
                 'descripcion' => 'max:200',
                 'estado_periodo' => [
                     'required',
+                    //creando validacion explicita para que alla solo un periodo activo
                     function ($attribute, $value, $fail) {
-                        $encontrar = Periodo::where([
-                            ['estado_periodo', '=', $value]
-                        ])->count();
-                        if ($encontrar == 1) {
-                            $fail('Ya hay periodo Activado');
+                        if ($value == 1) {
+                            $encontrar = Periodo::where([
+                                ['estado_periodo', '=', $value]
+                            ])->count();
+                            if ($encontrar >= 1) {
+                                $fail('Ya hay periodo Activado');
+                            }
                         }
                     },
                 ],
@@ -94,12 +98,15 @@ class PeriodosController extends Controller
                 //validacion poderosa para saber si ya hay un periodo activado
                 'estado_periodo' => [
                     'required',
+                    //creando validacion explicita para que alla solo un periodo activo
                     function ($attribute, $value, $fail) {
-                        $encontrar = Periodo::where([
-                            ['estado_periodo', '=', $value]
-                        ])->count();
-                        if ($encontrar >= 1) {
-                            $fail('Ya hay un periodo Activado');
+                        if ($value == 1) {
+                            $encontrar = Periodo::where([
+                                ['estado_periodo', '=', $value]
+                            ])->count();
+                            if ($encontrar > 1) {
+                                $fail('Ya hay un periodo Activado');
+                            }
                         }
                     }
                 ],
