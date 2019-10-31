@@ -664,9 +664,11 @@ export default {
         var year = currentDate.getFullYear();
         var fechaActual = date + "/" + (month + 1) + "/" + year;
 
+        //creamos variable para url que captura el objeto binario
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
+        //añadimos atributos a la variable link
         link.setAttribute("download", fechaActual + "_Personas.xlsx");
         document.body.appendChild(link);
         link.click();

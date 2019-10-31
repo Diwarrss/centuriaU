@@ -95,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('countComputadores', 'EscritorioController@countComputadores')->name('countComputadores');
     Route::get('countPrestamos', 'EscritorioController@countPrestamos')->name('countPrestamos');
     Route::get('countUsers', 'EscritorioController@countUsers')->name('countUsers');
-    Route::get('getIngresoPrograma', 'EscritorioController@getIngresoPrograma')->name('getIngresoPrograma');
+    Route::get('getIngresoTipoPersona', 'EscritorioController@getIngresoTipoPersona')->name('getIngresoTipoPersona');
     Route::get('getIngresosMes', 'EscritorioController@getIngresosMes')->name('getIngresosMes');
 
     //Controlador de Roles

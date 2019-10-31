@@ -5122,10 +5122,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var date = currentDate.getDate();
         var month = currentDate.getMonth();
         var year = currentDate.getFullYear();
-        var fechaActual = date + "/" + (month + 1) + "/" + year;
+        var fechaActual = date + "/" + (month + 1) + "/" + year; //creamos variable para url que captura el objeto binario
+
         var url = window.URL.createObjectURL(new Blob([response.data]));
         var link = document.createElement("a");
-        link.href = url;
+        link.href = url; //añadimos atributos a la variable link
+
         link.setAttribute("download", fechaActual + "_Personas.xlsx");
         document.body.appendChild(link);
         link.click();
@@ -7005,7 +7007,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale("es");
         me.fecha = moment__WEBPACK_IMPORTED_MODULE_1___default()(String(fechaActual)).format("YYYY-MM-DD");
       }
 
-      axios.get("/getIngresoPrograma", {
+      axios.get("/getIngresoTipoPersona", {
         params: {
           fecha: me.fecha
         }
@@ -65419,7 +65421,7 @@ var staticRenderFns = [
       _c("h5", [
         _c("strong", [
           _c("i", { staticClass: "fas fa-chart-bar" }),
-          _vm._v("\n        Ingresos/Programa\n      ")
+          _vm._v("\n        Ingresos/Rol Persona\n      ")
         ])
       ])
     ])

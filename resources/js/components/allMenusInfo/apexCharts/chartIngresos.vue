@@ -4,7 +4,7 @@
       <h5>
         <strong>
           <i class="fas fa-chart-bar"></i>
-          Ingresos/Programa
+          Ingresos/Rol Persona
         </strong>
       </h5>
     </div>
@@ -63,7 +63,7 @@ export default {
       }
 
       axios
-        .get("/getIngresoPrograma", {
+        .get("/getIngresoTipoPersona", {
           params: { fecha: me.fecha }
         })
         .then(function(response) {

@@ -34,6 +34,8 @@ class PersonasExport implements FromCollection, WithHeadings, WithColumnFormatti
             $invoice->tipo_persona,
             $invoice->programa,
             $invoice->sede,
+            $invoice->cargo,
+            $invoice->periodos_id,
             Date::dateTimeToExcel($invoice->created_at)
         ];
     }
@@ -51,6 +53,8 @@ class PersonasExport implements FromCollection, WithHeadings, WithColumnFormatti
             'Tipo_Persona',
             'Programa',
             'Sede',
+            'Cargo',
+            '# Periodo',
             'Creación'
         ];
     }
@@ -59,7 +63,7 @@ class PersonasExport implements FromCollection, WithHeadings, WithColumnFormatti
     public function columnFormats(): array
     {
         return [
-            'K' => NumberFormat::FORMAT_DATE_DDMMYYYY
+            'M' => NumberFormat::FORMAT_DATE_DDMMYYYY
         ];
     }
 }

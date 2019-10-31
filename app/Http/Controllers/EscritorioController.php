@@ -85,7 +85,7 @@ class EscritorioController extends Controller
         }
     }
 
-    public function getIngresoPrograma(Request $request)
+    public function getIngresoTipoPersona(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
 
@@ -95,18 +95,18 @@ class EscritorioController extends Controller
 
         if ($sedes_id) {
             $ingresosP = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
-                ->select('personas.programa as x', DB::raw('count(ingresos.id) as y'))
+                ->select('personas.tipo_persona as x', DB::raw('count(ingresos.id) as y'))
                 ->where('ingresos.created_at', 'like', '%' . $fechaRecibida . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
-                ->groupBy('personas.programa')
+                ->groupBy('personas.tipo_persona')
                 ->get();
 
             return $ingresosP;
         } else {
             $ingresosP = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
-                ->select('personas.programa as x', DB::raw('count(ingresos.id) as y'))
+                ->select('personas.tipo_persona as x', DB::raw('count(ingresos.id) as y'))
                 ->where('ingresos.created_at', 'like', '%' . $fechaRecibida . '%')
-                ->groupBy('personas.programa')
+                ->groupBy('personas.tipo_persona')
                 ->get();
 
             return $ingresosP;
