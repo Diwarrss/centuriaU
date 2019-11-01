@@ -32,7 +32,7 @@
         {{-- se llama el contenido respectivamente a la Ruta --}}
         <main>
             <div class="row justify-content-center mb-4">
-                <img src="/storage/1570649175.png" width="200px" class="img-fluid" alt="Responsive image">
+                <img src="/storage/1570649175.png" width="200px" height="200px" class="img-fluid" alt="Responsive image">
             </div>
             @yield('content')
         </main>
