@@ -606,8 +606,9 @@ export default {
                   me.infoPersona = [];
                   Swal.fire({
                     toast: true,
-                    position: "top-end",
+                    position: "top",
                     type: "error",
+                    background: "#f6e1e1",
                     title: "No hay Resultados!",
                     showConfirmButton: false,
                     timer: 3000
@@ -618,8 +619,9 @@ export default {
                   me.arrayErrors = [];
                   Swal.fire({
                     toast: true,
-                    position: "top-end",
+                    position: "top",
                     type: "success",
+                    background: "#d9ffe7",
                     title: "Información Recibida de BD Local",
                     showConfirmButton: false,
                     timer: 3000
@@ -640,8 +642,9 @@ export default {
             me.getProgramas();
             Swal.fire({
               toast: true,
-              position: "top-end",
+              position: "top",
               type: "success",
+              background: "#d9ffe7",
               title: "Información Recibida de Unisangil",
               showConfirmButton: false,
               timer: 3000

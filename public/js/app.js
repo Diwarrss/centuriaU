@@ -3653,8 +3653,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               me.infoPersona = [];
               Swal.fire({
                 toast: true,
-                position: "top-end",
+                position: "top",
                 type: "error",
+                background: "#f6e1e1",
                 title: "No hay Resultados!",
                 showConfirmButton: false,
                 timer: 3000
@@ -3664,8 +3665,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 me.arrayErrors = [];
                 Swal.fire({
                   toast: true,
-                  position: "top-end",
+                  position: "top",
                   type: "success",
+                  background: "#d9ffe7",
                   title: "Información Recibida de BD Local",
                   showConfirmButton: false,
                   timer: 3000
@@ -3684,8 +3686,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             me.getProgramas();
             Swal.fire({
               toast: true,
-              position: "top-end",
+              position: "top",
               type: "success",
+              background: "#d9ffe7",
               title: "Información Recibida de Unisangil",
               showConfirmButton: false,
               timer: 3000
