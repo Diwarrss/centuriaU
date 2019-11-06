@@ -431,6 +431,9 @@ export default {
           passwordV: me.passwordV
         }) //le envio el parametro completo
         .then(function(response) {
+          me.arrayErrors = [];
+          me.password = "";
+          me.passwordV = "";
           //si es exitoso mostramos el resultado enviado desde el server
           Swal.fire({
             position: "top",
