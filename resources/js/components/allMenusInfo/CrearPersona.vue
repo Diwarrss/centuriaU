@@ -174,28 +174,28 @@
                     </div>
                   </div>
                   <div v-if="tipo_persona == 'Administrativo'"></div>
-                <div v-else-if="tipo_persona == 'Particular'"></div>
-                <div class="form-group row" v-else>
-                  <label
-                    class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
-                  >Programa:</label>
-                  <div class="col-md-8 col-sm-7">
-                    <v-select
-                      :options="programas"
-                      :reduce="data => data.prog_nombre"
-                      label="prog_nombre"
-                      placeholder="Seleccionar..."
-                      v-model="programa"
-                    >
-                      <div slot="no-options">No hay Resultados!</div>
-                    </v-select>
-                    <span
-                      class="help-block text-danger"
-                      v-if="arrayErrors.programa"
-                      v-text="arrayErrors.programa[0]"
-                    ></span>
+                  <div v-else-if="tipo_persona == 'Particular'"></div>
+                  <div class="form-group row" v-else>
+                    <label
+                      class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
+                    >Programa:</label>
+                    <div class="col-md-8 col-sm-7">
+                      <v-select
+                        :options="programas"
+                        :reduce="data => data.prog_nombre"
+                        label="prog_nombre"
+                        placeholder="Seleccionar..."
+                        v-model="programa"
+                      >
+                        <div slot="no-options">No hay Resultados!</div>
+                      </v-select>
+                      <span
+                        class="help-block text-danger"
+                        v-if="arrayErrors.programa"
+                        v-text="arrayErrors.programa[0]"
+                      ></span>
+                    </div>
                   </div>
-                </div>
                   <div class="form-group row" v-if="tipo_persona == 'Administrativo'">
                     <label
                       class="col-md-4 col-sm-5 col-form-label font-weight-bold text-right"
@@ -294,7 +294,7 @@ export default {
     getProgramas() {
       let me = this;
       axios
-        .get("http://apicenturia.local/api/getProgramas")
+        .get("http://api.unisangil.edu.co/api/getProgramas")
         .then(res => {
           me.programas = res.data;
           //agregamos al array el campo particular
