@@ -4320,25 +4320,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //importamos para usar el mapState, mapActions
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4468,10 +4449,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         passwordV: me.passwordV
       }) //le envio el parametro completo
       .then(function (response) {
-        me.arrayErrors = [];
-        me.password = "";
-        me.passwordV = ""; //si es exitoso mostramos el resultado enviado desde el server
-
+        //si es exitoso mostramos el resultado enviado desde el server
         Swal.fire({
           position: "top",
           type: "success",
@@ -60538,210 +60516,142 @@ var render = function() {
                                 _vm._m(12, true),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "card-body" }, [
-                                  _c(
-                                    "form",
-                                    {
-                                      class: {
-                                        "needs-validation was-validated":
-                                          _vm.arrayErrors.password ||
-                                          _vm.arrayErrors.passwordV
-                                      },
-                                      attrs: { novalidate: "" }
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        { staticClass: "form-group row" },
-                                        [
-                                          _vm._m(13, true),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
+                                  _c("div", { staticClass: "form-group row" }, [
+                                    _vm._m(13, true),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-md-9 col-xl-8" },
+                                      [
+                                        _c("input", {
+                                          directives: [
                                             {
-                                              staticClass: "col-md-9 col-xl-8"
-                                            },
-                                            [
-                                              _c("input", {
-                                                directives: [
-                                                  {
-                                                    name: "model",
-                                                    rawName: "v-model",
-                                                    value: _vm.password,
-                                                    expression: "password"
-                                                  }
-                                                ],
-                                                staticClass: "form-control",
-                                                attrs: {
-                                                  type: "password",
-                                                  id: "pass1",
-                                                  required: ""
-                                                },
-                                                domProps: {
-                                                  value: _vm.password
-                                                },
-                                                on: {
-                                                  input: function($event) {
-                                                    if (
-                                                      $event.target.composing
-                                                    ) {
-                                                      return
-                                                    }
-                                                    _vm.password =
-                                                      $event.target.value
-                                                  }
-                                                }
-                                              }),
-                                              _vm._v(" "),
-                                              _vm.arrayErrors.password
-                                                ? _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "invalid-feedback"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.arrayErrors
-                                                            .password[0]
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e()
-                                            ]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "form-group row" },
-                                        [
-                                          _vm._m(14, true),
-                                          _vm._v(" "),
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass: "col-md-9 col-xl-8"
-                                            },
-                                            [
-                                              _c("input", {
-                                                directives: [
-                                                  {
-                                                    name: "model",
-                                                    rawName: "v-model",
-                                                    value: _vm.passwordV,
-                                                    expression: "passwordV"
-                                                  }
-                                                ],
-                                                staticClass: "form-control",
-                                                attrs: {
-                                                  id: "pass2",
-                                                  type: "password",
-                                                  required: ""
-                                                },
-                                                domProps: {
-                                                  value: _vm.passwordV
-                                                },
-                                                on: {
-                                                  input: function($event) {
-                                                    if (
-                                                      $event.target.composing
-                                                    ) {
-                                                      return
-                                                    }
-                                                    _vm.passwordV =
-                                                      $event.target.value
-                                                  }
-                                                }
-                                              }),
-                                              _vm._v(" "),
-                                              _vm.arrayErrors.passwordV
-                                                ? _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "invalid-feedback"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.arrayErrors
-                                                            .passwordV[0]
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.password != _vm.passwordV
-                                                ? _c(
-                                                    "span",
-                                                    {
-                                                      staticClass:
-                                                        "help-block text-danger"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "Contraseñas no Coinciden"
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e(),
-                                              _vm._v(" "),
-                                              _vm.arrayErrors.password ==
-                                              "El campo Contraseña debe contener al menos 8 caracteres."
-                                                ? _c(
-                                                    "span",
-                                                    {
-                                                      staticClass:
-                                                        "help-block text-danger"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(
-                                                          _vm.arrayErrors
-                                                            .password[0]
-                                                        )
-                                                      )
-                                                    ]
-                                                  )
-                                                : _vm._e()
-                                            ]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _vm.password === _vm.passwordV
-                                        ? _c(
-                                            "div",
-                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.password,
+                                              expression: "password"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            type: "password",
+                                            id: "pass1"
+                                          },
+                                          domProps: { value: _vm.password },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.password = $event.target.value
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm.arrayErrors.password
+                                          ? _c("span", {
                                               staticClass:
-                                                "form-group align-content-center"
+                                                "help-block text-danger",
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  _vm.arrayErrors.password[0]
+                                                )
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "form-group row" }, [
+                                    _vm._m(14, true),
+                                    _vm._v(" "),
+                                    _c(
+                                      "div",
+                                      { staticClass: "col-md-9 col-xl-8" },
+                                      [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.passwordV,
+                                              expression: "passwordV"
+                                            }
+                                          ],
+                                          staticClass: "form-control",
+                                          attrs: {
+                                            id: "pass2",
+                                            type: "password"
+                                          },
+                                          domProps: { value: _vm.passwordV },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.passwordV =
+                                                $event.target.value
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _vm.password != _vm.passwordV
+                                          ? _c(
+                                              "span",
+                                              {
+                                                staticClass:
+                                                  "help-block text-danger"
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "Contraseñas no Coinciden"
+                                                )
+                                              ]
+                                            )
+                                          : _vm._e(),
+                                        _vm._v(" "),
+                                        _vm.arrayErrors.passwordV
+                                          ? _c("span", {
+                                              staticClass:
+                                                "help-block text-danger",
+                                              domProps: {
+                                                textContent: _vm._s(
+                                                  _vm.arrayErrors.passwordV[0]
+                                                )
+                                              }
+                                            })
+                                          : _vm._e()
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.password === _vm.passwordV
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "form-group align-content-center"
+                                        },
+                                        [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "btn btn-success",
+                                              on: { click: _vm.updatePass }
                                             },
                                             [
-                                              _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "btn btn-success",
-                                                  on: { click: _vm.updatePass }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass: "fas fa-upload"
-                                                  }),
-                                                  _vm._v(
-                                                    " Actualizar\n                      "
-                                                  )
-                                                ]
+                                              _c("i", {
+                                                staticClass: "fas fa-upload"
+                                              }),
+                                              _vm._v(
+                                                " Actualizar\n                    "
                                               )
                                             ]
                                           )
-                                        : _vm._e()
-                                    ]
-                                  )
+                                        ]
+                                      )
+                                    : _vm._e()
                                 ])
                               ]
                             )

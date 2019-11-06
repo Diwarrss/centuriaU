@@ -240,60 +240,41 @@
                     </h5>
                   </div>
                   <div class="card-body">
-                    <form
-                      novalidate
-                      v-bind:class="{ 'needs-validation was-validated': arrayErrors.password || arrayErrors.passwordV}"
-                    >
-                      <div class="form-group row">
-                        <div class="col-md-3 col-xl-4">
-                          <label for="pass1">Nueva Contraseña:</label>
-                        </div>
-                        <div class="col-md-9 col-xl-8">
-                          <input
-                            class="form-control"
-                            type="password"
-                            id="pass1"
-                            v-model="password"
-                            required
-                          />
-                          <div
-                            v-if="arrayErrors.password"
-                            class="invalid-feedback"
-                          >{{arrayErrors.password[0]}}</div>
-                        </div>
+                    <div class="form-group row">
+                      <div class="col-md-3 col-xl-4">
+                        <label for="pass1">Nueva Contraseña:</label>
                       </div>
-                      <div class="form-group row">
-                        <div class="col-md-3 col-xl-4">
-                          <label for="pass2">Confirmación:</label>
-                        </div>
-                        <div class="col-md-9 col-xl-8">
-                          <input
-                            class="form-control"
-                            id="pass2"
-                            type="password"
-                            v-model="passwordV"
-                            required
-                          />
-                          <div
-                            v-if="arrayErrors.passwordV"
-                            class="invalid-feedback"
-                          >{{arrayErrors.passwordV[0]}}</div>
-                          <span
-                            class="help-block text-danger"
-                            v-if="password != passwordV"
-                          >Contraseñas no Coinciden</span>
-                          <span
-                            class="help-block text-danger"
-                            v-if="arrayErrors.password == 'El campo Contraseña debe contener al menos 8 caracteres.'"
-                          >{{arrayErrors.password[0]}}</span>
-                        </div>
+                      <div class="col-md-9 col-xl-8">
+                        <input class="form-control" type="password" id="pass1" v-model="password" />
+                        <span
+                          class="help-block text-danger"
+                          v-if="arrayErrors.password"
+                          v-text="arrayErrors.password[0]"
+                        ></span>
                       </div>
-                      <div class="form-group align-content-center" v-if="password === passwordV">
-                        <button class="btn btn-success" @click="updatePass">
-                          <i class="fas fa-upload"></i> Actualizar
-                        </button>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-3 col-xl-4">
+                        <label for="pass2">Confirmación:</label>
                       </div>
-                    </form>
+                      <div class="col-md-9 col-xl-8">
+                        <input class="form-control" id="pass2" type="password" v-model="passwordV" />
+                        <span
+                          class="help-block text-danger"
+                          v-if="password != passwordV"
+                        >Contraseñas no Coinciden</span>
+                        <span
+                          class="help-block text-danger"
+                          v-if="arrayErrors.passwordV"
+                          v-text="arrayErrors.passwordV[0]"
+                        ></span>
+                      </div>
+                    </div>
+                    <div class="form-group align-content-center" v-if="password === passwordV">
+                      <button class="btn btn-success" @click="updatePass">
+                        <i class="fas fa-upload"></i> Actualizar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -450,9 +431,6 @@ export default {
           passwordV: me.passwordV
         }) //le envio el parametro completo
         .then(function(response) {
-          me.arrayErrors = [];
-          me.password = "";
-          me.passwordV = "";
           //si es exitoso mostramos el resultado enviado desde el server
           Swal.fire({
             position: "top",
