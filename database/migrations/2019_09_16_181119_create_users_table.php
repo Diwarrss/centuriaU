@@ -33,11 +33,11 @@ class CreateUsersTable extends Migration
 
         //inserto a la tabla datos registros
         DB::table('users')->insert(array(
-            'id' => '1', 'name' => 'SUPERADMIN', 'email' => 'dialvaro30@gmail.com', 'email_verified_at' => null, 'password' => $password,
+            'id' => '1', 'name' => 'SUPERADMIN', 'email' => 'centuria@unisangil.edu.co', 'email_verified_at' => null, 'password' => $password,
             'estado_user' => 1, 'url_imagen' => 'storage/1570649197.png', 'roles_id' => 1, 'sedes_id' => null
         ));
 
-        DB::table('users')->insert(array(
+        /* DB::table('users')->insert(array(
             'id' => '2', 'name' => 'ADMIN SAN GIL', 'email' => 'dialvaro31@gmail.com', 'email_verified_at' => null, 'password' => $password,
             'estado_user' => 1, 'url_imagen' => 'storage/1570649197.png', 'roles_id' => 2, 'sedes_id' => 1
         ));
@@ -50,7 +50,7 @@ class CreateUsersTable extends Migration
         DB::table('users')->insert(array(
             'id' => '4', 'name' => 'ADMIN CHIQUI', 'email' => 'dialvaro33@gmail.com', 'email_verified_at' => null, 'password' => $password,
             'estado_user' => 1, 'url_imagen' => 'storage/1570649197.png', 'roles_id' => 2, 'sedes_id' => 2
-        ));
+        )); */
     }
 
     /**

@@ -136,7 +136,7 @@ class PersonasController extends Controller
                 'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
                 'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
                 'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-                'estado_persona' => 'required|max:50',
+                'estado' => 'required|max:50',
                 'tipo_persona' => 'required|max:100',
                 //'programa' => 'required|max:255',
                 'sede' => 'required|max:100',
@@ -151,7 +151,7 @@ class PersonasController extends Controller
                 'nombre2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
                 'apellido1' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
                 'apellido2' => 'max:50|regex:/^[\pL\s\-]+$/u|nullable',
-                'estado_persona' => 'required|max:50',
+                'estado' => 'required|max:50',
                 'tipo_persona' => 'required|max:100',
                 //'programa' => 'required|max:255',
                 'sede' => 'required|max:100',
@@ -184,7 +184,7 @@ class PersonasController extends Controller
             $persona->nombre2 = $request->nombre2;
             $persona->apellido1 = $request->apellido1;
             $persona->apellido2 = $request->apellido2;
-            $persona->estado_persona = $request->estado_persona;
+            $persona->estado_persona = $request->estado;
             $persona->tipo_persona = $request->tipo_persona;
             $persona->programa = $request->programa;
             $persona->sede = $request->sede;

@@ -19,7 +19,35 @@ class PrestamosController extends Controller
         $sedes_id = Auth::user()->sedes_id;
 
         if ($sedes_id) {
-            $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+            if ($criterio == 'nombre') {
+                $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
+                ->select(
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC',
+                    'computadores.descripcion',
+                    'prestamos.observacion',
+                    'prestamos.estado_prestamo',
+                    'prestamos.id as prestamoID',
+                    'prestamos.sedes_id',
+                    'prestamos.created_at as fechaPrestamo',
+                    'prestamos.updated_at as fechaFin',
+                    'sedes.nombre as nombreSede',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'personas.tipo_documento',
+                    'personas.numero_documento'
+                )->where('prestamos.sedes_id', $sedes_id)
+                ->where('computadores.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                ->paginate($cantidad);
+
+                return $prestamos;
+            }else{
+                $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
                 ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
@@ -44,9 +72,37 @@ class PrestamosController extends Controller
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 ->paginate($cantidad);
 
-            return $prestamos;
+                return $prestamos;
+            }
         } else {
-            $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+            if ($criterio == 'nombre') {
+                $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
+                ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
+                ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
+                ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
+                ->select(
+                    'computadores.id as computadorID',
+                    'computadores.nombre as nombrePC',
+                    'computadores.descripcion',
+                    'prestamos.observacion',
+                    'prestamos.estado_prestamo',
+                    'prestamos.id as prestamoID',
+                    'ingresos.id as ingresosID',
+                    'prestamos.created_at as fechaPrestamo',
+                    'prestamos.updated_at as fechaFin',
+                    'sedes.nombre as nombreSede',
+                    'personas.nombre1',
+                    'personas.nombre2',
+                    'personas.apellido1',
+                    'personas.apellido2',
+                    'personas.tipo_documento',
+                    'personas.numero_documento'
+                )->where('computadores.' . $criterio, 'LIKE', '%' . $buscar . '%')
+                ->paginate(5);
+
+                return $prestamos;
+            }else{
+                $prestamos = Prestamo::join('computadores', 'computadores.id', '=', 'prestamos.computadores_id')
                 ->join('ingresos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'prestamos.sedes_id')
@@ -70,7 +126,8 @@ class PrestamosController extends Controller
                 )->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
                 ->paginate(5);
 
-            return $prestamos;
+                return $prestamos;
+            }
         }
     }
 

@@ -182,6 +182,7 @@
                             <select class="form-control" v-model="criterioP">
                               <option value="nombre1">Nombre Persona</option>
                               <option value="numero_documento">ID o Documento</option>
+                              <option value="nombre">Computador</option>
                             </select>
                             <!-- keydown para ejecutar cuando vayan escribiendo -->
                             <input

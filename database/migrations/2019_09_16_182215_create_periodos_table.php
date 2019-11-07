@@ -23,9 +23,9 @@ class CreatePeriodosTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('periodos')->insert(array(
+        /* DB::table('periodos')->insert(array(
             'id' => '1', 'nombre' => '2019-2', 'estado_periodo' => 1, 'universidad_id' => 1
-        ));
+        )); */
     }
 
     /**
