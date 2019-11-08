@@ -36,8 +36,8 @@ class CreateUsersTable extends Migration
             'id' => '1', 'name' => 'SUPERADMIN', 'email' => 'centuria@unisangil.edu.co', 'email_verified_at' => null, 'password' => $password,
             'estado_user' => 1, 'url_imagen' => 'storage/1570649197.png', 'roles_id' => 1, 'sedes_id' => null
         ));
-
-        /* DB::table('users')->insert(array(
+        /*
+        DB::table('users')->insert(array(
             'id' => '2', 'name' => 'ADMIN SAN GIL', 'email' => 'dialvaro31@gmail.com', 'email_verified_at' => null, 'password' => $password,
             'estado_user' => 1, 'url_imagen' => 'storage/1570649197.png', 'roles_id' => 2, 'sedes_id' => 1
         ));

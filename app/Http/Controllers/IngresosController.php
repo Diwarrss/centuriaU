@@ -269,8 +269,11 @@ class IngresosController extends Controller
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
-                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
+                    'ingresos.created_at',
+                    'personas.tipo_persona',
+                    'personas.programa as programas'
+                    /* DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('ingresos.sedes_id', $sedes_id)
@@ -278,8 +281,8 @@ class IngresosController extends Controller
                 /* ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
                 ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
-                ->orderBy('ingresos.created_at', 'desc')
-                ->groupBy('ingresos.created_at')
+                //->groupBy('ingresos.created_at')
+                ->orderBy('ingresos.id', 'desc')
                 ->paginate($cantidad);
 
             return $ingresosActuales;
@@ -302,14 +305,17 @@ class IngresosController extends Controller
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
-                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas")
+                    'ingresos.created_at',
+                    'personas.tipo_persona',
+                    'personas.programa as programas'
+                    /* DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
+                    DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
                 ->where('ingresos.created_at', 'like', '%' . $fechahoy . '%')
                 ->where('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
                 ->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
-                ->orderBy('ingresos.created_at', 'desc')
-                ->groupBy('ingresos.created_at')
+                //->groupBy('ingresos.created_at')
+                ->orderBy('ingresos.id', 'desc')
                 ->paginate($cantidad);
 
             return $ingresosActuales;
@@ -357,7 +363,7 @@ class IngresosController extends Controller
             ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
                 ->orderBy('ingresos.id', 'asc')
-                /* ->groupBy('ingresos.created_at') */
+                /*  */
                 ->paginate($cantidad);
 
             return $ingresos;
@@ -392,7 +398,7 @@ class IngresosController extends Controller
             ->orWhere('personas.apellido1', 'LIKE', '%' . $buscar . '%')
             ->orWhere('computadores.nombre', 'LIKE', '%' . $buscar . '%') */
                 ->orderBy('ingresos.id', 'asc')
-                /* ->groupBy('ingresos.created_at') */
+                /*  */
                 ->paginate($cantidad);
 
             return $ingresos;
