@@ -1,8 +1,20 @@
 @extends('adminCoreui.app')
 
 @section('content')
+<div class="container bg-light">
+    <div class="row align-items-center">
+        <div class="col-md-3  text-center">
+            <img src="/storage/1570649176.png" width="150" height="150" class="img-fluid p-3" alt="Responsive image">
+        </div>
+        <div class="col-md-9 text-center">
+            <div class="p-2">
+                <h2>Centro Universitario de Recursos para la Investigación y el Aprendizaje</h2>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row justify-content-center">
-  <div class="col-md-8">
+  <div class="col-md-8 mt-5">
     <div class="card-group">
       <div class="card p-4">
         <div class="card-body">
@@ -61,5 +73,17 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="container mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div>
+            <span>Desarrollado por:</span>
+            <a href="http://www.unisangil.edu.co" target="_blanck">Departamento Sistemas y Tics</a>
+        </div>
+        <div class="ml-auto">
+            <span>2019 Copyright © </span>
+        </div>
+    </nav>
 </div>
 @endsection

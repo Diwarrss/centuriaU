@@ -27,13 +27,10 @@
       gtag('config', 'UA-118965717-5');
     </script>
   </head>
-  <body class="app flex-row align-items-center">
-    <div class="container">
+  <body class="app">
+    <div class="container mt-5">
         {{-- se llama el contenido respectivamente a la Ruta --}}
         <main>
-            <div class="row justify-content-center mb-4">
-                <img src="/storage/1570649175.png" width="200px" height="200px" class="img-fluid" alt="Responsive image">
-            </div>
             @yield('content')
         </main>
     </div>
