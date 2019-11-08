@@ -26,7 +26,16 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid" v-if="infoUserAuth.length && infoPeriodo.length">
+    <div class="container-fluid" v-else-if="infoPeriodo.length > 1">
+      <div role="alert" class="alert alert-warning text-center">
+        <div class="form-group">
+          <strong>
+            <h3>¡Hay más de un Periodo habilitado!</h3>
+          </strong>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" v-if="infoUserAuth.length && infoPeriodo.length == 1">
       <div class="ui-view">
         <div>
           <div class="animated fadeIn">
