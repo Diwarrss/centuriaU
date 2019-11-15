@@ -104,6 +104,7 @@
                           <th>Tipo Persona</th>
                           <th>Programa</th>
                           <th>Cargo</th>
+                          <th>Periodo</th>
                           <th>Sede</th>
                           <th>Computador</th>
                         </tr>
@@ -128,6 +129,7 @@
                           <td v-text="data.tipo_persona"></td>
                           <td v-text="data.programa"></td>
                           <td v-text="data.cargo"></td>
+                          <td v-text="data.periodo"></td>
                           <td v-text="data.nombre_sede"></td>
                           <td>
                             <h4>
@@ -199,7 +201,7 @@ export default {
         });
     }
   },
-  mounted() {
+  created() {
     this.getUserAuth();
     this.getIngresos(
       this.pagActual,

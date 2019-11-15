@@ -41,6 +41,8 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
             'Estado',
             'Tipo_Persona',
             'Programa',
+            'Cargo',
+            'Periodo',
             'Sede_Persona'
         ];
     }
@@ -61,6 +63,8 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
             $invoice->estado_persona,
             $invoice->tipo_persona,
             $invoice->programa,
+            $invoice->cargo,
+            $invoice->periodo,
             $invoice->sedePersona
         ];
     }
@@ -93,7 +97,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('personas.programa', $this->programa)
@@ -104,7 +108,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('personas.programa', $this->programa);
@@ -114,7 +118,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('ingresos.sedes_id', $this->sede);
@@ -124,7 +128,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.programa', $this->programa)
                     ->where('ingresos.sedes_id', $this->sede);
@@ -134,7 +138,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('ingresos.sedes_id', $this->sede);
 
@@ -143,7 +147,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo);
 
                 return $reporte;
@@ -151,7 +155,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.tipo_persona', $this->tipo_persona);
 
@@ -160,7 +164,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('personas.programa', $this->programa);
 
@@ -171,7 +175,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('personas.programa', $this->programa)
                     ->where('ingresos.sedes_id', $this->sede)
@@ -182,7 +186,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('personas.programa', $this->programa)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
@@ -192,7 +196,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->where('ingresos.sedes_id', $this->sede)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
@@ -202,7 +206,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.programa', $this->programa)
                     ->where('ingresos.sedes_id', $this->sede)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
@@ -212,7 +216,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('ingresos.periodos_id', $this->periodo)
                     ->where('ingresos.sedes_id', $this->sede)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
@@ -222,7 +226,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
 
                 return $reporte;
@@ -230,7 +234,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.tipo_persona', $this->tipo_persona)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
 
@@ -239,7 +243,7 @@ class ReporteAvanzado implements FromQuery, WithHeadings, WithMapping, WithColum
                 $reporte = Ingreso::query()->join('personas', 'personas.id', '=', 'ingresos.personas_id')
                     ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                     ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
-                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.sede as sedePersona')
+                    ->select('ingresos.id', 'ingresos.created_at', 'sedes.nombre as sedeIngreso', 'personas.tipo_documento', 'personas.numero_documento', 'personas.nombre1', 'personas.nombre2', 'personas.apellido1', 'personas.apellido2', 'personas.estado_persona', 'personas.tipo_persona', 'personas.programa', 'personas.cargo', 'periodos.nombre as periodo', 'personas.sede as sedePersona')
                     ->where('personas.programa', $this->programa)
                     ->whereBetween('ingresos.created_at', [$this->fechaInicial . ' 00:00:00', $this->fechaFinal . ' 23:59:59']);
 

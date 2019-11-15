@@ -1012,7 +1012,7 @@ export default {
         });
     }
   },
-  mounted() {
+  created() {
     this.getPeriodo();
     //optener el Usuario autenticado
     this.getUserAuth();

@@ -282,6 +282,7 @@ class PersonasController extends Controller
         if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $cantidad = $request->cantidad;
+        $periodo = $request->id_periodo; //el id de periodo para mostrar las personas por periodo activo
 
         //cuando hay otros parametros y hacemos or where para solo mostrar esos datos
         $personas = Persona::select(
@@ -300,6 +301,7 @@ class PersonasController extends Controller
             'periodos.nombre',
             'personas.registroComo'
         )->join('periodos', 'periodos.id', '=', 'personas.periodos_id')
+        ->where('personas.periodos_id', '=', $periodo)
             ->orWhere('personas.tipo_documento', 'LIKE', '%' . $buscar . '%')
             ->orWhere('personas.numero_documento', 'LIKE', '%' . $buscar . '%')
             ->orWhere('personas.nombre1', 'LIKE', '%' . $buscar . '%')

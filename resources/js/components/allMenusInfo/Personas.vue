@@ -17,7 +17,7 @@
         </div>
       </li>
     </ol>
-    <div class="container-fluid" v-if="infoUserAuth.length">
+    <div class="container-fluid" v-if="infoUserAuth.length && infoPeriodo.length">
       <div class="ui-view">
         <div>
           <div class="animated fadeIn">
@@ -32,7 +32,7 @@
                     <h5>
                       <strong>
                         <i class="fas fa-list-ul"></i>
-                        Listado de Personas (Total: {{objectPersonas.total}})
+                        Listado de Personas (Total: {{objectPersonas.total}}), Periodo: {{infoPeriodo[0].nombre}}
                       </strong>
                     </h5>
                     <div v-if="infoUserAuth[0].roles_id == 4"></div>
@@ -197,6 +197,15 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" v-if="!infoPeriodo.length">
+      <div role="alert" class="alert alert-warning text-center">
+        <div class="form-group">
+          <strong>
+            <h3>¡No hay Periodo habilitado!</h3>
+          </strong>
         </div>
       </div>
     </div>
@@ -506,6 +515,11 @@ export default {
   computed: {
     ...mapState(["infoUserAuth", "infoPeriodo"])
   },
+  created() {
+      this.getPeriodo();
+      this.getUserAuth();
+      this.getPersonas(this.pagActual, this.buscar, this.cantidad);
+  },
   methods: {
     ...mapActions(["getUserAuth", "getPeriodo"]),
     //obtener programas de Unisangil API
@@ -535,14 +549,15 @@ export default {
       let me = this;
       //enviamos los criterios para la paginacion y igualmente el parametro buscar a la ruta, controlador pagina por la busqueda
       axios
-        .get(
-          "getPersonas?page=" +
-            page +
-            "&buscar=" +
-            me.buscar +
-            "&cantidad=" +
-            me.cantidad
-        )
+        .get("getPersonas",  {
+            params:{
+                page: page,
+                buscar: me.buscar,
+                cantidad: me.cantidad,
+                id_periodo: me.infoPeriodo[0].id
+                }
+            }
+            )
         .then(response => {
           me.objectPersonas = response.data;
           me.pagActual = response.data.current_page; //capturamos el id de la pagina actual mostrando
@@ -779,10 +794,6 @@ export default {
       this.erroresImportar = [];
       this.errores500 = "";
     }
-  },
-  mounted() {
-    this.getUserAuth();
-    this.getPersonas(this.pagActual, this.buscar, this.cantidad);
   }
 };
 </script>

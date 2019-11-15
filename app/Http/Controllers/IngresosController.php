@@ -334,6 +334,7 @@ class IngresosController extends Controller
         if ($sedes_id) {
             $ingresos = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
+                ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                 ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
                 ->select(
@@ -353,7 +354,8 @@ class IngresosController extends Controller
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    'sedes.nombre as nombre_sede'/* ,
+                    'sedes.nombre as nombre_sede',
+                    'periodos.nombre as periodo'/* ,
                     DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
                     DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
@@ -370,6 +372,7 @@ class IngresosController extends Controller
         } else {
             $ingresos = Ingreso::join('personas', 'personas.id', '=', 'ingresos.personas_id')
                 ->join('sedes', 'sedes.id', '=', 'ingresos.sedes_id')
+                ->join('periodos', 'periodos.id', '=', 'ingresos.periodos_id')
                 ->leftJoin('prestamos', 'ingresos.id', '=', 'prestamos.ingresos_id')
                 ->leftJoin('computadores', 'prestamos.computadores_id', '=', 'computadores.id')
                 ->select(
@@ -389,7 +392,8 @@ class IngresosController extends Controller
                     'prestamos.estado_prestamo',
                     'computadores.id as computadorID',
                     'computadores.nombre as nombrePC',
-                    'sedes.nombre as nombre_sede'/* ,
+                    'sedes.nombre as nombre_sede',
+                    'periodos.nombre as periodo'/* ,
                     DB::raw("GROUP_CONCAT(personas.tipo_persona SEPARATOR '-') as tipo_persona"),
                     DB::raw("GROUP_CONCAT(personas.programa SEPARATOR '-') as programas") */
                 )
