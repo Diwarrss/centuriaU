@@ -98,7 +98,7 @@ class PrestamosController extends Controller
                     'personas.tipo_documento',
                     'personas.numero_documento'
                 )->where('computadores.' . $criterio, 'LIKE', '%' . $buscar . '%')
-                ->paginate(5);
+                ->paginate($cantidad);
 
                 return $prestamos;
             }else{
@@ -124,7 +124,7 @@ class PrestamosController extends Controller
                     'personas.tipo_documento',
                     'personas.numero_documento'
                 )->where('personas.' . $criterio, 'LIKE', '%' . $buscar . '%')
-                ->paginate(5);
+                ->paginate($cantidad);
 
                 return $prestamos;
             }
