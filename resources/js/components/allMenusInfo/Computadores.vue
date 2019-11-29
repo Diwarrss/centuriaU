@@ -140,7 +140,7 @@
                           <td v-text="data.nombreSede"></td>
                           <td>{{data.created_at | moment('DD/MM/YYYY h:mm a')}}</td>
                           <td v-text="data.observacion"></td>
-                          <td v-if="infoUserAuth[0].roles_id == 4"></td>
+                          <td v-if="infoUserAuth[0].roles_id == 4 || data.estado_computador == '2'"></td>
                           <td v-else>
                             <button
                               class="btn btn-secondary"

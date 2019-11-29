@@ -5,15 +5,16 @@ window.Vue = require("vue");
 //importacion de libreria Vue Router
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+//importando VUEX
+import Vuex from "vuex";
+Vue.use(Vuex);
 
 //importamos nuestras rutas
 import routes from './routes';
 //importamos nuestro store de vuex
 import store from './store';
 
-//importando VUEX
-import Vuex from "vuex";
-Vue.use(Vuex);
+
 
 //import vue-moment CONFIGURADO AL ESPAÑOL
 const moment = require("moment");

@@ -56009,7 +56009,8 @@ var render = function() {
                                         }
                                       }),
                                       _vm._v(" "),
-                                      _vm.infoUserAuth[0].roles_id == 4
+                                      _vm.infoUserAuth[0].roles_id == 4 ||
+                                      data.estado_computador == "2"
                                         ? _c("td")
                                         : _c("td", [
                                             _c(
@@ -89195,9 +89196,9 @@ var regionDayMap = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
@@ -89212,14 +89213,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); //importacion de libreria Vue Router
 
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); //importamos nuestras rutas
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); //importando VUEX
+
+
+Vue.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); //importamos nuestras rutas
 
  //importamos nuestro store de vuex
 
- //importando VUEX
-
-
-Vue.use(vuex__WEBPACK_IMPORTED_MODULE_3__["default"]); //import vue-moment CONFIGURADO AL ESPAÑOL
+ //import vue-moment CONFIGURADO AL ESPAÑOL
 
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
@@ -89260,9 +89261,9 @@ Vue.component("pagination", __webpack_require__(/*! laravel-vue-pagination */ ".
 var app = new Vue({
   el: "#app",
   //le pasamos las rutas asi
-  router: new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"](_routes__WEBPACK_IMPORTED_MODULE_1__["default"]),
+  router: new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"](_routes__WEBPACK_IMPORTED_MODULE_2__["default"]),
   //le pasamos el Store importado
-  store: new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store(_store__WEBPACK_IMPORTED_MODULE_2__["default"])
+  store: new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store(_store__WEBPACK_IMPORTED_MODULE_3__["default"])
 });
 
 /***/ }),
