@@ -29,6 +29,12 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+    //Route for access Bases de datos Unisangil http://centuria.unisangil.edu.co/bases-de-datos
+    Route::get('login-bases-de-datos', function () {
+      return view('adminCoreui.loginbd');
+    });
+    //save accesses for login to http://centuria.unisangil.edu.co/bases-de-datos
+    Route::post('createBdAccess', 'CenturiaBdAccessController@create');
 });
 
 Route::group(['middleware' => 'auth'], function () {

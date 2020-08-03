@@ -14,8 +14,6 @@ import routes from './routes';
 //importamos nuestro store de vuex
 import store from './store';
 
-
-
 //import vue-moment CONFIGURADO AL ESPAÑOL
 const moment = require("moment");
 require("moment/locale/es");
@@ -80,7 +78,11 @@ Vue.component(
     "ingresostotales",
     require("./components/allMenusInfo/IngresosTotales.vue").default
 ); */
-
+//creamos componente que se llama en la pagina de login bd centuria
+Vue.component(
+  "page-login-bd",
+  require("./components/PageLoginBD.vue").default
+);
 //LLAMAMOS EL COMPONENTE DE VUE PAGINATION
 Vue.component("pagination", require("laravel-vue-pagination"));
 
