@@ -2,5 +2,6 @@
 @extends('adminCoreui.app')
 
 @section('content')
-  <page-login-bd></page-login-bd>
+  {{-- send url obtenida por url --}}
+  <page-login-bd url="{{ $url }}"></page-login-bd>
 @endsection

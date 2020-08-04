@@ -10,21 +10,31 @@
         <form @submit.prevent="loginBd">
           <div class="form-group">
             <strong><label for="exampleInputEmail1">Email Institucional</label></strong>
-            <input v-model="email" type="email" :class="{'is-invalid' : errors.email}" class="form-control form-control-lg" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="emailx@unisangil.edu.co">
+            <input v-model="email" type="email" :class="{'is-invalid' : errors.email || errors.error}" class="form-control form-control-lg" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="emailx@unisangil.edu.co">
             <span
               class="help-block text-danger"
               v-if="errors.email"
               v-text="errors.email[0]"
             ></span>
+            <span
+              class="help-block text-danger"
+              v-if="errors"
+              v-text="errors.error"
+            ></span>
             <!-- <small id="emailHelp" class="form-text text-muted">Ingresa tu E-mail universitario.</small> -->
           </div>
           <div class="form-group">
             <strong><label for="exampleInputPassword1">Número Documento</label></strong>
-            <input v-model="documento" type="text" :class="{ 'is-invalid' : errors.documento}" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="1100XXXXXX">
+            <input v-model="documento" type="text" :class="{ 'is-invalid' : errors.documento || errors.error}" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="1100XXXXXX">
             <span
               class="help-block text-danger"
               v-if="errors.documento"
               v-text="errors.documento[0]"
+            ></span>
+            <span
+              class="help-block text-danger"
+              v-if="errors"
+              v-text="errors.error"
             ></span>
           </div>
           <div class="row justify-content-center">
@@ -44,21 +54,34 @@
 </template>
 <script>
 export default {
+  props: {
+    url: {
+      type: String,
+      default: ''
+    },
+  },
   data() {
     return {
       documento: '',
       email: '',
       errors: {},
       data: {},
-      sendInfo: false
+      sendInfo: false,
+      errorSend: 0
     }
   },
   methods: {
     loginBd(){
       let me = this
-      me.errors = {}
       me.sendInfo = true
       let urlApi = 'http://api.unisangil.edu.co/api/getUsuarios'
+
+      if (me.validation()) {
+        //si devuelve 1 para el error
+        me.sendInfo = false
+        return;
+      }
+
       axios.get(urlApi, {
         params: {
           type: 'BDCenturia',
@@ -78,7 +101,7 @@ export default {
             axios.post('/createBdAccess', dataValid)
             .then(res => {
               if(res.data.type === 'success'){
-                window.location.replace("http://centuria.unisangil.edu.co/bases-de-datos");
+                window.location.replace(me.url); //redirigimos a la url obtenida en la prop
               }else{
                 Swal.fire({
                   //toast: true,
@@ -147,6 +170,19 @@ export default {
         me.sendInfo = false
         //console.error(err);
       })
+    },
+    validation(){
+      let me = this
+      me.errorSend = 0
+      me.errors = {}
+
+      if (!me.email || !me.documento) {
+        me.errors = { error: 'El campo es obligatorio.' }
+        me.errorSend = 1
+      }else{
+        me.errorSend = 0
+      }
+      return me.errorSend;
     }
   },
 }

@@ -25,6 +25,16 @@ class LoginController extends Controller
         return view('adminCoreui.login'); //retornamos la vista q esta en kla carpeta auth
     }
 
+    //ur para base de datos dinamic url
+    public function showLoginBd(Request $request)
+    {
+      $url = $request->url;
+      if ($url) {
+        return view('adminCoreui.loginbd', compact('url')); //retornamos la vista q esta en kla carpeta auth
+      }
+      return back();
+    }
+
     //clase para acceder al login menu principal
     public function logingo(Request $request)
     {
