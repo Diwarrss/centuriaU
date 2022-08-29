@@ -74,7 +74,7 @@ export default {
     loginBd(){
       let me = this
       me.sendInfo = true
-      let urlApi = 'http://api.unisangil.edu.co/api/getUsuarios'
+      let urlApi = 'https://api.unisangil.edu.co//api/getUsuarios'
 
       if (me.validation()) {
         //si devuelve 1 para el error

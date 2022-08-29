@@ -554,7 +554,7 @@ export default {
     getProgramas() {
       let me = this;
       axios
-        .get("http://api.unisangil.edu.co/api/getProgramas")
+        .get("https://api.unisangil.edu.co//api/getProgramas")
         .then(res => {
           me.programas = res.data;
           //agregamos al array el campo particular
@@ -576,7 +576,7 @@ export default {
       let me = this;
       me.infoPersona = [];
       axios
-        .get("http://api.unisangil.edu.co/api/getUsuarios", {
+        .get("https://api.unisangil.edu.co//api/getUsuarios", {
           params: {
             documento: me.documento
           }
